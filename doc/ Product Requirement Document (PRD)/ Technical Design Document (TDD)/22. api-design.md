@@ -1,0 +1,39 @@
+# API Design
+## Restaurant Food Delivery System
+
+## Base URL
+
+
+## Authentication
+
+### Register
+POST /register
+
+### Login
+POST /login
+
+## Food APIs
+GET /foods
+GET /foods/{id}
+POST /foods
+PUT /foods/{id}
+DELETE /foods/{id}
+
+## Order APIs
+POST /orders
+GET /orders/user/{user_id}
+GET /orders
+PUT /orders/{id}
+
+## Response Format
+{
+  "success": true,
+  "message": "OK",
+  "data": {}
+}
+
+## Errors
+- 400 Bad Request
+- 401 Unauthorized
+- 404 Not Found
+- 500 Server Error
