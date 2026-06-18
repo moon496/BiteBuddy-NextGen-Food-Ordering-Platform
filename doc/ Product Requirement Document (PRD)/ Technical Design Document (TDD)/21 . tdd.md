@@ -1,0 +1,46 @@
+# Technical Design Document (TDD)
+## Restaurant Food Delivery System
+
+## 1. Introduction
+This system allows users to order food online from restaurants.
+
+## 2. System Overview
+- Frontend: HTML, CSS, JavaScript
+- Backend: Node.js / PHP
+- Database: MySQL
+
+## 3. Architecture
+User → Frontend → Backend → Database → Response
+
+## 4. Modules
+
+### User
+- Register / Login
+- Browse Food
+- Place Order
+
+### Admin
+- Manage Food
+- Manage Orders
+
+### Order
+- Order Processing
+- Tracking
+
+## 5. Functional Requirements
+- User can register and login
+- User can order food
+- Admin can manage system
+
+## 6. Non-Functional Requirements
+- Fast performance
+- Secure system
+- Easy UI
+
+## 7. Security
+- Password encryption
+- Validation
+
+## 8. Future Scope
+- Payment system
+- Mobile app

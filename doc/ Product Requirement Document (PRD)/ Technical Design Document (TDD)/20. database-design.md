@@ -1,0 +1,46 @@
+# Database Design
+## Restaurant Food Delivery System
+
+## Tables
+
+### Users
+| Field | Type |
+|------|------|
+| user_id | INT |
+| name | VARCHAR |
+| email | VARCHAR |
+| password | VARCHAR |
+| phone | VARCHAR |
+
+### Food_Items
+| Field | Type |
+|------|------|
+| food_id | INT |
+| name | VARCHAR |
+| price | DECIMAL |
+| category | VARCHAR |
+| image | VARCHAR |
+
+### Orders
+| Field | Type |
+|------|------|
+| order_id | INT |
+| user_id | INT |
+| total_price | DECIMAL |
+| status | VARCHAR |
+| created_at | DATETIME |
+
+### Order_Items
+| Field | Type |
+|------|------|
+| id | INT |
+| order_id | INT |
+| food_id | INT |
+| quantity | INT |
+
+## Relationships
+- One user → many orders
+- One order → many items
+
+## ER Concept
+Users → Orders → Order_Items → Food_Items
