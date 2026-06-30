@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import OrderStatus from "./components/OrderStatus";
+
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
@@ -18,7 +20,7 @@ function App() {
         <div>
           <h1>BiteBuddy-Nextgen-Food-Ordering-Platform</h1>
           <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
+            Order your favorite meals and track delivery status in real time.
           </p>
         </div>
         <button
@@ -26,10 +28,14 @@ function App() {
           className="counter"
           onClick={() => setCount((count) => count + 1)}
         >
-          Count is {count}
+          View Menu ({count})
         </button>
       </section>
 
+      <div className="ticks"></div>
+      <section id="order-status">
+         <OrderStatus />
+      </section>
       <div className="ticks"></div>
 
       <section id="next-steps">

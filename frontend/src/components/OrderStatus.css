@@ -1,0 +1,125 @@
+.order-status-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 24px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.order-status-container h1 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #333;
+}
+.order-status-page {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 24px;
+  text-align: center;
+}
+
+.order-search {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.order-search input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.order-search button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  background: #ff6b35;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.order-search button:hover {
+  background: #e85a2a;
+}
+
+.status-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.status-card h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.status-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.status-list li {
+  position: relative;
+  padding: 0 0 24px 36px;
+  color: #888;
+}
+
+.status-list li::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ddd;
+}
+
+.status-list li::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 16px;
+  width: 2px;
+  height: 100%;
+  background: #ddd;
+}
+
+.status-list li:last-child::after {
+  display: none;
+}
+
+.status-list li.completed {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.status-list li.completed::before {
+  background: #2e7d32;
+}
+
+.status-list li.completed::after {
+  background: #2e7d32;
+}
+
+.status-list li.active {
+  color: #ff6b35;
+  font-weight: 700;
+}
+
+.status-list li.active::before {
+  background: #ff6b35;
+  box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.2);
+}
+
+.error-message {
+  color: #c62828;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
