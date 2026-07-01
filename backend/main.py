@@ -20,3 +20,14 @@ def read_root():
 @app.get("/menu")
 def get_menu():
     return {"items": ["Pizza", "Burger", "Pasta", "Salad"]}
+
+@app.get("/menu-items")
+def get_menu_items():
+    return {
+        "items": [
+            {"id": 1, "name": "Burger", "price": 120, "category": "Fast Food"},
+            {"id": 2, "name": "Pizza", "price": 250, "category": "Italian"},
+            {"id": 3, "name": "Pasta", "price": 180, "category": "Italian"},
+            {"id": 4, "name": "Salad", "price": 90, "category": "Healthy"}
+        ]
+    }
