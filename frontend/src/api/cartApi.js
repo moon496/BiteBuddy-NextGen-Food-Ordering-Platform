@@ -1,37 +1,32 @@
-const BASE_URL = "http://localhost:5000/api/cart";
-
-const authHeaders = () => ({
-  "Content-Type": "application/json",
-  "Authorization": `Bearer ${localStorage.getItem("token")}`
-});
-
+const BASE_URL = "https://upgraded-spoon-pjw74p5569j9frrw9-8000.app.github.dev";
+const USER_ID = 1; 
 export const getCart = async () => {
-  const res = await fetch(BASE_URL, { headers: authHeaders() });
-  return res.json();
+  const res = await fetch(`${BASE_URL}/cart/${USER_ID}`);
+  const data = await res.json();
+  return data.items; 
 };
 
 export const addToCart = async (itemId, quantity = 1) => {
-  const res = await fetch(BASE_URL, {
+  const res = await fetch(`${BASE_URL}/cart`, {
     method: "POST",
-    headers: authHeaders(),
-    body: JSON.stringify({ item_id: itemId, quantity })
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user_id: USER_ID, item_id: itemId, quantity })
   });
   return res.json();
 };
 
 export const updateCartItem = async (cartId, quantity) => {
-  const res = await fetch(`${BASE_URL}/${cartId}`, {
+  const res = await fetch(`${BASE_URL}/cart/${USER_ID}/${cartId}`, {
     method: "PUT",
-    headers: authHeaders(),
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ quantity })
   });
   return res.json();
 };
 
 export const removeCartItem = async (cartId) => {
-  const res = await fetch(`${BASE_URL}/${cartId}`, {
-    method: "DELETE",
-    headers: authHeaders()
+  const res = await fetch(`${BASE_URL}/cart/${USER_ID}/${cartId}`, {
+    method: "DELETE"
   });
   return res.json();
 };

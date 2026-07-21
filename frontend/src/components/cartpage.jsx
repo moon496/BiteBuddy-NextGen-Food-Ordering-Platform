@@ -1,30 +1,54 @@
 import { useEffect, useState } from "react";
-import { getCart, updateCartItem, removeCartItem } from "../api/cartApi";
+import './App.css'
+
+const BASE_URL = "https://upgraded-spoon-pjw74p5569j9frrw9-8000.app.github.dev";
+const USER_ID = 1;
 
 function CartPage() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchCart = async () => {
-    setLoading(true);
-    const data = await getCart();
-    setCartItems(data);
-    setLoading(false);
+  const loadCart = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/cart/${USER_ID}`);
+      const data = await res.json();
+      setCartItems(data.items);
+    } catch (err) {
+      console.error("Failed to load cart:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    fetchCart();
+    loadCart();
   }, []);
 
-  const handleQuantityChange = async (cartId, newQty) => {
-    if (newQty < 1) return;
-    await updateCartItem(cartId, newQty);
-    fetchCart();
+  const handleQuantityChange = async (id, delta) => {
+    const item = cartItems.find((c) => c.id === id);
+    const newQuantity = Math.max(1, item.quantity + delta);
+
+    try {
+      await fetch(`${BASE_URL}/cart/${USER_ID}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quantity: newQuantity }),
+      });
+      loadCart();
+    } catch (err) {
+      console.error("Failed to update quantity:", err);
+    }
   };
 
-  const handleRemove = async (cartId) => {
-    await removeCartItem(cartId);
-    fetchCart();
+  const handleRemove = async (id) => {
+    try {
+      await fetch(`${BASE_URL}/cart/${USER_ID}/${id}`, {
+        method: "DELETE",
+      });
+      loadCart();
+    } catch (err) {
+      console.error("Failed to remove item:", err);
+    }
   };
 
   if (loading) return <p>Loading cart...</p>;
@@ -42,9 +66,9 @@ function CartPage() {
             <div key={c.id} className="cart-item">
               <span>{c.item_name}</span>
               <span>৳{c.price}</span>
-              <button onClick={() => handleQuantityChange(c.id, c.quantity - 1)}>-</button>
+              <button onClick={() => handleQuantityChange(c.id, -1)}>-</button>
               <span>{c.quantity}</span>
-              <button onClick={() => handleQuantityChange(c.id, c.quantity + 1)}>+</button>
+              <button onClick={() => handleQuantityChange(c.id, 1)}>+</button>
               <span>৳{c.subtotal}</span>
               <button onClick={() => handleRemove(c.id)}>Remove</button>
             </div>
