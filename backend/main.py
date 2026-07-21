@@ -1,9 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from routes.cart_routes import router as cart_router
 from order_status import router as order_status_router
 
-app = FastAPI()
+app = FastAPI()         
+
+app.include_router(cart_router)          
+app.include_router(order_status_router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -11,7 +14,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(order_status_router)
 
 @app.get("/")
 def read_root():

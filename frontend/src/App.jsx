@@ -1,32 +1,55 @@
 import { useEffect, useState } from "react";
 import './App.css'
+import MenuItems from "./components/MenuItems";
+
+const BASE_URL = "https://upgraded-spoon-pjw74p5569j9frrw9-8000.app.github.dev";
+const USER_ID = 1;
 
 function CartPage() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // temporary dummy data — backend API connect hobar age test korar jonno
-    setCartItems([
-      { id: 1, item_name: "Burger", price: 150, quantity: 2, subtotal: 300 },
-      { id: 2, item_name: "Pizza", price: 400, quantity: 1, subtotal: 400 },
-      { id: 2, item_name: "Pasta", price: 100, quantity: 1, subtotal: 100 },
-    ]);
-    setLoading(false);
-  }, []);
-
-  const handleQuantityChange = (id, delta) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta), subtotal: item.price * Math.max(1, item.quantity + delta) }
-          : item
-      )
-    );
+  const loadCart = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/cart/${USER_ID}`);
+      const data = await res.json();
+      setCartItems(data.items);
+    } catch (err) {
+      console.error("Failed to load cart:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleRemove = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  useEffect(() => {
+    loadCart();
+  }, []);
+
+  const handleQuantityChange = async (id, delta) => {
+    const item = cartItems.find((c) => c.id === id);
+    const newQuantity = Math.max(1, item.quantity + delta);
+
+    try {
+      await fetch(`${BASE_URL}/cart/${USER_ID}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quantity: newQuantity }),
+      });
+      loadCart();
+    } catch (err) {
+      console.error("Failed to update quantity:", err);
+    }
+  };
+
+  const handleRemove = async (id) => {
+    try {
+      await fetch(`${BASE_URL}/cart/${USER_ID}/${id}`, {
+        method: "DELETE",
+      });
+      loadCart();
+    } catch (err) {
+      console.error("Failed to remove item:", err);
+    }
   };
 
   if (loading) return <p>Loading cart...</p>;
@@ -58,4 +81,19 @@ function CartPage() {
   );
 }
 
-export default CartPage;
+function App() {
+  const [view, setView] = useState("menu");
+
+  return (
+    <div>
+      <nav style={{ display: "flex", gap: "10px", padding: "10px", borderBottom: "1px solid #444" }}>
+        <button onClick={() => setView("menu")}>Menu</button>
+        <button onClick={() => setView("cart")}>Cart</button>
+      </nav>
+
+      {view === "menu" ? <MenuItems /> : <CartPage />}
+    </div>
+  );
+}
+
+export default App;

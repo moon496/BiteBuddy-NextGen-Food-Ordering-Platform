@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 
+const BASE_URL = "https://upgraded-spoon-pjw74p5569j9frrw9-8000.app.github.dev";
+const USER_ID = 1;
+
 function MenuItems() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState(""); // notun state - message dekhanor jonno
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/menu-items")
+    fetch(`${BASE_URL}/menu-items`)
       .then((res) => res.json())
       .then((data) => {
         setItems(data.items);
@@ -19,18 +23,53 @@ function MenuItems() {
       });
   }, []);
 
+  const handleAddToCart = async (itemId, itemName) => {
+    try {
+      const res = await fetch(`${BASE_URL}/cart`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: USER_ID, item_id: itemId, quantity: 1 }),
+      });
+      if (!res.ok) throw new Error("Failed to add item");
+
+      setMessage(`${itemName} added to cart!`);
+      setTimeout(() => setMessage(""), 2000); // 2 second por message gayeb hobe
+    } catch (err) {
+      console.error("Error adding to cart:", err);
+      setMessage("Failed to add item to cart.");
+      setTimeout(() => setMessage(""), 2000);
+    }
+  };
+
   if (loading) return <p>Loading menu...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div className="menu-items">
       <h2>Our Menu</h2>
+
+      {message && (
+        <div
+          style={{
+            background: "#2e7d32",
+            color: "white",
+            padding: "10px 15px",
+            borderRadius: "6px",
+            marginBottom: "15px",
+            textAlign: "center",
+          }}
+        >
+          {message}
+        </div>
+      )}
+
       <div className="menu-grid">
         {items.map((item) => (
           <div className="menu-card" key={item.id}>
             <h3>{item.name}</h3>
             <p>Category: {item.category}</p>
             <p>Price: ৳{item.price}</p>
+            <button onClick={() => handleAddToCart(item.id, item.name)}>Add to Cart</button>
           </div>
         ))}
       </div>
