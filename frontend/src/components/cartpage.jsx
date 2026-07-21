@@ -1,32 +1,30 @@
 import { useEffect, useState } from "react";
-import './App.css'
+import { getCart, updateCartItem, removeCartItem } from "../api/cartApi";
 
 function CartPage() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // temporary dummy data — backend API connect hobar age test korar jonno
-    setCartItems([
-      { id: 1, item_name: "Burger", price: 150, quantity: 2, subtotal: 300 },
-      { id: 2, item_name: "Pizza", price: 400, quantity: 1, subtotal: 400 },
-      { id: 2, item_name: "Pasta", price: 100, quantity: 1, subtotal: 100 },
-    ]);
+  const fetchCart = async () => {
+    setLoading(true);
+    const data = await getCart();
+    setCartItems(data);
     setLoading(false);
-  }, []);
-
-  const handleQuantityChange = (id, delta) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta), subtotal: item.price * Math.max(1, item.quantity + delta) }
-          : item
-      )
-    );
   };
 
-  const handleRemove = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
+  const handleQuantityChange = async (cartId, newQty) => {
+    if (newQty < 1) return;
+    await updateCartItem(cartId, newQty);
+    fetchCart();
+  };
+
+  const handleRemove = async (cartId) => {
+    await removeCartItem(cartId);
+    fetchCart();
   };
 
   if (loading) return <p>Loading cart...</p>;
@@ -44,9 +42,9 @@ function CartPage() {
             <div key={c.id} className="cart-item">
               <span>{c.item_name}</span>
               <span>৳{c.price}</span>
-              <button onClick={() => handleQuantityChange(c.id, -1)}>-</button>
+              <button onClick={() => handleQuantityChange(c.id, c.quantity - 1)}>-</button>
               <span>{c.quantity}</span>
-              <button onClick={() => handleQuantityChange(c.id, 1)}>+</button>
+              <button onClick={() => handleQuantityChange(c.id, c.quantity + 1)}>+</button>
               <span>৳{c.subtotal}</span>
               <button onClick={() => handleRemove(c.id)}>Remove</button>
             </div>
