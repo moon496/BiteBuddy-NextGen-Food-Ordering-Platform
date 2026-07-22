@@ -5,10 +5,11 @@ from order_status import router as order_status_router
 
 from routes.auth_routes import router as auth_router
 from database import Base, engine
-import model  # noqa: F401  (registers models with Base before create_all)
+from model import User  # ensures User is registered with Base before create_all
 
 app = FastAPI()  
-Base.metadata.create_all(bind=engine)       
+
+Base.metadata.create_all(bind=engine)
 
 app.include_router(cart_router)          
 app.include_router(order_status_router)
