@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import './App.css'
 import MenuItems from "./components/MenuItems";
 
+import Login from "./components/Login";
+
 const BASE_URL = "https://upgraded-spoon-pjw74p5569j9frrw9-8000.app.github.dev";
 const USER_ID = 1;
 
@@ -89,9 +91,12 @@ function App() {
       <nav style={{ display: "flex", gap: "10px", padding: "10px", borderBottom: "1px solid #444" }}>
         <button onClick={() => setView("menu")}>Menu</button>
         <button onClick={() => setView("cart")}>Cart</button>
+        <button onClick={() => setView("account")}>Account</button>
       </nav>
 
-      {view === "menu" ? <MenuItems /> : <CartPage />}
+      {view === "menu" && <MenuItems />}
+      {view === "cart" && <CartPage />}
+      {view === "account" && <Login />}
     </div>
   );
 }
