@@ -3,13 +3,17 @@ import { useEffect, useState } from "react";
 const BASE_URL = "https://upgraded-spoon-pjw74p5569j9frrw9-8000.app.github.dev";
 const USER_ID = 1;
 
+const BASE_URL = "https://upgraded-spoon-pjw74p5569j9frrw9-8000.app.github.dev";
+const USER_ID = 1;
+
 function MenuItems() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [message, setMessage] = useState(""); // notun state - message dekhanor jonno
-
+  const [message, setMessage] = useState(""); 
+  
   useEffect(() => {
+    fetch(`${BASE_URL}/menu-items`)
     fetch(`${BASE_URL}/menu-items`)
       .then((res) => res.json())
       .then((data) => {
@@ -33,7 +37,7 @@ function MenuItems() {
       if (!res.ok) throw new Error("Failed to add item");
 
       setMessage(`${itemName} added to cart!`);
-      setTimeout(() => setMessage(""), 2000); // 2 second por message gayeb hobe
+      setTimeout(() => setMessage(""), 2000); 
     } catch (err) {
       console.error("Error adding to cart:", err);
       setMessage("Failed to add item to cart.");
@@ -63,12 +67,29 @@ function MenuItems() {
         </div>
       )}
 
+
+      {message && (
+        <div
+          style={{
+            background: "#2e7d32",
+            color: "white",
+            padding: "10px 15px",
+            borderRadius: "6px",
+            marginBottom: "15px",
+            textAlign: "center",
+          }}
+        >
+          {message}
+        </div>
+      )}
+
       <div className="menu-grid">
         {items.map((item) => (
           <div className="menu-card" key={item.id}>
             <h3>{item.name}</h3>
             <p>Category: {item.category}</p>
             <p>Price: ৳{item.price}</p>
+            <button onClick={() => handleAddToCart(item.id, item.name)}>Add to Cart</button>
             <button onClick={() => handleAddToCart(item.id, item.name)}>Add to Cart</button>
           </div>
         ))}

@@ -12,6 +12,10 @@ MENU_ITEMS = [
     {"id": 2, "name": "Pizza", "price": 250, "category": "Italian"},
     {"id": 3, "name": "Pasta", "price": 180, "category": "Italian"},
     {"id": 4, "name": "Salad", "price": 90, "category": "Healthy"},
+    {"id": 5, "name": "MeatBox", "price": 120, "category": "Testy Food"},
+    {"id": 6, "name": "Ice-cream", "price": 100, "category": "Fast Food"},
+    {"id": 7, "name": "Sushi", "price": 200, "category": "Healthy"},
+    {"id": 8, "name": "Fried-Rice", "price": 150, "category": "Fast Food"}
 ]
 
 
