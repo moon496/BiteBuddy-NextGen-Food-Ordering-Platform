@@ -1,6 +1,5 @@
 
-const BASE_URL = "http://localhost:8000";
-
+const BASE_URL = "https://expert-space-adventure-5g9wxrw565rf769w-8000.app.github.dev";
 export const registerUser = async (username, email, password) => {
   const res = await fetch(`${BASE_URL}/auth/register`, {
     method: "POST",
