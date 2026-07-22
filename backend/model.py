@@ -1,8 +1,7 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from database import Base  # tomar existing Base import koro
-
+from database import Base  
 class Cart(Base):
     __tablename__ = "cart"
 

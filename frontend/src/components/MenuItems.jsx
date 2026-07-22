@@ -7,8 +7,8 @@ function MenuItems() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [message, setMessage] = useState(""); // notun state - message dekhanor jonno
-
+  const [message, setMessage] = useState(""); 
+  
   useEffect(() => {
     fetch(`${BASE_URL}/menu-items`)
       .then((res) => res.json())
@@ -33,7 +33,7 @@ function MenuItems() {
       if (!res.ok) throw new Error("Failed to add item");
 
       setMessage(`${itemName} added to cart!`);
-      setTimeout(() => setMessage(""), 2000); // 2 second por message gayeb hobe
+      setTimeout(() => setMessage(""), 2000); 
     } catch (err) {
       console.error("Error adding to cart:", err);
       setMessage("Failed to add item to cart.");
