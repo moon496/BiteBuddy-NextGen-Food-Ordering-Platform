@@ -1,5 +1,5 @@
 
-const BASE_URL = "https://expert-space-adventure-5g9wxrw565rf769w-8000.app.github.dev";
+const BASE_URL = "https://vigilant-potato-q74vjp55x4g5fr5x-8000.app.github.dev";
 export const registerUser = async (username, email, password) => {
   const res = await fetch(`${BASE_URL}/auth/register`, {
     method: "POST",

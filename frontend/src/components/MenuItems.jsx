@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 
-const BASE_URL = "https://upgraded-spoon-pjw74p5569j9frrw9-8000.app.github.dev";
-const USER_ID = 1;
 
-const BASE_URL = "https://upgraded-spoon-pjw74p5569j9frrw9-8000.app.github.dev";
+const BASE_URL = "https://vigilant-potato-q74vjp55x4g5fr5x-8000.app.github.dev";
 const USER_ID = 1;
 
 function MenuItems() {
@@ -13,7 +11,6 @@ function MenuItems() {
   const [message, setMessage] = useState(""); 
   
   useEffect(() => {
-    fetch(`${BASE_URL}/menu-items`)
     fetch(`${BASE_URL}/menu-items`)
       .then((res) => res.json())
       .then((data) => {
@@ -68,20 +65,7 @@ function MenuItems() {
       )}
 
 
-      {message && (
-        <div
-          style={{
-            background: "#2e7d32",
-            color: "white",
-            padding: "10px 15px",
-            borderRadius: "6px",
-            marginBottom: "15px",
-            textAlign: "center",
-          }}
-        >
-          {message}
-        </div>
-      )}
+
 
       <div className="menu-grid">
         {items.map((item) => (
@@ -90,7 +74,7 @@ function MenuItems() {
             <p>Category: {item.category}</p>
             <p>Price: ৳{item.price}</p>
             <button onClick={() => handleAddToCart(item.id, item.name)}>Add to Cart</button>
-            <button onClick={() => handleAddToCart(item.id, item.name)}>Add to Cart</button>
+
           </div>
         ))}
       </div>

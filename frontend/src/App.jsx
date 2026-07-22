@@ -4,7 +4,7 @@ import MenuItems from "./components/MenuItems";
 
 import Login from "./components/Login";
 
-const BASE_URL = "https://upgraded-spoon-pjw74p5569j9frrw9-8000.app.github.dev";
+const BASE_URL = "https://vigilant-potato-q74vjp55x4g5fr5x-8000.app.github.dev";
 const USER_ID = 1;
 
 function CartPage() {
