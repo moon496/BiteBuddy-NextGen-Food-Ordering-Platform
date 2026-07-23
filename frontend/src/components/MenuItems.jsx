@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 
 
-const BASE_URL = "https://vigilant-potato-q74vjp55x4g5fr5x-8000.app.github.dev";
-const USER_ID = 1;
-
+const BASE_URL = "https://obscure-acorn-4jrxwvxx64qvh5j4q-8000.app.github.dev";
 function MenuItems() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);

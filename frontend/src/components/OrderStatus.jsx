@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./OrderStatus.css";
 
-const API_BASE_URL = "http://localhost:8000";
+const BASE_URL = "https://obscure-acorn-4jrxwvxx64qvh5j4q-8000.app.github.dev";
 
 const ORDER_STATUS_SEQUENCE = [
   "Pending",
@@ -19,8 +19,9 @@ function OrderStatus() {
 
   const fetchOrderStatus = async (orderId) => {
     try {
+    
       const response = await fetch(
-        `${API_BASE_URL}/orders/${orderId}/status`
+        `${BASE_URL}/orders/${orderId}/status`
       );
 
       if (!response.ok) {
