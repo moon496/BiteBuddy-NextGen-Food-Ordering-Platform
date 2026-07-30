@@ -1,19 +1,17 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.cart_routes import router as cart_router
-from order_status import router as order_status_router
-
+from routes.order_routes import router as order_router
 from routes.auth_routes import router as auth_router
 from database import Base, engine
-from model import User  
+from model import User
 
-app = FastAPI()  
+app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
 
-app.include_router(cart_router)          
-app.include_router(order_status_router)
-
+app.include_router(cart_router)
+app.include_router(order_router)
 app.include_router(auth_router)
 
 app.add_middleware(
