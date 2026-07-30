@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import './App.css'
+import "../App.css";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const USER_ID = 1;
@@ -7,6 +7,7 @@ const USER_ID = 1;
 function CartPage() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [placingOrder, setPlacingOrder] = useState(false);
 
   const loadCart = async () => {
     try {
@@ -51,6 +52,29 @@ function CartPage() {
     }
   };
 
+  const handlePlaceOrder = async () => {
+    setPlacingOrder(true);
+    try {
+      const res = await fetch(`${BASE_URL}/orders/create?user_id=${USER_ID}`, {
+        method: "POST",
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.detail || "Failed to place order");
+        return;
+      }
+
+      alert(`Order placed! Your Order ID is ${data.order_id}`);
+      loadCart();
+    } catch (err) {
+      console.error("Failed to place order:", err);
+      alert("Something went wrong placing the order.");
+    } finally {
+      setPlacingOrder(false);
+    }
+  };
+
   if (loading) return <p>Loading cart...</p>;
 
   const total = cartItems.reduce((sum, c) => sum + c.subtotal, 0);
@@ -74,6 +98,9 @@ function CartPage() {
             </div>
           ))}
           <h3>Total: ৳{total}</h3>
+          <button onClick={handlePlaceOrder} disabled={placingOrder}>
+            {placingOrder ? "Placing Order..." : "Place Order"}
+          </button>
         </>
       )}
     </div>
