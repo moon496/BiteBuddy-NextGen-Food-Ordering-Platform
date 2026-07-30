@@ -4,7 +4,7 @@ import MenuItems from "./components/MenuItems";
 
 import Login from "./components/Login";
 
-const BASE_URL = "https://obscure-acorn-4jrxwvxx64qvh5j4q-8000.app.github.dev";
+const BASE_URL = import.meta.env.VITE_API_URL;
 const USER_ID = 1;
 
 function CartPage() {

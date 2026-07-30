@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import "./OrderStatus.css";
 
-const BASE_URL = "https://obscure-acorn-4jrxwvxx64qvh5j4q-8000.app.github.dev";
+const BASE_URL = import.meta.env.VITE_API_URL;
+const USER_ID = 1;
 
 const ORDER_STATUS_SEQUENCE = [
   "Pending",

@@ -1,5 +1,4 @@
-
-const BASE_URL = "https://obscure-acorn-4jrxwvxx64qvh5j4q-8000.app.github.dev";
+const BASE_URL = import.meta.env.VITE_API_URL;
 export const registerUser = async (username, email, password) => {
   const res = await fetch(`${BASE_URL}/auth/register`, {
     method: "POST",
