@@ -1,9 +1,10 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
-export const registerUser = async (username, email, password) => {
+
+export const registerUser = async (username, email, password, role = "User") => {
   const res = await fetch(`${BASE_URL}/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, email, password }),
+    body: JSON.stringify({ username, email, password, role }),
   });
   if (!res.ok) {
     const err = await res.json();
@@ -38,5 +39,33 @@ export const fetchCurrentUser = async (token) => {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) throw new Error("Not authenticated");
+  return res.json();
+};
+
+export const updateUser = async (token, username, email) => {
+  const res = await fetch(`${BASE_URL}/auth/me`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ username, email }),
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.detail || "Update failed");
+  }
+  return res.json();
+};
+
+export const deleteUser = async (token) => {
+  const res = await fetch(`${BASE_URL}/auth/me`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.detail || "Delete failed");
+  }
   return res.json();
 };
