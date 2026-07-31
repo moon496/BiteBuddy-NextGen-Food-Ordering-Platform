@@ -42,7 +42,7 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
     return {
         "access_token": token,
         "token_type": "bearer",
-        "user": {"id": user.id, "username": user.username, "email": user.email},
+        "user": {"id": user.id, "username": user.username, "email": user.email, "role": user.role},
     }
 
 
@@ -70,8 +70,7 @@ def get_current_user(authorization: str = Header(None), db: Session = Depends(ge
 @router.get("/me")
 def get_me(current=Depends(get_current_user)):
     user, _ = current
-    return {"id": user.id, "username": user.username, "email": user.email}
-
+    return {"id": user.id, "username": user.username, "email": user.email, "role": user.role}
 
 @router.post("/logout")
 def logout(current=Depends(get_current_user)):
