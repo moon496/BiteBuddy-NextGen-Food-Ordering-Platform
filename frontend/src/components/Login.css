@@ -170,11 +170,20 @@
 /* ---------- Right form panel ---------- */
 
 .auth-form-panel {
+  position: relative;
   flex: 1 1 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px 24px;
+  background: linear-gradient(rgba(6, 5, 4, 0.15), rgba(6, 5, 4, 0.32)),
+    url("https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1200")
+    center/cover no-repeat;
+}
+
+.auth-form-panel .auth-card {
+  position: relative;
+  z-index: 1;
 }
 
 .auth-card {
@@ -443,6 +452,29 @@
   color: var(--ink);
 }
 
+/* ---------- Footer credits ---------- */
+
+.auth-footer {
+  position: absolute;
+  right: 24px;
+  bottom: 20px;
+  z-index: 1;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.78rem;
+  margin-top: 0;
+}
+
+.auth-footer a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 900px) {
@@ -460,6 +492,10 @@
     display: none;
   }
   .auth-form-panel {
-    padding: 32px 20px 48px;
+    padding: 32px 20px 56px;
+  }
+  .auth-footer {
+    right: 16px;
+    bottom: 10px;
   }
 }

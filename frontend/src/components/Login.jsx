@@ -286,6 +286,29 @@ function Login() {
             </span>
           </p>
         </div>
+
+        <p className="auth-footer">
+          Built by{" "}
+          <a href="https://github.com/farhana2443" target="_blank" rel="noopener noreferrer">
+            Farhana
+          </a>
+          ,{" "}
+          <a href="https://github.com/moon496" target="_blank" rel="noopener noreferrer">
+            Moon
+          </a>{" "}
+          &{" "}
+          <a href="https://github.com/Yeonali" target="_blank" rel="noopener noreferrer">
+            Naim
+          </a>{" "}
+          ·{" "}
+          <a
+            href="https://github.com/moon496/BiteBuddy-NextGen-Food-Ordering-Platform"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View on GitHub
+          </a>
+        </p>
       </div>
     </div>
   );
