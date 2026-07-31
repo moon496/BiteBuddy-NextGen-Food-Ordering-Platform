@@ -4,7 +4,7 @@ import jwt
 
 from database import get_db
 from model import User
-from auth_schemas import RegisterRequest, LoginRequest, UserResponse
+from auth_schemas import RegisterRequest, LoginRequest, UserResponse, UpdateUserRequest
 from auth_utils import hash_password, verify_password, create_access_token, decode_access_token
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
@@ -24,6 +24,7 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
         username=payload.username,
         email=payload.email,
         hashed_password=hash_password(payload.password),
+        role=payload.role,
     )
     db.add(user)
     db.commit()
@@ -77,3 +78,27 @@ def logout(current=Depends(get_current_user)):
     _, token = current
     token_blocklist.add(token)
     return {"message": "Logged out successfully"}
+@router.put("/me", response_model=UserResponse)
+def update_me(payload: UpdateUserRequest, current=Depends(get_current_user), db: Session = Depends(get_db)):
+    user, _ = current
+
+    existing = db.query(User).filter(
+        ((User.username == payload.username) | (User.email == payload.email))
+        & (User.id != user.id)
+    ).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Username or email already in use")
+
+    db_user = db.query(User).filter(User.id == user.id).first()
+    db_user.username = payload.username
+    db_user.email = payload.email
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+@router.delete("/me")
+def delete_me(current=Depends(get_current_user), db: Session = Depends(get_db)):
+    user, _ = current
+    db_user = db.query(User).filter(User.id == user.id).first()
+    db.delete(db_user)
+    db.commit()
+    return {"message": "Account deleted successfully"}

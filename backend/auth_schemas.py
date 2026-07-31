@@ -5,6 +5,7 @@ class RegisterRequest(BaseModel):
     username: str
     email: str
     password: str
+    role: str = "User"
 
 
 class LoginRequest(BaseModel):
@@ -16,6 +17,12 @@ class UserResponse(BaseModel):
     id: int
     username: str
     email: str
+    role: str
 
     class Config:
         from_attributes = True
+
+
+class UpdateUserRequest(BaseModel):
+    username: str
+    email: str
