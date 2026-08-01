@@ -1,29 +1,32 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.cart_routes import router as cart_router
-from routes.order_routes import router as order_router
-from routes.auth_routes import router as auth_router
-from database import Base, engine
-from model import User
+from order_status import router as order_status_router
 
-app = FastAPI()
+from routes.auth_routes import router as auth_router
+from routes.coupon_routes import router as coupon_router
+from routes.address_routes import router as address_router
+from routes.admin_routes import router as admin_router
+from routes.review_routes import router as review_router
+from database import Base, engine
+from model import User  
+
+app = FastAPI()  
 
 Base.metadata.create_all(bind=engine)
 
-app.include_router(cart_router)
-app.include_router(order_router)
-app.include_router(auth_router)
+app.include_router(cart_router)          
+app.include_router(order_status_router)
 
-origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "https://expert-space-adventure-5g9wxrww565rf769w-5173.app.github.dev",
-]
+app.include_router(auth_router)
+app.include_router(coupon_router)
+app.include_router(address_router)
+app.include_router(admin_router)
+app.include_router(review_router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
