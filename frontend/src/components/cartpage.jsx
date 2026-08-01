@@ -4,10 +4,17 @@ import "../App.css";
 const BASE_URL = import.meta.env.VITE_API_URL;
 const USER_ID = 1;
 
-function CartPage() {
+function CartPage({ setView }) {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [placingOrder, setPlacingOrder] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+
+  const handleGoToLogin = () => {
+    localStorage.setItem("checkout_redirect", "addresses");
+    setShowLoginPrompt(false);
+    setView("account");
+  };
 
   const loadCart = async () => {
     try {
@@ -53,6 +60,12 @@ function CartPage() {
   };
 
   const handlePlaceOrder = async () => {
+    const token = localStorage.getItem("bitebuddy_token");
+    if (!token) {
+      setShowLoginPrompt(true);
+      return;
+    }
+
     setPlacingOrder(true);
     try {
       const res = await fetch(`${BASE_URL}/orders/create?user_id=${USER_ID}`, {
@@ -166,8 +179,25 @@ function CartPage() {
         </div>
       </>
     )}
+
+    {showLoginPrompt && (
+      <div className="login-modal-overlay">
+        <div className="login-modal-card">
+          <div className="login-modal-icon">🔒</div>
+          <h3>Login Required</h3>
+          <p>Please log in to place your order and continue to your delivery address.</p>
+          <div className="login-modal-actions">
+            <button className="login-modal-primary" onClick={handleGoToLogin}>
+              Go to Login
+            </button>
+            <button className="login-modal-secondary" onClick={() => setShowLoginPrompt(false)}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
   </div>
 );
 }
-
 export default CartPage;
