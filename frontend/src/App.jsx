@@ -1,6 +1,9 @@
 import { useState } from "react";
 import './App.css';
 
+import Payment from "./components/Payment";
+<button onClick={() => setView("payment")}>Payment</button>
+{view === "payment" && <Payment />}
 import MenuItems from "./components/MenuItems";
 import CartPage from "./components/cartpage";
 import Login from "./components/Login";
