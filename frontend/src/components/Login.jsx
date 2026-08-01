@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { registerUser, loginUser, logoutUser, fetchCurrentUser, updateUser, deleteUser } from "../api/authApi";
 import "./Login.css";
 
-function Login() {
+function Login({ setView }) {
   const [mode, setMode] = useState("login");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -45,6 +45,12 @@ function Login() {
       localStorage.setItem("bitebuddy_token", data.access_token);
       setToken(data.access_token);
       setUser(data.user);
+
+      const redirectTarget = localStorage.getItem("checkout_redirect");
+      if (redirectTarget && setView) {
+        localStorage.removeItem("checkout_redirect");
+        setView(redirectTarget);
+      }
     } catch (err) {
       setError(err.message);
     }
