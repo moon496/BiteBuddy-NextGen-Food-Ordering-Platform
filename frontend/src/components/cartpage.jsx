@@ -80,31 +80,94 @@ function CartPage() {
   const total = cartItems.reduce((sum, c) => sum + c.subtotal, 0);
 
   return (
-    <div className="cart-page">
-      <h2>Your Cart</h2>
-      {cartItems.length === 0 ? (
-        <p>Cart is empty</p>
-      ) : (
-        <>
+  <div className="cart-page">
+    <div className="cart-brand-header">
+      <span className="menu-brand-mark">🍔</span>
+
+      <h1 className="menu-brand-name">BiteBuddy</h1>
+
+      <p className="menu-brand-tagline">
+         Fresh • Delicious • Ready to Order
+      </p>
+    </div>
+
+    {cartItems.length === 0 ? (
+      <div className="empty-cart">
+        <h2>Your cart is empty</h2>
+        <p>Add some delicious food from the menu!</p>
+      </div>
+    ) : (
+      <>
+        <div className="cart-list">
           {cartItems.map((c) => (
-            <div key={c.id} className="cart-item">
-              <span>{c.item_name}</span>
-              <span>৳{c.price}</span>
-              <button onClick={() => handleQuantityChange(c.id, -1)}>-</button>
-              <span>{c.quantity}</span>
-              <button onClick={() => handleQuantityChange(c.id, 1)}>+</button>
-              <span>৳{c.subtotal}</span>
-              <button onClick={() => handleRemove(c.id)}>Remove</button>
+            <div key={c.id} className="cart-card">
+              <img
+                src={c.image}
+                alt={c.item_name}
+                className="cart-image"
+              />
+
+              <div className="cart-content">
+                <span className="cart-category">
+                  {c.category}
+                </span>
+
+                <h3 className="cart-name">{c.item_name}</h3>
+
+                <p className="cart-price">
+                  ৳{c.price} each
+                </p>
+
+                <div className="cart-bottom">
+                  <div className="qty-box">
+                    <button onClick={() => handleQuantityChange(c.id, -1)}>
+                      −
+                    </button>
+
+                    <span>{c.quantity}</span>
+
+                    <button onClick={() => handleQuantityChange(c.id, 1)}>
+                      +
+                    </button>
+                  </div>
+
+                  <strong>৳{c.subtotal}</strong>
+
+                  <button
+                    className="remove-btn"
+                    onClick={() => handleRemove(c.id)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
-          <h3>Total: ৳{total}</h3>
-          <button onClick={handlePlaceOrder} disabled={placingOrder}>
+        </div>
+
+        <div className="summary-card">
+          <div className="summary-row">
+            <span>Items</span>
+            <strong>{cartItems.length}</strong>
+          </div>
+
+          <div className="summary-row summary-total">
+            <span>Total</span>
+            <strong>৳{total}</strong>
+          </div>
+
+          <button
+            className="checkout-btn"
+            onClick={handlePlaceOrder}
+            disabled={placingOrder}
+          >
             {placingOrder ? "Placing Order..." : "Place Order"}
           </button>
-        </>
-      )}
-    </div>
-  );
+        </div>
+      </>
+    )}
+  </div>
+);
 }
 
 export default CartPage;
