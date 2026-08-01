@@ -47,7 +47,11 @@ function MenuItems() {
 
   return (
     <div className="menu-items">
-      <h2>Our Menu</h2>
+      <div className="menu-brand-header">
+         <span className="menu-brand-mark">🍔</span>
+         <h1 className="menu-brand-name">BiteBuddy</h1>
+         <p className="menu-brand-tagline">Our Menu</p>
+      </div>
 
       {message && (
         <div
@@ -70,11 +74,15 @@ function MenuItems() {
       <div className="menu-grid">
         {items.map((item) => (
           <div className="menu-card" key={item.id}>
-            <h3>{item.name}</h3>
-            <p>Category: {item.category}</p>
-            <p>Price: ৳{item.price}</p>
-            <button onClick={() => handleAddToCart(item.id, item.name)}>Add to Cart</button>
-
+            {item.image && (
+              <img className="menu-card-img" src={item.image} alt={item.name} />
+            )}
+            <div className="menu-card-body">
+              <span className="menu-card-category">{item.category}</span>
+              <h3>{item.name}</h3>
+              <p className="menu-card-price">৳{item.price}</p>
+              <button onClick={() => handleAddToCart(item.id, item.name)}>Add to Cart</button>
+            </div>
           </div>
         ))}
       </div>
