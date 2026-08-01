@@ -2,12 +2,14 @@ import { useState } from "react";
 import './App.css';
 
 import Payment from "./components/Payment";
-<button onClick={() => setView("payment")}>Payment</button>
-{view === "payment" && <Payment />}
 import MenuItems from "./components/MenuItems";
 import CartPage from "./components/cartpage";
 import Login from "./components/Login";
 import OrderStatus from "./components/OrderStatus";
+import AddressBook from "./components/AddressBook";
+import AdminDashboard from "./components/AdminDashboard";
+import Coupon from "./components/Coupon";
+import Reviews from "./components/Reviews";
 
 function App() {
   const [view, setView] = useState("menu");
@@ -19,12 +21,21 @@ function App() {
         <button onClick={() => setView("cart")}>Cart</button>
         <button onClick={() => setView("orders")}>Track Order</button>
         <button onClick={() => setView("account")}>Account</button>
+        <button onClick={() => setView("reviews")}>Reviews</button>
+        <button onClick={() => setView("admin")}>Admin</button>
+        <button onClick={() => setView("addresses")}>Addresses</button>
+        <button onClick={() => setView("coupon")}>Coupon</button>
       </nav>
 
       {view === "menu" && <MenuItems />}
-      {view === "cart" && <CartPage />}
+      {view === "cart" && <CartPage setView={setView} />}
       {view === "orders" && <OrderStatus />}
-      {view === "account" && <Login />}
+      {view === "account" && <Login setView={setView} />}
+      {view === "payment" && <Payment />}
+      {view === "addresses" && <AddressBook />}
+      {view === "admin" && <AdminDashboard />}
+      {view === "coupon" && <Coupon />}
+      {view === "reviews" && <Reviews />}
     </div>
   );
 }
