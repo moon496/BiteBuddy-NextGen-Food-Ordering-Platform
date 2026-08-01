@@ -22,7 +22,19 @@ function App() {
         <button onClick={() => setView("orders")}>Track Order</button>
         <button onClick={() => setView("account")}>Account</button>
         <button onClick={() => setView("reviews")}>Reviews</button>
-        <button onClick={() => setView("admin")}>Admin</button>
+        <button
+          onClick={() => {
+            const role = localStorage.getItem("bitebuddy_role");
+
+            if (role === "Admin") {
+              setView("admin");
+            } else {
+              alert("Access denied. Admins only.");
+            }
+          }}
+        >
+          Admin
+        </button>
         <button onClick={() => setView("addresses")}>Addresses</button>
         <button onClick={() => setView("coupon")}>Coupon</button>
       </nav>

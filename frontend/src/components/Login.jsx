@@ -45,11 +45,19 @@ function Login({ setView }) {
       localStorage.setItem("bitebuddy_token", data.access_token);
       setToken(data.access_token);
       setUser(data.user);
+      localStorage.setItem("bitebuddy_role", data.user.role);
 
       const redirectTarget = localStorage.getItem("checkout_redirect");
       if (redirectTarget && setView) {
         localStorage.removeItem("checkout_redirect");
         setView(redirectTarget);
+      }
+      else if (setView) {
+        if (data.user.role === "Admin") {
+           setView("admin");
+        } else {
+           setView("menu");
+        }
       }
     } catch (err) {
       setError(err.message);
@@ -61,6 +69,7 @@ function Login({ setView }) {
       await logoutUser(token);
     } finally {
       localStorage.removeItem("bitebuddy_token");
+      localStorage.removeItem("bitebuddy_role");
       setToken(null);
       setUser(null);
     }
@@ -100,7 +109,7 @@ function Login({ setView }) {
 
   if (loading) return <div className="auth-loading">Loading BiteBuddy…</div>;
 
-  // ---- Shared brand panel (left side) ----
+
   const BrandPanel = () => (
     <div className="auth-brand-panel">
       <div className="brand-pattern" aria-hidden="true"></div>
@@ -132,7 +141,7 @@ function Login({ setView }) {
     </div>
   );
 
-  // ---- Logged-in view ----
+
   if (user) {
     const initial = user.username.charAt(0).toUpperCase();
     return (
@@ -186,7 +195,6 @@ function Login({ setView }) {
     );
   }
 
-  // ---- Login / Register view ----
   return (
     <div className="auth-page">
       <BrandPanel />
@@ -253,7 +261,7 @@ function Login({ setView }) {
 
             {mode === "register" && (
               <div className="field">
-                <label>I'm ordering as</label>
+                <label>I'm creating an account as</label>
                 <div className="role-select">
                   <button
                     type="button"
