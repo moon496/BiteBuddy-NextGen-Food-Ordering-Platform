@@ -1,6 +1,10 @@
 import { useState } from "react";
 import './App.css';
+import './Layout.css';
 
+import Sidebar from "./components/Sidebar";
+import Dashboard from "./components/Dashboard";
+import Footer from "./components/Footer";
 import Payment from "./components/Payment";
 import MenuItems from "./components/MenuItems";
 import CartPage from "./components/cartpage";
@@ -12,42 +16,28 @@ import Coupon from "./components/Coupon";
 import Reviews from "./components/Reviews";
 
 function App() {
-  const [view, setView] = useState("menu");
+  const [view, setView] = useState("dashboard");
 
   return (
-    <div>
-      <nav style={{ display: "flex", gap: "10px", padding: "10px", borderBottom: "1px solid #444" }}>
-        <button onClick={() => setView("menu")}>Menu</button>
-        <button onClick={() => setView("cart")}>Cart</button>
-        <button onClick={() => setView("orders")}>Track Order</button>
-        <button onClick={() => setView("account")}>Account</button>
-        <button onClick={() => setView("reviews")}>Reviews</button>
-        <button
-          onClick={() => {
-            const role = localStorage.getItem("bitebuddy_role");
+    <div className="app-shell">
+      <Sidebar view={view} setView={setView} />
 
-            if (role === "Admin") {
-              setView("admin");
-            } else {
-              alert("Access denied. Admins only.");
-            }
-          }}
-        >
-          Admin
-        </button>
-        <button onClick={() => setView("addresses")}>Addresses</button>
-        <button onClick={() => setView("coupon")}>Coupon</button>
-      </nav>
+      <div className="app-main">
+        <div className="app-content">
+          {view === "dashboard" && <Dashboard setView={setView} />}
+          {view === "menu" && <MenuItems />}
+          {view === "cart" && <CartPage setView={setView} />}
+          {view === "orders" && <OrderStatus />}
+          {view === "account" && <Login setView={setView} />}
+          {view === "payment" && <Payment />}
+          {view === "addresses" && <AddressBook />}
+          {view === "admin" && <AdminDashboard />}
+          {view === "coupon" && <Coupon />}
+          {view === "reviews" && <Reviews />}
+        </div>
 
-      {view === "menu" && <MenuItems />}
-      {view === "cart" && <CartPage setView={setView} />}
-      {view === "orders" && <OrderStatus />}
-      {view === "account" && <Login setView={setView} />}
-      {view === "payment" && <Payment />}
-      {view === "addresses" && <AddressBook />}
-      {view === "admin" && <AdminDashboard />}
-      {view === "coupon" && <Coupon />}
-      {view === "reviews" && <Reviews />}
+        <Footer />
+      </div>
     </div>
   );
 }
