@@ -261,7 +261,7 @@ nav button:hover {
 }
 
 .menu-brand-tagline {
-  color: var(--chili, #e8491d);
+  color: #fff;
   font-weight: 700;
   font-size: 1rem;
   text-transform: uppercase;
@@ -674,4 +674,170 @@ nav button:hover {
   background: #333;
   color: #ccc;
   cursor: pointer;
+}
+
+.address-input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s ease;
+  box-sizing: border-box;
+}
+
+.address-input:focus {
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+}
+.secondary-btn {
+  margin-top: 10px;
+}
+
+.secondary-btn:hover {
+  background: #ffe5dd;
+}
+/* ================= ADDRESS PAGE ================= */
+
+.address-page {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.page-hero {
+  background: linear-gradient(135deg, #ff7a3d, #e8491d);
+  border-radius: 18px;
+  padding: 30px;
+  margin-bottom: 30px;
+  color: white;
+}
+
+.page-hero-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.menu-icon {
+  font-size: 70px;
+}
+
+.section-title {
+  color: #1b140f;
+  margin-bottom: 18px;
+  font-family: "Baloo 2", sans-serif;
+}
+
+.address-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(27,20,15,.08);
+  margin-bottom: 30px;
+}
+
+.address-card h3 {
+  margin-top: 0;
+  color: #1b140f;
+}
+
+.primary-btn {
+  width: 100%;
+  background: #e8491d;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.primary-btn:hover {
+  background: #c33a14;
+}
+
+.address-list {
+  display: grid;
+  gap: 20px;
+}
+
+.address-item {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(27,20,15,.08);
+  border-left: 6px solid #e8491d;
+}
+
+.address-item h3 {
+  margin-top: 0;
+  color: #1b140f;
+}
+
+.address-item p {
+  color: #555;
+  margin: 8px 0;
+}
+
+.secondary-btn {
+  margin-top: 12px;
+  background: #fff3ef;
+  color: #e8491d;
+  border: 1px solid #e8491d;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.secondary-btn:hover {
+  background: #e8491d;
+  color: white;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 50px 20px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(27,20,15,.08);
+}
+.page-hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-icon {
+  font-size: 2.5rem;
+}
+
+.brand-name {
+  margin: 0;
+  font-size: 2rem;
+  color: #fff;
+}
+
+.brand-tagline {
+  margin: 0;
+  color: #ffe6d8;
+}
+
+.hero-text h1 {
+  margin: 0;
+}
+
+.hero-text p {
+  margin-top: 8px;
 }
