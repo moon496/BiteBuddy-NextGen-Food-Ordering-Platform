@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 router = APIRouter(prefix="/cart", tags=["Cart"])
 
@@ -24,13 +24,13 @@ MENU_ITEMS = [
 
 
 class CartItemCreate(BaseModel):
-    user_id: int
-    item_id: int
-    quantity: int = 1
+    user_id: int = Field(..., gt=0)
+    item_id: int = Field(..., gt=0)
+    quantity: int = Field(default=1, gt=0)
 
 
 class CartItemUpdate(BaseModel):
-    quantity: int
+    quantity: int = Field(..., gt=0)
 
 
 def find_menu_item(item_id: int):
@@ -85,9 +85,7 @@ def update_cart_item(user_id: int, cart_item_id: int, payload: CartItemUpdate):
     if not entry:
         raise HTTPException(status_code=404, detail="Cart item not found")
 
-    if payload.quantity <= 0:
-        raise HTTPException(status_code=400, detail="Invalid quantity")
-
+    
     entry["quantity"] = payload.quantity
     return serialize_cart_item(entry)
 
