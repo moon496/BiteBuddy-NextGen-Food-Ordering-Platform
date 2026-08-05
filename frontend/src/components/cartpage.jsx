@@ -19,6 +19,7 @@ function CartPage({ setView }) {
   const loadCart = async () => {
     try {
       const res = await fetch(`${BASE_URL}/cart/${USER_ID}`);
+      if (!res.ok) throw new Error(`Server responded with ${res.status}`);
       const data = await res.json();
       setCartItems(data.items);
     } catch (err) {

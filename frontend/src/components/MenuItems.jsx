@@ -15,8 +15,9 @@ function MenuItems() {
 
     fetch(`${BASE_URL}/menu-items`)
       .then((res) => {
-      console.log("STATUS:", res.status);
-      return res.json();
+        if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+        console.log("STATUS:", res.status);
+        return res.json();
       })
       .then((data) => {
         console.log("MENU DATA:", data);

@@ -1,6 +1,8 @@
+
 import { useState } from "react";
 import "./App.css";
 import "./Layout.css";
+
 
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
@@ -22,6 +24,7 @@ function App() {
     <div className="app-shell">
       <Sidebar view={view} setView={setView} />
 
+
       <div className="app-main">
         <div className="app-content">
           {view === "dashboard" && <Dashboard setView={setView} />}
@@ -38,6 +41,7 @@ function App() {
 
         <Footer />
       </div>
+
     </div>
   );
 }
