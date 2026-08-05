@@ -26,7 +26,7 @@ function App() {
         <div className="app-content">
           {view === "dashboard" && <Dashboard setView={setView} />}
           {view === "menu" && <MenuItems />}
-          {view === "cart" && <CartPage />}
+          {view === "cart" && <CartPage setView={setView} />}
           {view === "orders" && <OrderStatus />}
           {view === "account" && <Login setView={setView} />}
           {view === "payment" && <Payment />}

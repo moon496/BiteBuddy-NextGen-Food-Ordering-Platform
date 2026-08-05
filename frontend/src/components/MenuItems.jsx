@@ -11,14 +11,20 @@ function MenuItems() {
   const [message, setMessage] = useState(""); 
   
   useEffect(() => {
+    console.log("BASE_URL:", BASE_URL);
+
     fetch(`${BASE_URL}/menu-items`)
-      .then((res) => res.json())
+      .then((res) => {
+      console.log("STATUS:", res.status);
+      return res.json();
+      })
       .then((data) => {
+        console.log("MENU DATA:", data);
         setItems(data.items);
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Error fetching menu items:", err);
+        console.error("FETCH ERROR:", err);
         setError("Could not load menu.");
         setLoading(false);
       });
