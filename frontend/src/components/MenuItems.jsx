@@ -12,7 +12,10 @@ function MenuItems() {
   
   useEffect(() => {
     fetch(`${BASE_URL}/menu-items`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
         setItems(data.items);
         setLoading(false);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import './App.css'
-import MenuItems from "./components/MenuItems";
 
+import MenuItems from "./components/MenuItems";
 import Login from "./components/Login";
 import OrderStatus from "./components/OrderStatus";
 import Coupon from "./components/Coupon";
@@ -10,7 +10,8 @@ import AdminDashboard from "./components/AdminDashboard";
 import Reviews from "./components/Reviews";
 import Payment from "./components/Payment";
 
-const BASE_URL = "http://127.0.0.1:8000";
+
+const BASE_URL = "https://verbose-tribble-wr5vpgqq45xrcg7wq-8000.app.github.dev";
 const USER_ID = 1;
 
 function CartPage() {
