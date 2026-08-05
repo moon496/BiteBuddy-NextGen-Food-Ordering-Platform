@@ -1,3 +1,14 @@
+const handleError = async (res, defaultMessage) => {
+  const err = await res.json();
+
+  if (Array.isArray(err.detail)) {
+    const messages = err.detail.map((e) => e.msg);
+    throw new Error(messages.join(", "));
+  }
+
+  throw new Error(err.detail || defaultMessage);
+};
+
 const BASE_URL = import.meta.env.VITE_API_URL;
 console.log("BASE_URL =", BASE_URL);
 export const registerUser = async (username, email, password, role = "User") => {
@@ -7,16 +18,9 @@ export const registerUser = async (username, email, password, role = "User") => 
     body: JSON.stringify({ username, email, password, role }),
   });
   if (!res.ok) {
-    const err = await res.json();
-    let message = "Registration failed";
-    if (Array.isArray(err.detail)) {
-      message = err.detail.map((e) => e.msg).join(", ");
-    } else if (typeof err.detail === "string") {
-      message = err.detail;
-    }
 
-  throw new Error(message);
-}
+     await handleError(res, "Registration failed");
+  }
   return res.json();
 };
 
@@ -27,9 +31,8 @@ export const loginUser = async (email, password) => {
     body: JSON.stringify({ email, password }),
   });
   if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.detail || "Login failed");
-  }
+    await handleError(res, "Login failed");
+}
   return res.json();
 };
 
@@ -59,9 +62,8 @@ export const updateUser = async (token, username, email) => {
     body: JSON.stringify({ username, email }),
   });
   if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.detail || "Update failed");
-  }
+    await handleError(res, "Update failed");
+}
   return res.json();
 };
 
@@ -71,8 +73,7 @@ export const deleteUser = async (token) => {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.detail || "Delete failed");
-  }
+    await handleError(res, "Delete failed");
+}
   return res.json();
 };
