@@ -8,6 +8,7 @@ from routes.coupon_routes import router as coupon_router
 from routes.address_routes import router as address_router
 from routes.admin_routes import router as admin_router
 from routes.review_routes import router as review_router
+from routes.payment_routes import router as payment_router
 from database import Base, engine
 from model import User  
 
@@ -23,6 +24,7 @@ app.include_router(coupon_router)
 app.include_router(address_router)
 app.include_router(admin_router)
 app.include_router(review_router)
+app.include_router(payment_router)
 
 app.add_middleware(
     CORSMiddleware,

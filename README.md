@@ -14,6 +14,24 @@ This feature lets customers track the real-time status of their order, from the 
 Order status moves through this sequence:
 
 `Pending → Confirmed → Preparing → Out for Delivery → Delivered`
+## Input Validation & Error Handling
+
+This feature improves API reliability by adding input validation and consistent error responses.
+
+### Validation
+
+- Request data is validated using Pydantic schemas.
+- Required fields are checked before processing requests.
+- Invalid input values return clear validation messages.
+
+### Error Responses
+
+The API provides predictable error responses:
+
+- `400 Bad Request` - Invalid request data
+- `401 Unauthorized` - Authentication failure
+- `404 Not Found` - Requested resource not found
+- `422 Validation Error` - Invalid input format or missing required fields
 
 ## Frontend (React)
 

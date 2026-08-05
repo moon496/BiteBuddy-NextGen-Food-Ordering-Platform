@@ -10,7 +10,7 @@ import random
 import uuid
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from order_status import ORDERS_DB
 
@@ -21,13 +21,15 @@ PAYMENTS_DB: dict[str, dict] = {}
 
 
 class InitiatePaymentRequest(BaseModel):
-    order_id: str
-    amount: float
-    method: str  # "bkash" | "card"
-
+    order_id: str = Field(..., min_length=1)
+    amount: float = Field(..., gt=0)
+    method: str  = Field(..., pattern="^(bkash|card)$")
 
 class CallbackRequest(BaseModel):
-    force_result: str | None = None  # "success" | "failure", optional override for testing
+    force_result: str | None = Field(
+        default=None,
+        pattern="^(success|failure)$"
+    ) # "success" | "failure", optional override for testing
 
 
 def call_bkash_gateway() -> bool:

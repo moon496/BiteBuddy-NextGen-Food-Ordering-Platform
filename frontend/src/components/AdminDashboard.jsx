@@ -2,6 +2,16 @@ import { useEffect, useState } from "react";
 import { getAllOrders, updateOrderStatus } from "../api/adminApi";
 
 function AdminDashboard() {
+  const role = localStorage.getItem("bitebuddy_role");
+
+  if (role !== "Admin") {
+    return (
+      <div style={{ textAlign: "center", marginTop: "60px" }}>
+        <h2>Access Denied</h2>
+        <p>You do not have permission to access this page.</p>
+      </div>
+    );
+  }
   const [orders, setOrders] = useState([]);
   const [statusSequence, setStatusSequence] = useState([]);
   const [loading, setLoading] = useState(true);
