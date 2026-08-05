@@ -48,7 +48,10 @@ function Login({ setView }) {
       localStorage.setItem("bitebuddy_role", data.user.role);
 
       if (setView) {
+        
   if (data.user.role === "Admin") {
+    console.log("LOGIN ROLE:", data.user.role);
+    console.log("GOING TO ADMIN DASHBOARD"); 
     localStorage.removeItem("checkout_redirect");
     setView("admin");
   } 
