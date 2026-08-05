@@ -26,7 +26,7 @@ function AdminDashboard() {
   if (loading) return <p>Loading orders...</p>;
 
   return (
-    <div style={{ maxWidth: 700, margin: "40px auto", padding: 20 }}>
+   <div className="styled-page" style={{ maxWidth: 750, margin: "40px auto", padding: 20 }}>
       <h2>Restaurant Order Dashboard</h2>
 
       <table style={{ width: "100%", borderCollapse: "collapse" }}>

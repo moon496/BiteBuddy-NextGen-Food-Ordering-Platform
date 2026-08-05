@@ -21,7 +21,7 @@ function Coupon() {
   };
 
   return (
-    <div style={{ maxWidth: 420, margin: "40px auto", padding: 20 }}>
+  <div className="styled-page" style={{ maxWidth: 420, margin: "40px auto", padding: 20 }}>
       <h2>Apply a Coupon</h2>
       <p style={{ color: "#888", fontSize: 14 }}>
         Try: WELCOME10, SAVE50, BITEBUDDY20

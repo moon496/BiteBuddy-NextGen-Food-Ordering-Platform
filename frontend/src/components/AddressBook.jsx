@@ -38,7 +38,7 @@ function AddressBook() {
   };
 
   return (
-    <div style={{ maxWidth: 500, margin: "40px auto", padding: 20 }}>
+   <div className="styled-page" style={{ maxWidth: 500, margin: "40px auto", padding: 20 }}>
       <h2>Delivery Addresses</h2>
 
       <form onSubmit={handleAdd} style={{ marginBottom: 24 }}>
