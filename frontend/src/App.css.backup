@@ -230,16 +230,13 @@ nav button:hover {
   padding: 40px 20px;
   font-family: "Plus Jakarta Sans", sans-serif;
 }
-.menu-items h1 {
-   color:rgba(56, 224, 22, 0.975)
-}
 
 .menu-items h2 {
   text-align: center;
   margin-bottom: 28px;
   font-family: "Baloo 2", sans-serif;
   font-size: 2rem;
-  color: var(--ink, #d0c1b6);
+  color: var(--ink, #1b140f);
 }
 
 .menu-brand-header {
@@ -264,7 +261,7 @@ nav button:hover {
 }
 
 .menu-brand-tagline {
-  color: #ffffff;
+  color: var(--chili, #e8491d);
   font-weight: 700;
   font-size: 1rem;
   text-transform: uppercase;
@@ -606,230 +603,4 @@ nav button:hover {
 .summary-total strong {
   color: #e8491d;
   font-size: 24px;
-}
-.login-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.65);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.login-modal-card {
-  background: #1c1c1c;
-  border: 1px solid rgba(255, 107, 53, 0.3);
-  border-radius: 16px;
-  padding: 32px;
-  max-width: 340px;
-  width: 90%;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.login-modal-icon {
-  font-size: 2.2rem;
-  margin-bottom: 10px;
-}
-
-.login-modal-card h3 {
-  color: #fff;
-  margin-bottom: 10px;
-  font-size: 1.3rem;
-  text-align: center;
-}
-
-.login-modal-card p {
-  color: #ccc;
-  font-size: 0.9rem;
-  margin-bottom: 22px;
-  line-height: 1.4;
-}
-
-.login-modal-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.login-modal-primary {
-  padding: 11px;
-  border: none;
-  border-radius: 9px;
-  background: linear-gradient(135deg, #ff6b35, #ff9248);
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.login-modal-secondary {
-  padding: 11px;
-  border: none;
-  border-radius: 9px;
-  background: #333;
-  color: #ccc;
-  cursor: pointer;
-}
-.address-input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 15px;
-  outline: none;
-  transition: 0.2s ease;
-  box-sizing: border-box;
-}
-
-.address-input:focus {
-  border-color: #ff6b35;
-  box-shadow: 0 0 0 3px rgba(255,107,53,.15);
-}
-
-.address-page {
-  max-width: 1100px;
-  margin: 40px auto;
-  padding: 20px;
-}
-
-.page-hero {
-  background: linear-gradient(135deg, #ff8a4c, #f15a24);
-  border-radius:18px;
-  padding:35px;
-  margin-bottom:30px;
-  color:white;
-   border: 2px solid rgba(255,255,255,0.35);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-}
-
-.page-hero-content {
-  display:flex;
-  flex-direction:column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap:20px;
-}
-
-.brand-header {
-  display:flex;
-  justify-content: center;
-  gap: 14px;
-}
-
-.menu-icon {
-  font-size:2.5rem;
-}
-
-.brand-name {
-  margin:0;
-  font-size: 2.2rem;
-  color: #1b140f;
-  font-weight: 800;
-}
-
-.section-title {
-  color:#1b140f;
-}
-
-.address-card {
-  background:white;
-  padding:25px;
-  border-radius:16px;
-  box-shadow:0 8px 20px rgba(27,20,15,.08);
-}
-
-.primary-btn {
-  width:100%;
-  background:#e8491d;
-  color:white;
-  border:none;
-  padding:14px;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.address-list {
-  display:grid;
-  gap:20px;
-}
-
-.address-item {
-  background:white;
-  border-radius:16px;
-  padding:20px;
-  box-shadow:0 8px 20px rgba(27,20,15,.08);
-  border-left:6px solid #e8491d;
-  transition: 0.3s ease;
-}
-.address-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(27,20,15,.15);
-}
-.secondary-btn {
-  margin-top:12px;
-  background:#fff3ef;
-  color:#e8491d;
-  border:1px solid #e8491d;
-  padding:10px 16px;
-  border-radius:8px;
-}
-.brand-tagline {
-  color: #fff;
-  font-size: 1rem;
-  margin: 3px 0 0;
-}
-.hero-text h1 {
-  background: rgba(255,255,255,0.15);
-  padding: 10px 24px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.35);
-}
-.address-card {
-  background: #fff;
-  padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(27,20,15,.08);
-  margin-bottom: 30px;
-  transition: 0.3s ease;
-}
-
-.address-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 28px rgba(27,20,15,.15);
-}
-.primary-btn:hover {
-  background: #c33a14;
-  transform: scale(1.02);
-}
-.secondary-btn:hover {
-  background: #e8491d;
-  color: white;
-  transform: translateY(-2px);
-}
-
-/* active menu */
-.sidebar-item.active,
-.sidebar-item.active button,
-.sidebar-item.active a {
-  background: #ff6b35;
-  color: white;
-}
-.sidebar-item:hover {
-  background: rgba(255, 107, 53, 0.25);
-  color: #ff6b35;
-  transform: translateX(6px);
-  box-shadow: 0 4px 12px rgba(232, 73, 29, 0.15);
-}
-.sidebar-item.active {
-  background: #ff6b35;
-  color: white;
-  box-shadow: 0 6px 15px rgba(232,73,29,0.25);
 }

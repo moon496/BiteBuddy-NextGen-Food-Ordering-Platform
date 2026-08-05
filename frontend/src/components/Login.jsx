@@ -47,18 +47,25 @@ function Login({ setView }) {
       setUser(data.user);
       localStorage.setItem("bitebuddy_role", data.user.role);
 
-      const redirectTarget = localStorage.getItem("checkout_redirect");
-      if (redirectTarget && setView) {
-        localStorage.removeItem("checkout_redirect");
-        setView(redirectTarget);
-      }
-      else if (setView) {
-        if (data.user.role === "Admin") {
-           setView("admin");
-        } else {
-           setView("menu");
-        }
-      }
+      if (setView) {
+        
+  if (data.user.role === "Admin") {
+    console.log("LOGIN ROLE:", data.user.role);
+    console.log("GOING TO ADMIN DASHBOARD"); 
+    localStorage.removeItem("checkout_redirect");
+    setView("admin");
+  } 
+  else {
+    const redirectTarget = localStorage.getItem("checkout_redirect");
+
+    if (redirectTarget) {
+      localStorage.removeItem("checkout_redirect");
+      setView(redirectTarget);
+    } else {
+      setView("menu");
+    }
+  }
+}
     } catch (err) {
       setError(err.message);
     }
