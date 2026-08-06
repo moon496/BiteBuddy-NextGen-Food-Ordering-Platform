@@ -1,11 +1,12 @@
+
 import { useState } from "react";
-import './App.css';
-import './Layout.css';
+import "./App.css";
+import "./Layout.css";
+
 
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
 import Footer from "./components/Footer";
-import Payment from "./components/Payment";
 import MenuItems from "./components/MenuItems";
 import CartPage from "./components/cartpage";
 import Login from "./components/Login";
@@ -14,6 +15,7 @@ import AddressBook from "./components/AddressBook";
 import AdminDashboard from "./components/AdminDashboard";
 import Coupon from "./components/Coupon";
 import Reviews from "./components/Reviews";
+import Payment from "./components/Payment";
 
 function App() {
   const [view, setView] = useState("dashboard");
@@ -21,6 +23,7 @@ function App() {
   return (
     <div className="app-shell">
       <Sidebar view={view} setView={setView} />
+
 
       <div className="app-main">
         <div className="app-content">
@@ -38,6 +41,7 @@ function App() {
 
         <Footer />
       </div>
+
     </div>
   );
 }

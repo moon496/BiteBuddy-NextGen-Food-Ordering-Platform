@@ -35,7 +35,7 @@ function Reviews() {
   };
 
   return (
-    <div style={{ maxWidth: 500, margin: "40px auto", padding: 20 }}>
+    <div className="styled-page" style={{ maxWidth: 500, margin: "40px auto", padding: 20 }}>
       <h2>Ratings & Reviews</h2>
 
       <select

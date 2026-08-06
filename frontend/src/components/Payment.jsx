@@ -63,7 +63,7 @@ function Payment() {
       {error && <p style={{ color: "#c62828" }}>{error}</p>}
 
       {payment && (
-        <div style={{ marginTop: 20, padding: 16, border: "1px solid #ddd", borderRadius: 8 }}>
+        <div className="styled-page" style={{ maxWidth: 420, margin: "40px auto", padding: 20 }}>
           <p>Payment ID: {payment.payment_id}</p>
           <p>Amount: ৳{payment.amount} via {payment.method}</p>
           <p>
