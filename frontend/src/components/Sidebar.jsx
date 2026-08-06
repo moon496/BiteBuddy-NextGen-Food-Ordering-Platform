@@ -1,4 +1,8 @@
+import { useState } from "react";
+import NotificationModal from "./NotificationModal";
 function Sidebar({ view, setView }) {
+  const [notification, setNotification] = useState(null);
+
   const isAdmin = localStorage.getItem("bitebuddy_role") === "Admin";
 
   const navItems = [
@@ -16,11 +20,16 @@ function Sidebar({ view, setView }) {
     if (isAdmin) {
       setView("admin");
     } else {
-      alert("Access denied. Admins only.");
+      setNotification({
+      title: "Admin Access Required",
+      message: "You need admin privileges to access this section.",
+      icon: "🔒",
+     });
     }
   };
 
   return (
+    <>
     <aside className="sidebar">
       <div className="sidebar-brand">
         <span className="sidebar-logo">🍔</span>
@@ -48,6 +57,15 @@ function Sidebar({ view, setView }) {
         </button>
       </nav>
     </aside>
+     {notification && (
+      <NotificationModal
+        title={notification.title}
+        message={notification.message}
+        icon={notification.icon}
+        onClose={() => setNotification(null)}
+      />
+      )}
+    </>
   );
 }
 

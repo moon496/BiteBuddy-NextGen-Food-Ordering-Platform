@@ -56,7 +56,7 @@ function MenuItems() {
     <div className="menu-items">
       <div className="menu-brand-header">
          <span className="menu-brand-mark">🍔</span>
-         <h1 className="menu-brand-name">BiteBuddy</h1>
+         <h1 className="brand-title">BiteBuddy</h1>
          <p className="menu-brand-tagline">Our Menu</p>
       </div>
 

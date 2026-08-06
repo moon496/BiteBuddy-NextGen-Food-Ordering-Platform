@@ -48,7 +48,7 @@ return (
 
     
         <div>
-          <h2 className="brand-name">BiteBuddy</h2>
+          <h2 className="brand-title">BiteBuddy</h2>
           <p className="brand-tagline">Delicious food, delivered fast.</p>
         
         

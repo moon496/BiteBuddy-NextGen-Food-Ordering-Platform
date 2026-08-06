@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.cart_routes import router as cart_router
 from order_status import router as order_status_router
-
 from routes.order_routes import router as order_router
 
 from routes.auth_routes import router as auth_router
@@ -18,21 +17,9 @@ app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
 
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "https://shiny-palm-tree-v65xqrxxw77qhxx76-5173.app.github.dev",
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-app.include_router(cart_router)
-app.include_router(order_router)          
+app.include_router(cart_router)          
 app.include_router(order_status_router)
-
+app.include_router(order_router)
 
 app.include_router(auth_router)
 app.include_router(coupon_router)
@@ -40,6 +27,13 @@ app.include_router(address_router)
 app.include_router(admin_router)
 app.include_router(review_router)
 app.include_router(payment_router)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def read_root():

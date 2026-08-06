@@ -230,16 +230,13 @@ nav button:hover {
   padding: 40px 20px;
   font-family: "Plus Jakarta Sans", sans-serif;
 }
-.menu-items h1 {
-   color:rgba(56, 224, 22, 0.975)
-}
 
 .menu-items h2 {
   text-align: center;
   margin-bottom: 28px;
   font-family: "Baloo 2", sans-serif;
   font-size: 2rem;
-  color: var(--ink, #d0c1b6);
+  color: var(--ink, #1b140f);
 }
 
 .menu-brand-header {
@@ -264,7 +261,7 @@ nav button:hover {
 }
 
 .menu-brand-tagline {
-  color: #ffffff;
+  color: #fff;
   font-weight: 700;
   font-size: 1rem;
   text-transform: uppercase;
@@ -607,6 +604,7 @@ nav button:hover {
   color: #e8491d;
   font-size: 24px;
 }
+
 .login-modal-overlay {
   position: fixed;
   top: 0;
@@ -628,6 +626,7 @@ nav button:hover {
   max-width: 340px;
   width: 90%;
   text-align: center;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -676,6 +675,7 @@ nav button:hover {
   color: #ccc;
   cursor: pointer;
 }
+
 .address-input {
   width: 100%;
   padding: 12px;
@@ -690,146 +690,249 @@ nav button:hover {
 
 .address-input:focus {
   border-color: #ff6b35;
-  box-shadow: 0 0 0 3px rgba(255,107,53,.15);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
 }
+.secondary-btn {
+  margin-top: 10px;
+}
+
+.secondary-btn:hover {
+  background: #ffe5dd;
+}
+/* ================= ADDRESS PAGE ================= */
 
 .address-page {
   max-width: 1100px;
   margin: 40px auto;
   padding: 20px;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .page-hero {
-  background: linear-gradient(135deg, #ff8a4c, #f15a24);
-  border-radius:18px;
-  padding:35px;
-  margin-bottom:30px;
-  color:white;
-   border: 2px solid rgba(255,255,255,0.35);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  background: linear-gradient(135deg, #ff7a3d, #e8491d);
+  border-radius: 18px;
+  padding: 30px;
+  margin-bottom: 30px;
+  color: white;
+  border: 1px solid rgba(27, 20, 15, 0.18);
+  box-shadow: 0 10px 25px rgba(27,20,15,0.12);
 }
 
 .page-hero-content {
-  display:flex;
-  flex-direction:column;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap:20px;
-}
-
-.brand-header {
-  display:flex;
-  justify-content: center;
-  gap: 14px;
+  gap: 24px;
 }
 
 .menu-icon {
-  font-size:2.5rem;
-}
-
-.brand-name {
-  margin:0;
-  font-size: 2.2rem;
-  color: #1b140f;
-  font-weight: 800;
+  font-size: 70px;
 }
 
 .section-title {
-  color:#1b140f;
+  color: #1b140f;
+  margin-bottom: 18px;
+  font-family: "Baloo 2", sans-serif;
 }
 
 .address-card {
-  background:white;
-  padding:25px;
-  border-radius:16px;
-  box-shadow:0 8px 20px rgba(27,20,15,.08);
+  background: #fffdf9;
+  padding: 25px;
+  border-radius: 16px;
+  border: 2px solid rgba(27, 20, 75, 0.18);
+  box-shadow:  0 10px 25px rgba(27,20,15,.08);
+  margin-bottom: 30px;
+}
+
+.address-card h3 {
+  margin-top: 0;
+  color: #1b140f;
 }
 
 .primary-btn {
-  width:100%;
-  background:#e8491d;
-  color:white;
-  border:none;
-  padding:14px;
-  border-radius:10px;
-  cursor:pointer;
+  width: 100%;
+  background: #e8491d;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.primary-btn:hover {
+  background: #c33a14;
 }
 
 .address-list {
-  display:grid;
-  gap:20px;
+  display: grid;
+  gap: 20px;
 }
 
 .address-item {
-  background:white;
-  border-radius:16px;
-  padding:20px;
-  box-shadow:0 8px 20px rgba(27,20,15,.08);
-  border-left:6px solid #e8491d;
-  transition: 0.3s ease;
-}
-.address-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(27,20,15,.15);
-}
-.secondary-btn {
-  margin-top:12px;
-  background:#fff3ef;
-  color:#e8491d;
-  border:1px solid #e8491d;
-  padding:10px 16px;
-  border-radius:8px;
-}
-.brand-tagline {
-  color: #fff;
-  font-size: 1rem;
-  margin: 3px 0 0;
-}
-.hero-text h1 {
-  background: rgba(255,255,255,0.15);
-  padding: 10px 24px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.35);
-}
-.address-card {
   background: #fff;
-  padding: 25px;
   border-radius: 16px;
+  padding: 20px;
   box-shadow: 0 8px 20px rgba(27,20,15,.08);
-  margin-bottom: 30px;
-  transition: 0.3s ease;
+  border-left: 6px solid #e8491d;
 }
 
-.address-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 28px rgba(27,20,15,.15);
+.address-item h3 {
+  margin-top: 0;
+  color: #1b140f;
 }
-.primary-btn:hover {
-  background: #c33a14;
-  transform: scale(1.02);
+
+.address-item p {
+  color: #555;
+  margin: 8px 0;
 }
+
+.secondary-btn {
+  margin-top: 12px;
+  background: #fff3ef;
+  color: #e8491d;
+  border: 1px solid #e8491d;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
 .secondary-btn:hover {
   background: #e8491d;
   color: white;
-  transform: translateY(-2px);
 }
 
-/* active menu */
-.sidebar-item.active,
-.sidebar-item.active button,
-.sidebar-item.active a {
-  background: #ff6b35;
-  color: white;
+.empty-state {
+  text-align: center;
+  padding: 50px 20px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(27,20,15,.08);
 }
-.sidebar-item:hover {
-  background: rgba(255, 107, 53, 0.25);
-  color: #ff6b35;
-  transform: translateX(6px);
-  box-shadow: 0 4px 12px rgba(232, 73, 29, 0.15);
+.page-hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
-.sidebar-item.active {
-  background: #ff6b35;
+
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-icon {
+  font-size: 2.5rem;
+}
+
+.brand-name {
+  margin: 0;
+  font-size: 2rem;
+  color: #fff;
+}
+
+.brand-tagline {
+  margin: 0;
+  color: #ffe6d8;
+}
+
+.hero-text h1 {
+  margin: 0;
+}
+
+.hero-text p {
+  margin-top: 8px;
+}
+.brand-title {
+  font-family: "Baloo 2", sans-serif;
+  font-weight: 800;
+  font-size: 2.4rem;
+  color: var(--ink, #1b140f);
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+.notification-modal {
+  animation: popupScale 0.2s ease;
+}
+
+.notification-modal h3 {
+  font-family: "Baloo 2", sans-serif;
+}
+
+@keyframes popupScale {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.notification-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.notification-card {
+  width: 360px;
+  background: #fffdf9;
+  border-radius: 18px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  animation: popupScale 0.25s ease;
+  border: 1px solid rgba(232,73,29,0.15);
+}
+
+.notification-icon {
+  font-size: 45px;
+  margin-bottom: 12px;
+}
+
+.notification-card h3 {
+  font-family: "Baloo 2", sans-serif;
+  color: #1b140f;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.notification-card p {
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 25px;
+}
+
+.notification-btn {
+  background: #e8491d;
   color: white;
-  box-shadow: 0 6px 15px rgba(232,73,29,0.25);
+  border: none;
+  padding: 12px 30px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.notification-btn:hover {
+  background: #c33a14;
+}
+
+@keyframes popupScale {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
