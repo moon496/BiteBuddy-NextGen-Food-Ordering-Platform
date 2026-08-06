@@ -3,9 +3,15 @@ from sqlalchemy.orm import Session
 import jwt
 
 from database import get_db
+from datetime import datetime
+import logging
+
+
 from model import User
 from auth_schemas import RegisterRequest, LoginRequest, UserResponse, UpdateUserRequest
 from auth_utils import hash_password, verify_password, create_access_token, decode_access_token
+
+logger = logging.getLogger("bitebuddy.admin")
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -24,7 +30,7 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
         username=payload.username,
         email=payload.email,
         hashed_password=hash_password(payload.password),
-        role=payload.role,
+        role="User",   
     )
     db.add(user)
     db.commit()
@@ -37,6 +43,11 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == payload.email).first()
     if not user or not verify_password(payload.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    if user.role == "Admin":
+        msg = f"🔔 ADMIN LOGIN — {user.username} ({user.email}) at {datetime.utcnow()} UTC"
+        logger.warning(msg)
+        print(msg)   
 
     token = create_access_token({"sub": str(user.id), "username": user.username})
     return {
