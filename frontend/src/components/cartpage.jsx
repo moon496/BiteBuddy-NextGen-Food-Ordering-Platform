@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "../App.css";
+import NotificationModal from "./NotificationModal";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const USER_ID = 1;
@@ -9,6 +10,7 @@ function CartPage({ setView }) {
   const [loading, setLoading] = useState(true);
   const [placingOrder, setPlacingOrder] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [notification, setNotification] = useState(null);
 
   const handleGoToLogin = () => {
     localStorage.setItem("checkout_redirect", "addresses");
@@ -74,15 +76,27 @@ function CartPage({ setView }) {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.detail || "Failed to place order");
+        setNotification({
+          title: "Order Failed",
+          message: data.detail || "Failed to place order.",
+          icon: "⚠️",
+        });
         return;
       }
 
-      alert(`Order placed! Your Order ID is ${data.order_id}`);
+      setNotification({
+        title: "Order Placed Successfully",
+        message: `Your Order ID is ${data.order_id}`,
+        icon: "✅",
+      });
       loadCart();
     } catch (err) {
       console.error("Failed to place order:", err);
-      alert("Something went wrong placing the order.");
+      setNotification({
+        title: "Something Went Wrong",
+        message: "Unable to place your order. Please try again.",
+        icon: "❌",
+      });
     } finally {
       setPlacingOrder(false);
     }
@@ -97,7 +111,7 @@ function CartPage({ setView }) {
     <div className="cart-brand-header">
       <span className="menu-brand-mark">🍔</span>
 
-      <h1 className="menu-brand-name">BiteBuddy</h1>
+      <h1 className="brand-title">BiteBuddy</h1>
 
       <p className="menu-brand-tagline">
          Fresh • Delicious • Ready to Order
@@ -178,6 +192,14 @@ function CartPage({ setView }) {
           </button>
         </div>
       </>
+    )}
+    {notification && (
+      <NotificationModal
+        title={notification.title}
+        message={notification.message}
+        icon={notification.icon}
+        onClose={() => setNotification(null)}
+      />
     )}
 
     {showLoginPrompt && (

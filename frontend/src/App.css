@@ -714,6 +714,8 @@ nav button:hover {
   padding: 30px;
   margin-bottom: 30px;
   color: white;
+  border: 1px solid rgba(27, 20, 15, 0.18);
+  box-shadow: 0 10px 25px rgba(27,20,15,0.12);
 }
 
 .page-hero-content {
@@ -733,10 +735,11 @@ nav button:hover {
 }
 
 .address-card {
-  background: #fff;
+  background: #fffdf9;
   padding: 25px;
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(27,20,15,.08);
+  border: 2px solid rgba(27, 20, 75, 0.18);
+  box-shadow:  0 10px 25px rgba(27,20,15,.08);
   margin-bottom: 30px;
 }
 
@@ -840,4 +843,96 @@ nav button:hover {
 
 .hero-text p {
   margin-top: 8px;
+}
+.brand-title {
+  font-family: "Baloo 2", sans-serif;
+  font-weight: 800;
+  font-size: 2.4rem;
+  color: var(--ink, #1b140f);
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+.notification-modal {
+  animation: popupScale 0.2s ease;
+}
+
+.notification-modal h3 {
+  font-family: "Baloo 2", sans-serif;
+}
+
+@keyframes popupScale {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.notification-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.notification-card {
+  width: 360px;
+  background: #fffdf9;
+  border-radius: 18px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  animation: popupScale 0.25s ease;
+  border: 1px solid rgba(232,73,29,0.15);
+}
+
+.notification-icon {
+  font-size: 45px;
+  margin-bottom: 12px;
+}
+
+.notification-card h3 {
+  font-family: "Baloo 2", sans-serif;
+  color: #1b140f;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.notification-card p {
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 25px;
+}
+
+.notification-btn {
+  background: #e8491d;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.notification-btn:hover {
+  background: #c33a14;
+}
+
+@keyframes popupScale {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

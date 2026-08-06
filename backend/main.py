@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.cart_routes import router as cart_router
 from order_status import router as order_status_router
+from routes.order_routes import router as order_router
 
 from routes.auth_routes import router as auth_router
 from routes.coupon_routes import router as coupon_router
@@ -18,6 +19,7 @@ Base.metadata.create_all(bind=engine)
 
 app.include_router(cart_router)          
 app.include_router(order_status_router)
+app.include_router(order_router)
 
 app.include_router(auth_router)
 app.include_router(coupon_router)
