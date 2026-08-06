@@ -8,8 +8,15 @@ export const registerUser = async (username, email, password, role = "User") => 
   });
   if (!res.ok) {
     const err = await res.json();
-    throw new Error(err.detail || "Registration failed");
-  }
+    let message = "Registration failed";
+    if (Array.isArray(err.detail)) {
+      message = err.detail.map((e) => e.msg).join(", ");
+    } else if (typeof err.detail === "string") {
+      message = err.detail;
+    }
+
+  throw new Error(message);
+}
   return res.json();
 };
 
