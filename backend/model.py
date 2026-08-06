@@ -55,3 +55,18 @@ class OrderItem(Base):
     item_name = Column(String(100), nullable=False)
     quantity = Column(Integer, nullable=False)
     price = Column(Float, nullable=False)
+
+
+class UserCoupon(Base):
+    __tablename__ = "user_coupons"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    code = Column(String(30), nullable=False)
+    discount_type = Column(String(10), nullable=False)
+    value = Column(Float, nullable=False)
+    max_discount = Column(Float, nullable=True)
+    used = Column(String(5), default="false", nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User", backref="coupons")

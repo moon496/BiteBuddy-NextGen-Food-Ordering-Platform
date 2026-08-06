@@ -7,6 +7,8 @@ function Dashboard({ setView }) {
     { key: "addresses", title: "Addresses", desc: "Manage delivery addresses.", icon: "📍" },
     { key: "reviews", title: "Reviews", desc: "See what customers are saying.", icon: "⭐" },
     { key: "coupon", title: "Coupons", desc: "Check available discounts.", icon: "🏷️" },
+    { key: "payment", title: "payment", desc: "choose your payment type", icon: "💵" },
+
   ];
 
   return (

@@ -1,14 +1,25 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const applyCoupon = async (code, subtotal) => {
+  const token = localStorage.getItem("bitebuddy_token");
+  const headers = { "Content-Type": "application/json" };
+  if (token) headers.Authorization = `Bearer ${token}`;
+
   const res = await fetch(`${BASE_URL}/coupons/apply`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify({ code, subtotal }),
   });
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.detail || "Invalid coupon");
-  }
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.detail || "Invalid coupon");
+  return data;
+};
+
+export const redeemCoupon = async (userCouponId) => {
+  const token = localStorage.getItem("bitebuddy_token");
+  const res = await fetch(`${BASE_URL}/coupons/redeem/${userCouponId}`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return res.json();
 };

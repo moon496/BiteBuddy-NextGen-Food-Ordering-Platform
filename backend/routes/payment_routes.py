@@ -23,7 +23,7 @@ PAYMENTS_DB: dict[str, dict] = {}
 class InitiatePaymentRequest(BaseModel):
     order_id: str = Field(..., min_length=1)
     amount: float = Field(..., gt=0)
-    method: str  = Field(..., pattern="^(bkash|card)$")
+    method: str  = Field(..., pattern="^(bkash|card|cod)$")
 
 class CallbackRequest(BaseModel):
     force_result: str | None = Field(
@@ -46,8 +46,8 @@ def initiate_payment(payload: InitiatePaymentRequest):
     if payload.order_id not in ORDERS_DB:
         raise HTTPException(status_code=404, detail="Order not found")
 
-    if payload.method not in ("bkash", "card"):
-        raise HTTPException(status_code=400, detail="Unsupported payment method")
+    if payload.method not in ("bkash", "card", "cod"):
+       raise HTTPException(status_code=400, detail="Unsupported payment method")
 
     if payload.amount <= 0:
         raise HTTPException(status_code=400, detail="Amount must be greater than 0")

@@ -14,6 +14,7 @@ function Sidebar({ view, setView }) {
     { key: "reviews", label: "Reviews", icon: "⭐" },
     { key: "addresses", label: "Addresses", icon: "📍" },
     { key: "coupon", label: "Coupon", icon: "🏷️" },
+    { key: "payment", label: "payment", icon: "💵" },
   ];
 
   const handleAdminClick = () => {

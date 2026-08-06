@@ -7,7 +7,6 @@ function Login({ setView }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("User");
   const [error, setError] = useState("");
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
@@ -36,7 +35,8 @@ function Login({ setView }) {
     setError("");
     try {
       if (mode === "register") {
-        await registerUser(username, email, password, role);
+        // role r pathanor dorkar nai, backend nijei "User" set kore dey
+        await registerUser(username, email, password);
         setMode("login");
         setError("Registration successful. Please log in.");
         return;
@@ -48,24 +48,22 @@ function Login({ setView }) {
       localStorage.setItem("bitebuddy_role", data.user.role);
 
       if (setView) {
-        
-  if (data.user.role === "Admin") {
-    console.log("LOGIN ROLE:", data.user.role);
-    console.log("GOING TO ADMIN DASHBOARD"); 
-    localStorage.removeItem("checkout_redirect");
-    setView("admin");
-  } 
-  else {
-    const redirectTarget = localStorage.getItem("checkout_redirect");
+        if (data.user.role === "Admin") {
+          console.log("LOGIN ROLE:", data.user.role);
+          console.log("GOING TO ADMIN DASHBOARD");
+          localStorage.removeItem("checkout_redirect");
+          setView("admin");
+        } else {
+          const redirectTarget = localStorage.getItem("checkout_redirect");
 
-    if (redirectTarget) {
-      localStorage.removeItem("checkout_redirect");
-      setView(redirectTarget);
-    } else {
-      setView("menu");
-    }
-  }
-}
+          if (redirectTarget) {
+            localStorage.removeItem("checkout_redirect");
+            setView(redirectTarget);
+          } else {
+            setView("menu");
+          }
+        }
+      }
     } catch (err) {
       setError(err.message);
     }
@@ -116,7 +114,6 @@ function Login({ setView }) {
 
   if (loading) return <div className="auth-loading">Loading BiteBuddy…</div>;
 
-
   const BrandPanel = () => (
     <div className="auth-brand-panel">
       <div className="brand-pattern" aria-hidden="true"></div>
@@ -147,7 +144,6 @@ function Login({ setView }) {
       </div>
     </div>
   );
-
 
   if (user) {
     const initial = user.username.charAt(0).toUpperCase();
@@ -266,27 +262,10 @@ function Login({ setView }) {
               />
             </div>
 
-            {mode === "register" && (
-              <div className="field">
-                <label>I'm creating an account as</label>
-                <div className="role-select">
-                  <button
-                    type="button"
-                    className={role === "User" ? "role-option active" : "role-option"}
-                    onClick={() => setRole("User")}
-                  >
-                    User
-                  </button>
-                  <button
-                    type="button"
-                    className={role === "Admin" ? "role-option active" : "role-option"}
-                    onClick={() => setRole("Admin")}
-                  >
-                    Admin
-                  </button>
-                </div>
-              </div>
-            )}
+            {/* Admin role select purapuri sorano hoyeche.
+                Notun account shob shomoy "User" hisebe register hobe.
+                Admin banano jabe shudhu seed script diye, othoba
+                existing admin er "Manage Admins" panel theke. */}
 
             <button type="submit" className="submit-btn">
               {mode === "login" ? "Sign in" : "Create account"}
