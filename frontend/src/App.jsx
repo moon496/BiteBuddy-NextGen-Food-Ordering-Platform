@@ -16,6 +16,7 @@ import AdminDashboard from "./components/AdminDashboard";
 import Coupon from "./components/Coupon";
 import Reviews from "./components/Reviews";
 import Payment from "./components/Payment";
+import Checkout from "./components/Checkout";
 
 function App() {
   const [view, setView] = useState("dashboard");
@@ -37,6 +38,7 @@ function App() {
           {view === "admin" && <AdminDashboard />}
           {view === "coupon" && <Coupon />}
           {view === "reviews" && <Reviews />}
+          {view === "checkout" && <Checkout setView={setView} />}
         </div>
 
         <Footer />

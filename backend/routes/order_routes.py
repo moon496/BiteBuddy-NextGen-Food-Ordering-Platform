@@ -15,9 +15,8 @@ class StatusUpdate(BaseModel):
     status: str
 
 
-
 @router.post("/create", status_code=201)
-def create_order(user_id: int, db: Session = Depends(get_db)):
+def create_order(user_id: int, address_id: int | None = None, db: Session = Depends(get_db)):
     user_cart = cart_db.get(user_id, [])
     if not user_cart:
         raise HTTPException(status_code=400, detail="Cart is empty")
@@ -25,7 +24,7 @@ def create_order(user_id: int, db: Session = Depends(get_db)):
     total = 0
     order_items_data = []
     for entry in user_cart:
-        item = find_menu_item(entry["item_id"])
+        item = find_menu_item(entry["item_id"], db)
         if not item:
             continue
         subtotal = item["price"] * entry["quantity"]
@@ -37,7 +36,7 @@ def create_order(user_id: int, db: Session = Depends(get_db)):
             "price": item["price"],
         })
 
-    new_order = Order(user_id=user_id, total_amount=total, status="Pending")
+    new_order = Order(user_id=user_id, address_id=address_id, total_amount=total, status="Pending")
     db.add(new_order)
     db.flush()
 
@@ -47,7 +46,7 @@ def create_order(user_id: int, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_order)
 
-    cart_db[user_id] = []  
+    cart_db[user_id] = []
 
     return {"message": "Order placed", "order_id": new_order.id, "total": total}
 

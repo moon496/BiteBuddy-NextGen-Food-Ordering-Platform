@@ -8,7 +8,6 @@ const USER_ID = 1;
 function CartPage({ setView }) {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [placingOrder, setPlacingOrder] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [notification, setNotification] = useState(null);
 
@@ -62,165 +61,133 @@ function CartPage({ setView }) {
     }
   };
 
-  const handlePlaceOrder = async () => {
+  const total = cartItems.reduce((sum, c) => sum + c.subtotal, 0);
+
+  const handlePlaceOrder = () => {
     const token = localStorage.getItem("bitebuddy_token");
     if (!token) {
       setShowLoginPrompt(true);
       return;
     }
-
-    setPlacingOrder(true);
-    try {
-      const res = await fetch(`${BASE_URL}/orders/create?user_id=${USER_ID}`, {
-        method: "POST",
-      });
-      const data = await res.json();
-
-      if (!res.ok) {
-        setNotification({
-          title: "Order Failed",
-          message: data.detail || "Failed to place order.",
-          icon: "⚠️",
-        });
-        return;
-      }
-
-      setNotification({
-        title: "Order Placed Successfully",
-        message: `Your Order ID is ${data.order_id}`,
-        icon: "✅",
-      });
-      loadCart();
-    } catch (err) {
-      console.error("Failed to place order:", err);
-      setNotification({
-        title: "Something Went Wrong",
-        message: "Unable to place your order. Please try again.",
-        icon: "❌",
-      });
-    } finally {
-      setPlacingOrder(false);
-    }
+    localStorage.setItem("checkout_cart_total", total);
+    setView("checkout");
   };
 
   if (loading) return <p>Loading cart...</p>;
 
-  const total = cartItems.reduce((sum, c) => sum + c.subtotal, 0);
-
   return (
-  <div className="cart-page">
-    <div className="cart-brand-header">
-      <span className="menu-brand-mark">🍔</span>
+    <div className="cart-page">
+      <div className="cart-brand-header">
+        <span className="menu-brand-mark">🍔</span>
 
-      <h1 className="brand-title">BiteBuddy</h1>
+        <h1 className="brand-title">BiteBuddy</h1>
 
-      <p className="menu-brand-tagline">
-         Fresh • Delicious • Ready to Order
-      </p>
-    </div>
-
-    {cartItems.length === 0 ? (
-      <div className="empty-cart">
-        <h2>Your cart is empty</h2>
-        <p>Add some delicious food from the menu!</p>
+        <p className="menu-brand-tagline">
+          Fresh • Delicious • Ready to Order
+        </p>
       </div>
-    ) : (
-      <>
-        <div className="cart-list">
-          {cartItems.map((c) => (
-            <div key={c.id} className="cart-card">
-              <img
-                src={c.image}
-                alt={c.item_name}
-                className="cart-image"
-              />
 
-              <div className="cart-content">
-                <span className="cart-category">
-                  {c.category}
-                </span>
+      {cartItems.length === 0 ? (
+        <div className="empty-cart">
+          <h2>Your cart is empty</h2>
+          <p>Add some delicious food from the menu!</p>
+        </div>
+      ) : (
+        <>
+          <div className="cart-list">
+            {cartItems.map((c) => (
+              <div key={c.id} className="cart-card">
+                <img
+                  src={c.image}
+                  alt={c.item_name}
+                  className="cart-image"
+                />
 
-                <h3 className="cart-name">{c.item_name}</h3>
+                <div className="cart-content">
+                  <span className="cart-category">
+                    {c.category}
+                  </span>
 
-                <p className="cart-price">
-                  ৳{c.price} each
-                </p>
+                  <h3 className="cart-name">{c.item_name}</h3>
 
-                <div className="cart-bottom">
-                  <div className="qty-box">
-                    <button onClick={() => handleQuantityChange(c.id, -1)}>
-                      −
-                    </button>
+                  <p className="cart-price">
+                    ৳{c.price} each
+                  </p>
 
-                    <span>{c.quantity}</span>
+                  <div className="cart-bottom">
+                    <div className="qty-box">
+                      <button onClick={() => handleQuantityChange(c.id, -1)}>
+                        −
+                      </button>
 
-                    <button onClick={() => handleQuantityChange(c.id, 1)}>
-                      +
+                      <span>{c.quantity}</span>
+
+                      <button onClick={() => handleQuantityChange(c.id, 1)}>
+                        +
+                      </button>
+                    </div>
+
+                    <strong>৳{c.subtotal}</strong>
+
+                    <button
+                      className="remove-btn"
+                      onClick={() => handleRemove(c.id)}
+                    >
+                      Remove
                     </button>
                   </div>
-
-                  <strong>৳{c.subtotal}</strong>
-
-                  <button
-                    className="remove-btn"
-                    onClick={() => handleRemove(c.id)}
-                  >
-                    Remove
-                  </button>
                 </div>
               </div>
+            ))}
+          </div>
+
+          <div className="summary-card">
+            <div className="summary-row">
+              <span>Items</span>
+              <strong>{cartItems.length}</strong>
             </div>
-          ))}
-        </div>
 
-        <div className="summary-card">
-          <div className="summary-row">
-            <span>Items</span>
-            <strong>{cartItems.length}</strong>
-          </div>
+            <div className="summary-row summary-total">
+              <span>Total</span>
+              <strong>৳{total}</strong>
+            </div>
 
-          <div className="summary-row summary-total">
-            <span>Total</span>
-            <strong>৳{total}</strong>
-          </div>
-
-          <button
-            className="checkout-btn"
-            onClick={handlePlaceOrder}
-            disabled={placingOrder}
-          >
-            {placingOrder ? "Placing Order..." : "Place Order"}
-          </button>
-        </div>
-      </>
-    )}
-    {notification && (
-      <NotificationModal
-        title={notification.title}
-        message={notification.message}
-        icon={notification.icon}
-        onClose={() => setNotification(null)}
-      />
-    )}
-
-    {showLoginPrompt && (
-      <div className="login-modal-overlay">
-        <div className="login-modal-card">
-          <div className="login-modal-icon">🔒</div>
-          <h3>Login Required</h3>
-          <p>Please log in to place your order and continue to your delivery address.</p>
-          <div className="login-modal-actions">
-            <button className="login-modal-primary" onClick={handleGoToLogin}>
-              Go to Login
-            </button>
-            <button className="login-modal-secondary" onClick={() => setShowLoginPrompt(false)}>
-              Cancel
+            <button
+              className="checkout-btn"
+              onClick={handlePlaceOrder}
+            >
+              Place Order
             </button>
           </div>
+        </>
+      )}
+      {notification && (
+        <NotificationModal
+          title={notification.title}
+          message={notification.message}
+          icon={notification.icon}
+          onClose={() => setNotification(null)}
+        />
+      )}
+
+      {showLoginPrompt && (
+        <div className="login-modal-overlay">
+          <div className="login-modal-card">
+            <div className="login-modal-icon">🔒</div>
+            <h3>Login Required</h3>
+            <p>Please log in to place your order and continue to your delivery address.</p>
+            <div className="login-modal-actions">
+              <button className="login-modal-primary" onClick={handleGoToLogin}>
+                Go to Login
+              </button>
+              <button className="login-modal-secondary" onClick={() => setShowLoginPrompt(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    )}
-  </div>
-);
+      )}
+    </div>
+  );
 }
 export default CartPage;

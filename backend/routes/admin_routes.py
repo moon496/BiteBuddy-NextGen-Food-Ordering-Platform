@@ -1,15 +1,17 @@
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import Session
+from sqlalchemy import func
+from datetime import datetime, timedelta
 
-from order_status import ORDERS_DB, ORDER_STATUS_SEQUENCE
 from database import get_db
-from model import User
+from model import User, UserCoupon, Order, MenuItem
 from routes.auth_routes import get_current_user
 from auth_utils import hash_password
-from model import User, UserCoupon
 
 router = APIRouter(prefix="/admin", tags=["Admin Dashboard"])
+
+ORDER_STATUS_SEQUENCE = ["Pending", "Confirmed", "Preparing", "Out for Delivery", "Delivered"]
 
 
 class StatusUpdate(BaseModel):
@@ -29,17 +31,48 @@ def require_admin(current=Depends(get_current_user)):
     return user
 
 
-# ---------- Orders ----------
+# ---------- Orders (REAL DB now) ----------
 
 @router.get("/orders")
-def list_all_orders(admin: User = Depends(require_admin)):
-    """Returns every order in the system, for the restaurant staff dashboard."""
-    return {"orders": list(ORDERS_DB.values()), "status_sequence": ORDER_STATUS_SEQUENCE}
+def list_all_orders(admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    orders = db.query(Order).order_by(Order.created_at.desc()).all()
+    return {
+        "orders": [
+            {
+                "order_id": o.id,
+                "user_id": o.user_id,
+                "username": o.user.username if o.user else None,
+                "status": o.status,
+                "total_amount": o.total_amount,
+                "created_at": o.created_at.isoformat(),
+                "items": [
+                    {"item_name": i.item_name, "quantity": i.quantity, "price": i.price}
+                    for i in o.items
+                ],
+            }
+            for o in orders
+        ],
+        "status_sequence": ORDER_STATUS_SEQUENCE,
+    }
+
+
+@router.get("/orders/user/{user_id}")
+def list_orders_by_user(user_id: int, admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    orders = db.query(Order).filter(Order.user_id == user_id).order_by(Order.created_at.desc()).all()
+    return [
+        {
+            "order_id": o.id,
+            "status": o.status,
+            "total_amount": o.total_amount,
+            "created_at": o.created_at.isoformat(),
+        }
+        for o in orders
+    ]
 
 
 @router.patch("/orders/{order_id}/status")
-def admin_update_order_status(order_id: str, body: StatusUpdate, admin: User = Depends(require_admin)):
-    order = ORDERS_DB.get(order_id)
+def admin_update_order_status(order_id: int, body: StatusUpdate, admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    order = db.query(Order).filter(Order.id == order_id).first()
     if order is None:
         raise HTTPException(status_code=404, detail="Order not found")
 
@@ -49,11 +82,75 @@ def admin_update_order_status(order_id: str, body: StatusUpdate, admin: User = D
             detail={"error": "Invalid status", "allowed_statuses": ORDER_STATUS_SEQUENCE},
         )
 
-    order["status"] = body.status
-    return order
+    order.status = body.status
+    db.commit()
+    return {"order_id": order.id, "status": order.status}
 
 
-# ---------- Admin management ----------
+# ---------- Revenue ----------
+
+@router.get("/revenue")
+def get_revenue(admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    total_revenue = db.query(func.coalesce(func.sum(Order.total_amount), 0)).scalar()
+    total_orders = db.query(func.count(Order.id)).scalar()
+
+    today = datetime.utcnow().date()
+    today_start = datetime(today.year, today.month, today.day)
+    today_revenue = db.query(func.coalesce(func.sum(Order.total_amount), 0)).filter(
+        Order.created_at >= today_start
+    ).scalar()
+
+    month_start = datetime(today.year, today.month, 1)
+    month_revenue = db.query(func.coalesce(func.sum(Order.total_amount), 0)).filter(
+        Order.created_at >= month_start
+    ).scalar()
+
+    return {
+        "total_revenue": total_revenue,
+        "today_revenue": today_revenue,
+        "month_revenue": month_revenue,
+        "total_orders": total_orders,
+    }
+
+
+# ---------- Menu management ----------
+
+class MenuItemCreate(BaseModel):
+    name: str
+    price: float
+    category: str | None = None
+    image: str | None = None
+
+
+@router.get("/menu")
+def admin_list_menu(admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    items = db.query(MenuItem).all()
+    return [
+        {"id": m.id, "name": m.name, "price": m.price, "category": m.category, "image": m.image}
+        for m in items
+    ]
+
+
+@router.post("/menu", status_code=201)
+def admin_add_menu_item(payload: MenuItemCreate, admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    item = MenuItem(**payload.dict())
+    db.add(item)
+    db.commit()
+    db.refresh(item)
+    return {"message": f"{item.name} added to menu", "id": item.id}
+
+
+@router.delete("/menu/{item_id}")
+def admin_remove_menu_item(item_id: int, admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    item = db.query(MenuItem).filter(MenuItem.id == item_id).first()
+    if not item:
+        raise HTTPException(status_code=404, detail="Menu item not found")
+    db.delete(item)
+    db.commit()
+    return {"message": "Menu item removed"}
+
+
+# ---------- Admin management (অপরিবর্তিত) ----------
 
 @router.get("/admins")
 def list_admins(admin: User = Depends(require_admin), db: Session = Depends(get_db)):
@@ -88,22 +185,20 @@ def add_admin(payload: AdminCreateRequest, admin: User = Depends(require_admin),
 def remove_admin(admin_id: int, admin: User = Depends(require_admin), db: Session = Depends(get_db)):
     if admin_id == admin.id:
         raise HTTPException(status_code=400, detail="You cannot remove yourself")
-
     target = db.query(User).filter(User.id == admin_id, User.role == "Admin").first()
     if not target:
         raise HTTPException(status_code=404, detail="Admin not found")
-
     target.role = "User"
     db.commit()
     return {"message": f"{target.username} removed from Admin"}
 
 
-    # ---------- Coupon assignment ----------
+# ---------- Coupon assignment (অপরিবর্তিত) ----------
 
 class AssignCouponRequest(BaseModel):
     user_id: int
     code: str
-    discount_type: str   # "percent" or "flat"
+    discount_type: str
     value: float
     max_discount: float | None = None
 
@@ -113,7 +208,6 @@ def assign_coupon(payload: AssignCouponRequest, admin: User = Depends(require_ad
     target_user = db.query(User).filter(User.id == payload.user_id).first()
     if not target_user:
         raise HTTPException(status_code=404, detail="User not found")
-
     if payload.discount_type not in ("percent", "flat"):
         raise HTTPException(status_code=400, detail="discount_type must be 'percent' or 'flat'")
 

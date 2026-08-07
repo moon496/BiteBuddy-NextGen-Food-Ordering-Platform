@@ -33,21 +33,25 @@ function MenuItems() {
 
   const handleAddToCart = async (itemId, itemName) => {
     try {
-      const res = await fetch(`${BASE_URL}/cart`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: USER_ID, item_id: itemId, quantity: 1 }),
-      });
-      if (!res.ok) throw new Error("Failed to add item");
+     const res = await fetch(`${BASE_URL}/cart`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_id: USER_ID, item_id: itemId, quantity: 1 }),
+    });
 
-      setMessage(`${itemName} added to cart!`);
-      setTimeout(() => setMessage(""), 2000); 
-    } catch (err) {
-      console.error("Error adding to cart:", err);
-      setMessage("Failed to add item to cart.");
-      setTimeout(() => setMessage(""), 2000);
+    if (!res.ok) {
+      const errData = await res.json().catch(() => null);
+      throw new Error(errData?.detail || `Failed to add item (status ${res.status})`);
     }
-  };
+
+    setMessage(`${itemName} added to cart!`);
+    setTimeout(() => setMessage(""), 2000);
+  } catch (err) {
+    console.error("Error adding to cart:", err.message);
+    setMessage(err.message || "Failed to add item to cart.");
+    setTimeout(() => setMessage(""), 2000);
+  }
+};
 
   if (loading) return <p>Loading menu...</p>;
   if (error) return <p>{error}</p>;

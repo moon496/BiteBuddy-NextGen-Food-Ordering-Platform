@@ -26,12 +26,12 @@ class Cart(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    item_id = Column(Integer, ForeignKey("items.id"), nullable=False)
+    item_id = Column(Integer, ForeignKey("menu_items.id"), nullable=False)   # <-- items → menu_items
     quantity = Column(Integer, default=1, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     user = relationship("User", backref="cart_items")
-    item = relationship("Item", backref="cart_entries")
+    item = relationship("MenuItem", backref="cart_entries")   # <-- Item → MenuItem
 
 
 class Order(Base):
@@ -39,9 +39,12 @@ class Order(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    address_id = Column(Integer, ForeignKey("addresses.id"), nullable=True)  # ← notun line
     status = Column(String(20), default="Pending", nullable=False)
     total_amount = Column(Float, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+    user = relationship("User", backref="orders")
+    address = relationship("Address", backref="orders")  # ← notun line
 
     items = relationship("OrderItem", backref="order", cascade="all, delete-orphan")
 
@@ -70,3 +73,26 @@ class UserCoupon(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     user = relationship("User", backref="coupons")
+
+class MenuItem(Base):
+    __tablename__ = "menu_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    price = Column(Float, nullable=False)
+    category = Column(String(50), nullable=True)
+    image = Column(String(500), nullable=True)
+
+
+class Address(Base):
+    __tablename__ = "addresses"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    label = Column(String(50), nullable=False)
+    address_line = Column(String(255), nullable=False)
+    city = Column(String(100), nullable=False)
+    phone = Column(String(20), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User", backref="addresses")

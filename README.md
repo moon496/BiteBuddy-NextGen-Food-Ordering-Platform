@@ -46,6 +46,7 @@ The `OrderStatus` component (`frontend/src/components/OrderStatus.jsx`) lets a c
 ```bash
 # Backend
 cd backend
+pip install -r requirements.txt
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 # Frontend (separate terminal)
