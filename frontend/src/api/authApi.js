@@ -21,6 +21,7 @@ export const registerUser = async (username, email, password, role = "User") => 
 };
 
 export const loginUser = async (email, password) => {
+  console.log("Login attempt:", email, password); // temporary debug line — pore remove korte hobe
   const res = await fetch(`${BASE_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

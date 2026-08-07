@@ -1,26 +1,13 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, Field
+from sqlalchemy.orm import Session
+
+from database import get_db
+from model import MenuItem
 
 router = APIRouter(prefix="/cart", tags=["Cart"])
 
-
 cart_db: dict[int, list[dict]] = {}
-
-
-MENU_ITEMS = [
-    {"id": 1, "name": "Burger", "price": 120, "category": "Fast Food", "image": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=500"},
-    {"id": 2, "name": "Pizza", "price": 250, "category": "Italian","image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=500"},
-    {"id": 3, "name": "Pasta", "price": 180, "category": "Italian","image": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=500"},
-    {"id": 4, "name": "Salad", "price": 90, "category": "Healthy","image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=500"},
-    {"id": 5, "name": "MeatBox", "price": 120, "category": "Testy Food", "image": "https://images.unsplash.com/photo-1767065703791-ddc9a028563c?q=80&w=500"},
-    {"id": 6, "name": "Ice-cream", "price": 100, "category": "Fast Food","image": "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?q=80&w=500"},
-    {"id": 7, "name": "Sushi", "price": 200, "category": "Healthy","image": "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?q=80&w=500"},
-    {"id": 8, "name": "Fried-Rice", "price": 150, "category": "Fast Food","image": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?q=80&w=500"},
-    {"id": 9, "name": "Double Cheeseburger", "price": 320, "category": "Burgers","image": "https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?q=80&w=500"},
-    {"id": 10, "name": "Mango Lassi", "price": 120, "category": "Drinks","image": "https://images.unsplash.com/photo-1719239948819-0afeced16184?q=80&w=500"},
-    {"id": 11, "name": "Spicy Ramen Bowl", "price": 280, "category": "Noodles", "image": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?q=80&w=500"},
-    {"id": 12, "name": "Chicken Tacos", "price": 260, "category": "Mexican","image": "https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?q=80&w=500"}
-]
 
 
 class CartItemCreate(BaseModel):
@@ -33,12 +20,21 @@ class CartItemUpdate(BaseModel):
     quantity: int = Field(..., gt=0)
 
 
-def find_menu_item(item_id: int):
-    return next((m for m in MENU_ITEMS if m["id"] == item_id), None)
+def find_menu_item(item_id: int, db: Session):
+    item = db.query(MenuItem).filter(MenuItem.id == item_id).first()
+    if not item:
+        return None
+    return {
+        "id": item.id,
+        "name": item.name,
+        "price": item.price,
+        "category": item.category,
+        "image": item.image,
+    }
 
 
-def serialize_cart_item(entry: dict) -> dict:
-    item = find_menu_item(entry["item_id"])
+def serialize_cart_item(entry: dict, db: Session) -> dict:
+    item = find_menu_item(entry["item_id"], db)
     price = item["price"] if item else 0
 
     return {
@@ -54,19 +50,18 @@ def serialize_cart_item(entry: dict) -> dict:
 
 
 @router.get("/{user_id}")
-def get_cart(user_id: int):
+def get_cart(user_id: int, db: Session = Depends(get_db)):
     items = cart_db.get(user_id, [])
-    return {"items": [serialize_cart_item(e) for e in items]}
+    return {"items": [serialize_cart_item(e, db) for e in items]}
 
 
 @router.post("", status_code=201)
-def add_to_cart(payload: CartItemCreate):
-    item = find_menu_item(payload.item_id)
+def add_to_cart(payload: CartItemCreate, db: Session = Depends(get_db)):
+    item = find_menu_item(payload.item_id, db)
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
 
     user_cart = cart_db.setdefault(payload.user_id, [])
-
     existing = next((e for e in user_cart if e["item_id"] == payload.item_id), None)
     if existing:
         existing["quantity"] += payload.quantity
@@ -75,28 +70,24 @@ def add_to_cart(payload: CartItemCreate):
         existing = {"id": new_id, "item_id": payload.item_id, "quantity": payload.quantity}
         user_cart.append(existing)
 
-    return serialize_cart_item(existing)
+    return serialize_cart_item(existing, db)
 
 
 @router.put("/{user_id}/{cart_item_id}")
-def update_cart_item(user_id: int, cart_item_id: int, payload: CartItemUpdate):
+def update_cart_item(user_id: int, cart_item_id: int, payload: CartItemUpdate, db: Session = Depends(get_db)):
     user_cart = cart_db.get(user_id, [])
     entry = next((e for e in user_cart if e["id"] == cart_item_id), None)
     if not entry:
         raise HTTPException(status_code=404, detail="Cart item not found")
-
-    
     entry["quantity"] = payload.quantity
-    return serialize_cart_item(entry)
-
+    return serialize_cart_item(entry, db)
 
 
 @router.delete("/{user_id}/{cart_item_id}")
-def delete_cart_item(user_id: int, cart_item_id: int):
+def delete_cart_item(user_id: int, cart_item_id: int, db: Session = Depends(get_db)):
     user_cart = cart_db.get(user_id, [])
     entry = next((e for e in user_cart if e["id"] == cart_item_id), None)
     if not entry:
         raise HTTPException(status_code=404, detail="Cart item not found")
-
     user_cart.remove(entry)
     return {"message": "Item removed from cart"}

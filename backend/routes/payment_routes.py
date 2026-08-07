@@ -9,27 +9,30 @@ so it's a drop-in swap later (replace call_bkash_gateway()).
 import random
 import uuid
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, Field
+from sqlalchemy.orm import Session
 
-from order_status import ORDERS_DB
+from database import get_db
+from model import Order
 
 router = APIRouter(prefix="/payments", tags=["Payments"])
 
-# payment_id -> payment record
+# payment_id -> payment record (payments still simulated / not in DB)
 PAYMENTS_DB: dict[str, dict] = {}
 
 
 class InitiatePaymentRequest(BaseModel):
-    order_id: str = Field(..., min_length=1)
+    order_id: int
     amount: float = Field(..., gt=0)
-    method: str  = Field(..., pattern="^(bkash|card|cod)$")
+    method: str = Field(..., pattern="^(bkash|card|cod)$")
+
 
 class CallbackRequest(BaseModel):
     force_result: str | None = Field(
         default=None,
         pattern="^(success|failure)$"
-    ) # "success" | "failure", optional override for testing
+    )  # "success" | "failure", optional override for testing
 
 
 def call_bkash_gateway() -> bool:
@@ -42,12 +45,13 @@ def call_bkash_gateway() -> bool:
 
 
 @router.post("/initiate", status_code=201)
-def initiate_payment(payload: InitiatePaymentRequest):
-    if payload.order_id not in ORDERS_DB:
+def initiate_payment(payload: InitiatePaymentRequest, db: Session = Depends(get_db)):
+    order = db.query(Order).filter(Order.id == payload.order_id).first()
+    if not order:
         raise HTTPException(status_code=404, detail="Order not found")
 
     if payload.method not in ("bkash", "card", "cod"):
-       raise HTTPException(status_code=400, detail="Unsupported payment method")
+        raise HTTPException(status_code=400, detail="Unsupported payment method")
 
     if payload.amount <= 0:
         raise HTTPException(status_code=400, detail="Amount must be greater than 0")
@@ -64,7 +68,7 @@ def initiate_payment(payload: InitiatePaymentRequest):
 
 
 @router.post("/{payment_id}/callback")
-def payment_callback(payment_id: str, body: CallbackRequest = CallbackRequest()):
+def payment_callback(payment_id: str, body: CallbackRequest = CallbackRequest(), db: Session = Depends(get_db)):
     """
     Simulates the gateway calling us back after the user pays.
     In real bKash/card integration, this endpoint is what the gateway hits
@@ -86,9 +90,10 @@ def payment_callback(payment_id: str, body: CallbackRequest = CallbackRequest())
 
     if succeeded:
         payment["status"] = "paid"
-        order = ORDERS_DB.get(payment["order_id"])
+        order = db.query(Order).filter(Order.id == payment["order_id"]).first()
         if order:
-            order["status"] = "Confirmed"
+            order.status = "Confirmed"
+            db.commit()
     else:
         payment["status"] = "failed"
 

@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.cart_routes import router as cart_router
-from order_status import router as order_status_router
+from database import Base, engine, get_db
+from fastapi import Depends
+from sqlalchemy.orm import Session
+from model import User, MenuItem 
+
 from routes.order_routes import router as order_router
 
 from routes.auth_routes import router as auth_router
@@ -18,7 +22,7 @@ app = FastAPI()
 Base.metadata.create_all(bind=engine)
 
 app.include_router(cart_router)          
-app.include_router(order_status_router)
+
 app.include_router(order_router)
 
 app.include_router(auth_router)
@@ -39,6 +43,22 @@ app.add_middleware(
 @app.get("/")
 def read_root():
     return {"message": "Welcome to BiteBuddy API"}
+
+@app.get("/menu-items")
+def get_menu_items(db: Session = Depends(get_db)):
+    items = db.query(MenuItem).all()
+    return {
+        "items": [
+            {
+                "id": item.id,
+                "name": item.name,
+                "price": item.price,
+                "category": item.category,
+                "image": item.image,
+            }
+            for item in items
+        ]
+    }
 
 @app.get("/menu")
 def get_menu():
