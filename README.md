@@ -49,6 +49,11 @@ cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
+#Backend relode
+kill -9 66051 74141
+lsof -i :8000
+uvicorn main:app --reload
+
 # Frontend (separate terminal)
 cd frontend
 npm install
