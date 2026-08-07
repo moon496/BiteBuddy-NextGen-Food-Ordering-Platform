@@ -4,9 +4,9 @@ import { applyCoupon, redeemCoupon } from "../api/couponApi";
 import { initiatePayment, confirmPayment } from "../api/paymentApi";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
-const USER_ID = 1;
+const USER_ID = 1; // TODO: order create-o token-based korte hobe, address er moto
 
-function Checkout({ setView }) {
+function Checkout({ setView, token }) {
   const [step, setStep] = useState("address"); // address -> payment -> confirm
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
@@ -29,17 +29,22 @@ function Checkout({ setView }) {
   const finalAmount = couponResult ? couponResult.total : subtotal;
 
   useEffect(() => {
-    getAddresses().then(setAddresses);
-  }, []);
+    if (!token) return;
+    getAddresses(token).then(setAddresses).catch((err) => setError(err.message));
+  }, [token]);
 
   const handleAddAddress = async (e) => {
     e.preventDefault();
     if (!label.trim() || !addressLine.trim() || !city.trim() || !phone.trim()) return;
-    const newAddr = await addAddress(label, addressLine, city, phone);
-    setLabel(""); setAddressLine(""); setCity(""); setPhone("");
-    const updated = await getAddresses();
-    setAddresses(updated);
-    setSelectedAddressId(newAddr.id);
+    try {
+      const newAddr = await addAddress(token, label, addressLine, city, phone);
+      setLabel(""); setAddressLine(""); setCity(""); setPhone("");
+      const updated = await getAddresses(token);
+      setAddresses(updated);
+      setSelectedAddressId(newAddr.id);
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   const handleContinueToPayment = async () => {
