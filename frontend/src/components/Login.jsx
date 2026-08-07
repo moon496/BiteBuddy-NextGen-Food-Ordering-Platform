@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import { registerUser, loginUser, logoutUser, fetchCurrentUser, updateUser, deleteUser } from "../api/authApi";
 import "./Login.css";
 
-function Login({ setView }) {
+function Login({ setView, token, setToken }) {
   const [mode, setMode] = useState("login");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [token, setToken] = useState(null);
+  
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);

@@ -6,7 +6,6 @@ from database import get_db
 from datetime import datetime
 import logging
 
-
 from model import User
 from auth_schemas import RegisterRequest, LoginRequest, UserResponse, UpdateUserRequest
 from auth_utils import hash_password, verify_password, create_access_token, decode_access_token
@@ -30,7 +29,7 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
         username=payload.username,
         email=payload.email,
         hashed_password=hash_password(payload.password),
-        role="User",   
+        role="User",
     )
     db.add(user)
     db.commit()
@@ -47,9 +46,10 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
     if user.role == "Admin":
         msg = f"🔔 ADMIN LOGIN — {user.username} ({user.email}) at {datetime.utcnow()} UTC"
         logger.warning(msg)
-        print(msg)   
+        print(msg)
 
     token = create_access_token({"sub": str(user.id), "username": user.username})
+
     return {
         "access_token": token,
         "token_type": "bearer",
@@ -57,6 +57,7 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
     }
 
 
+# get_current_user MUST be defined here, before any route below uses it as a Depends default
 def get_current_user(authorization: str = Header(None), db: Session = Depends(get_db)):
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing or invalid Authorization header")
@@ -83,11 +84,14 @@ def get_me(current=Depends(get_current_user)):
     user, _ = current
     return {"id": user.id, "username": user.username, "email": user.email, "role": user.role}
 
+
 @router.post("/logout")
 def logout(current=Depends(get_current_user)):
     _, token = current
     token_blocklist.add(token)
     return {"message": "Logged out successfully"}
+
+
 @router.put("/me", response_model=UserResponse)
 def update_me(payload: UpdateUserRequest, current=Depends(get_current_user), db: Session = Depends(get_db)):
     user, _ = current
@@ -105,6 +109,8 @@ def update_me(payload: UpdateUserRequest, current=Depends(get_current_user), db:
     db.commit()
     db.refresh(db_user)
     return db_user
+
+
 @router.delete("/me")
 def delete_me(current=Depends(get_current_user), db: Session = Depends(get_db)):
     user, _ = current
