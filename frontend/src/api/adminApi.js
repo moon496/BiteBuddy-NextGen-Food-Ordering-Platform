@@ -82,3 +82,14 @@ export const removeAssignedCoupon = async (couponId) => {
   }
   return res.json();
 };
+
+
+export async function getRevenue() {
+  const res = await fetch(`${BASE_URL}/admin/revenue`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("bitebuddy_token")}`,
+    },
+  });
+  if (!res.ok) throw new Error("Failed to load revenue");
+  return res.json();
+}
