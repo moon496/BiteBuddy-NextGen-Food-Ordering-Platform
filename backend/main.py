@@ -17,11 +17,14 @@ from routes.admin_routes import router as admin_router
 from routes.review_routes import router as review_router
 from routes.payment_routes import router as payment_router
 
+import seed as menu_seed
+import seed_admin
+import seed_orders
+
 ORDER_STATUS_SEQUENCE = ["Pending", "Confirmed", "Preparing", "Out for Delivery", "Delivered"]
 
 
 def advance_order_statuses():
-    """Runs on a schedule. Moves every non-Delivered order to its next status."""
     db = SessionLocal()
     try:
         orders = db.query(Order).filter(Order.status != "Delivered").all()
@@ -39,12 +42,31 @@ def advance_order_statuses():
         db.close()
 
 
+def run_startup_seeds():
+    """Backend chalu hobar shomoy check kore — data na thakle seed kore dey.
+    Render restart/sleep-wake er por o data thakbe."""
+    try:
+        menu_seed.seed()
+    except Exception as e:
+        print(f"[startup-seed] menu seed error: {e}")
+    try:
+        seed_admin.seed()
+    except Exception as e:
+        print(f"[startup-seed] admin seed error: {e}")
+    try:
+        seed_orders.seed()
+    except Exception as e:
+        print(f"[startup-seed] orders seed error: {e}")
+
+
 scheduler = AsyncIOScheduler()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # startup
+    Base.metadata.create_all(bind=engine)
+    run_startup_seeds()
     scheduler.add_job(advance_order_statuses, "interval", minutes=5, id="advance_order_statuses")
     scheduler.start()
     yield
@@ -53,8 +75,6 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
-
-Base.metadata.create_all(bind=engine)
 
 app.include_router(cart_router)
 app.include_router(order_router)
@@ -67,7 +87,7 @@ app.include_router(payment_router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origin_regex=r"https://.*\.vercel\.app|https://.*\.app\.github\.dev|http://localhost:\d+",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
