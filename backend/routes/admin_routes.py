@@ -44,7 +44,7 @@ def list_all_orders(admin: User = Depends(require_admin), db: Session = Depends(
                 "username": o.user.username if o.user else None,
                 "status": o.status,
                 "total_amount": o.total_amount,
-                "created_at": o.created_at.isoformat(),
+                "created_at": o.created_at.isoformat() + "Z",
                 "items": [
                     {"item_name": i.item_name, "quantity": i.quantity, "price": i.price}
                     for i in o.items
@@ -64,7 +64,7 @@ def list_orders_by_user(user_id: int, admin: User = Depends(require_admin), db: 
             "order_id": o.id,
             "status": o.status,
             "total_amount": o.total_amount,
-            "created_at": o.created_at.isoformat(),
+            "created_at": o.created_at.isoformat() + "Z",
         }
         for o in orders
     ]

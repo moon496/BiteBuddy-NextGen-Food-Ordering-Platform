@@ -1,5 +1,5 @@
 const BASE_URL =  import.meta.env.VITE_API_URL;
-const USER_ID = 1;
+
 
 export const getReviews = async (itemId) => {
   const res = await fetch(`${BASE_URL}/reviews/${itemId}`);

@@ -3,7 +3,7 @@ import "../App.css";
 import NotificationModal from "./NotificationModal";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
-const USER_ID = 1;
+
 
 function CartPage({ setView }) {
   const [cartItems, setCartItems] = useState([]);
@@ -19,7 +19,7 @@ function CartPage({ setView }) {
 
   const loadCart = async () => {
     try {
-      const res = await fetch(`${BASE_URL}/cart/${USER_ID}`);
+      const res = await fetch(`${BASE_URL}/cart/${getCurrentUserId()}`);
       if (!res.ok) throw new Error(`Server responded with ${res.status}`);
       const data = await res.json();
       setCartItems(data.items);
@@ -39,7 +39,7 @@ function CartPage({ setView }) {
     const newQuantity = Math.max(1, item.quantity + delta);
 
     try {
-      await fetch(`${BASE_URL}/cart/${USER_ID}/${id}`, {
+      await fetch(`${BASE_URL}/cart/${getCurrentUserId()}/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ quantity: newQuantity }),
@@ -52,7 +52,7 @@ function CartPage({ setView }) {
 
   const handleRemove = async (id) => {
     try {
-      await fetch(`${BASE_URL}/cart/${USER_ID}/${id}`, {
+      await fetch(`${BASE_URL}/cart/${getCurrentUserId()}/${id}`, {
         method: "DELETE",
       });
       loadCart();

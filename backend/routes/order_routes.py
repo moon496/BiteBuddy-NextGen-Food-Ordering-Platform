@@ -60,7 +60,7 @@ def list_orders(user_id: int, db: Session = Depends(get_db)):
                 "id": o.id,
                 "status": o.status,
                 "total_amount": o.total_amount,
-                "created_at": o.created_at.isoformat(),
+                "created_at": o.created_at.isoformat() + "Z",
             }
             for o in orders
         ]

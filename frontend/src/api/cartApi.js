@@ -1,5 +1,5 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
-const USER_ID = 1; 
+
 export const getCart = async () => {
   const res = await fetch(`${BASE_URL}/cart/${USER_ID}`);
   const data = await res.json();

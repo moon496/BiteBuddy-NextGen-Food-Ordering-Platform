@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { getAddresses, addAddress } from "../api/addressApi";
 import { applyCoupon, redeemCoupon } from "../api/couponApi";
 import { initiatePayment, confirmPayment } from "../api/paymentApi";
+import { getCurrentUserId } from "../utils/auth";  
 
 const BASE_URL = import.meta.env.VITE_API_URL;
-const USER_ID = 1; // TODO: order create-o token-based korte hobe, address er moto
+
 
 function Checkout({ setView, token }) {
   const [step, setStep] = useState("address"); // address -> payment -> confirm
@@ -53,7 +54,7 @@ function Checkout({ setView, token }) {
       return;
     }
     try {
-      const res = await fetch(`${BASE_URL}/orders/create?user_id=${USER_ID}&address_id=${selectedAddressId}`, {
+      const res = await fetch(`${BASE_URL}/orders/create?user_id=${getCurrentUserId()}&address_id=${selectedAddressId}`,{
         method: "POST",
       });
       const data = await res.json();

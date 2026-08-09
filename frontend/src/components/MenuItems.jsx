@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 
 const BASE_URL = import.meta.env.VITE_API_URL;
-const USER_ID = 1; 
+
 
 function MenuItems() {
   const [items, setItems] = useState([]);
@@ -36,7 +36,7 @@ function MenuItems() {
      const res = await fetch(`${BASE_URL}/cart`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ user_id: USER_ID, item_id: itemId, quantity: 1 }),
+      body: JSON.stringify({ user_id: getCurrentUserId(), item_id: itemId, quantity: 1 }),
     });
 
     if (!res.ok) {

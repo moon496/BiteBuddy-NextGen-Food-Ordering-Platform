@@ -145,10 +145,10 @@ function AdminDashboard() {
   };
 
   const formatDate = (isoString) => {
-    if (!isoString) return "-";
-    const d = new Date(isoString);
-    return d.toLocaleString();
-  };
+  if (!isoString) return "-";
+  const d = new Date(isoString);
+  return d.toLocaleString("en-BD", { timeZone: "Asia/Dhaka" });
+};
 
   const formatItems = (items) => {
     if (!items || items.length === 0) return "-";

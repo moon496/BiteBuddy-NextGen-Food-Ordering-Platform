@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./OrderStatus.css";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
-const USER_ID = 1;
+
 
 const ORDER_STATUS_SEQUENCE = [
   "Pending",

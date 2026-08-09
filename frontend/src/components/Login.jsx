@@ -22,6 +22,7 @@ function Login({ setView, token, setToken }) {
         .then((data) => {
           setToken(savedToken);
           setUser(data);
+          localStorage.setItem("bitebuddy_user_id", data.id);
         })
         .catch(() => localStorage.removeItem("bitebuddy_token"))
         .finally(() => setLoading(false));
@@ -43,6 +44,7 @@ function Login({ setView, token, setToken }) {
       }
       const data = await loginUser(email, password);
       localStorage.setItem("bitebuddy_token", data.access_token);
+      localStorage.setItem("bitebuddy_user_id", data.user.id);
       setToken(data.access_token);
       setUser(data.user);
       localStorage.setItem("bitebuddy_role", data.user.role);
@@ -75,6 +77,7 @@ function Login({ setView, token, setToken }) {
     } finally {
       localStorage.removeItem("bitebuddy_token");
       localStorage.removeItem("bitebuddy_role");
+      localStorage.removeItem("bitebuddy_user_id");
       setToken(null);
       setUser(null);
     }
