@@ -16,3 +16,4 @@ bcrypt>=4.0.0
 PyJWT>=2.8.0
 
 email-validator
+APScheduler==3.11.3
