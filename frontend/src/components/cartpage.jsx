@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../App.css";
 import NotificationModal from "./NotificationModal";
+import { getCurrentUserId } from "../utils/auth";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 

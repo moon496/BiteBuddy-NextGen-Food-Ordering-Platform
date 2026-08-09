@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getCurrentUserId } from "../utils/auth";
 
 
 const BASE_URL = import.meta.env.VITE_API_URL;
