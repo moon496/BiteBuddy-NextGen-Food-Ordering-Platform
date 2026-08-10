@@ -1,7 +1,7 @@
 .app-shell {
   display: flex;
   min-height: 100vh;
-  background: #a9462262;
+  background: #fff3e8;
 }
 
 /* Sidebar */
@@ -76,7 +76,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: #5c352789;
+  background: #fff3e8;
 }
 
 .app-content {
@@ -92,48 +92,70 @@
 .home-hero {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  background: linear-gradient(120deg, #ffe3d6, #fff6ee);
+  justify-content: center;
+  gap: 32px;
+  background: linear-gradient(135deg, #ff6b35, #ff9248);
   border-radius: 18px;
-  padding: 40px;
+  padding: 36px 40px;
   margin-bottom: 28px;
   border: 1px solid rgba(255, 107, 53, 0.2);
+  text-align: center;
 }
+.home-hero-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+} 
 
 .home-hero-text h1 {
-  font-size: 2.2rem;
-  margin-bottom: 10px;
-  color: #14342f;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 2.4rem;
+  font-weight: 800;
+  margin: 0 0 10px;
+  color: #000000;
+  text-align: center;
 }
 
 .home-hero-text p {
-  color: #555;
+  color:#3a3a3a;
   font-size: 1rem;
-  max-width: 380px;
+  max-width: 520px;
+  margin: 0 auto;
+  text-align: center;
 }
 
+.home-hero-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 .home-hero-image img {
-  width: 160px;
-  height: 160px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
   border-radius: 50%;
-  border: 4px solid #ff6b35;
+  border: 4px solid #fff7f0;
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
 .home-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
 }
 
 .home-card {
+  width: 100%;
+  min-height: 170px;
   background: #ffffff;
   border: 1px solid #eee;
   border-radius: 14px;
   padding: 22px;
-  text-align: left;
+  text-align: center;
   cursor: pointer;
   transition: transform 0.15s, box-shadow 0.15s;
   color: inherit;
@@ -154,13 +176,14 @@
 
 .home-card h3 {
   color: #14342f;
-  margin-bottom: 6px;
+  margin: 0 0 6px;
   font-size: 1.05rem;
 }
 
 .home-card p {
   color: #777;
   font-size: 0.85rem;
+  margin: 0;
 }
 
 /* Footer */

@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from database import get_db
-from model import Order, OrderItem
+from model import Order, OrderItem, UserCoupon
 from routes.cart_routes import cart_db, find_menu_item
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
@@ -92,6 +92,25 @@ def update_order_status(order_id: int, body: StatusUpdate, db: Session = Depends
 
     order.status = body.status
     db.commit()
+
+    if body.status == "Delivered":
+        delivered_count = (
+            db.query(Order)
+            .filter(Order.user_id == order.user_id, Order.status == "Delivered")
+            .count()
+        )
+        if delivered_count % 3 == 0:
+            loyalty_coupon = UserCoupon(
+                user_id=order.user_id,
+                code=f"LOYAL15-{delivered_count}",
+                discount_type="percent",
+                value=15,
+                max_discount=250,
+                used="false",
+            )
+            db.add(loyalty_coupon)
+            db.commit()
+            
     return {"order_id": order_id, "status": body.status}
 
 

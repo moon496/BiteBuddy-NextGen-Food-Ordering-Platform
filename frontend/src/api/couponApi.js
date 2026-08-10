@@ -23,3 +23,14 @@ export const redeemCoupon = async (userCouponId) => {
   });
   return res.json();
 };
+
+export const myCoupons = async () => {
+  const token = localStorage.getItem("bitebuddy_token");
+  if (!token) return [];
+
+  const res = await fetch(`${BASE_URL}/coupons/my`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) return [];
+  return res.json();
+};

@@ -167,7 +167,7 @@
 
   &::before,
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     top: -4.5px;
     border: 5px solid transparent;
@@ -215,7 +215,9 @@ nav button {
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
 }
 
 nav button:hover {
@@ -225,9 +227,11 @@ nav button:hover {
 
 /* ---- Menu items page wrapper ---- */
 .menu-items {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 40px 20px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 40px 32px;
+  box-sizing: border-box;
   font-family: "Plus Jakarta Sans", sans-serif;
 }
 
@@ -236,703 +240,718 @@ nav button:hover {
   margin-bottom: 28px;
   font-family: "Baloo 2", sans-serif;
   font-size: 2rem;
-  color: var(--ink, #1b140f);
+  color: #ff6b35;
 }
 
-.menu-brand-header {
-  text-align: center;
-  margin-bottom: 32px;
-}
-
-.menu-brand-mark {
-  display: block;
-  font-size: 2.6rem;
-  line-height: 1;
-  margin-bottom: 4px;
-}
-
-.menu-brand-name {
-  font-family: "Baloo 2", sans-serif;
-  font-weight: 800;
-  font-size: 2.4rem;
-  color: var(--ink, #1b140f);
-  margin: 0 0 4px;
-  letter-spacing: -0.01em;
-}
-
-.menu-brand-tagline {
-  color: #fff;
-  font-weight: 700;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin: 0;
-}
-
-.menu-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  margin-top: 16px;
-}
-
-.menu-card {
-  border: 1px solid rgba(27, 20, 15, 0.08);
-  border-radius: 14px;
-  overflow: hidden;
-  text-align: left;
-  background: var(--cream-2, #fff);
-  box-shadow: 0 6px 18px rgba(27, 20, 15, 0.07);
-  transition: transform 0.15s, box-shadow 0.15s;
-}
-
-.menu-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 14px 28px rgba(27, 20, 15, 0.12);
-}
-
-.menu-card-img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-  display: block;
-}
-
-.menu-card-body {
-  padding: 16px 18px 18px;
-}
-
-.menu-card-category {
-  display: inline-block;
-  background: rgba(244, 165, 34, 0.15);
-  color: var(--mango-dark, #b5760f);
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 3px 10px;
-  border-radius: 20px;
-  margin-bottom: 8px;
-}
-
-.menu-card h3 {
-  margin: 0 0 6px 0;
-  font-family: "Baloo 2", sans-serif;
-  color: var(--ink, #1b140f);
-  font-size: 1.15rem;
-}
-
-.menu-card-price {
-  margin: 0 0 12px 0;
-  color: var(--chili-dark, #c33a14);
-  font-family: "Plus Jakarta Sans", sans-serif;
-  font-weight: 700;
-  font-size: 1.05rem;
-}
-
-/* Add to Cart button inside each card */
-.menu-card button {
-  margin-top: 12px;
-  width: 100%;
-  background: var(--chili, #e8491d);
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 700;
-  font-family: "Plus Jakarta Sans", sans-serif;
-  transition: background 0.2s, transform 0.15s;
-}
-
-.menu-card button:hover {
-  background: var(--chili-dark, #c33a14);
-  transform: translateY(-1px);
-}
-
-/* ---- Cart page ---- */
-.cart-page {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 24px;
-  background: var(--ink, #1b140f);
-  border-radius: 16px;
-  color: #ffffff;
-  font-family: "Plus Jakarta Sans", sans-serif;
-}
-
-.cart-page h2 {
-  font-family: "Baloo 2", sans-serif;
-  font-size: 1.6rem;
-  margin-bottom: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  padding-bottom: 10px;
-}
-
-.cart-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.cart-item span:first-child {
-  flex: 1;
-  font-weight: 600;
-  text-align: left;
-}
-
-.cart-item button {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  border: none;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.cart-item button:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.cart-item button:last-child {
-  width: auto;
-  padding: 6px 12px;
-  background: var(--chili-dark, #c33a14);
-  border-radius: 6px;
-  font-size: 0.85rem;
-}
-
-.cart-item button:last-child:hover {
-  background: var(--chili, #e8491d);
-}
-
-.cart-page h3 {
-  text-align: right;
-  margin-top: 20px;
-  font-size: 1.3rem;
-  color: var(--mango, #f4a522);
-}
-/* ================= CART PAGE ================= */
-
-.cart-page {
-  max-width: 1100px;
-  margin: 40px auto;
-  padding: 20px;
-  font-family: "Plus Jakarta Sans", sans-serif;
-}
-
-.cart-brand-header {
-  text-align: center;
-  margin-bottom: 35px;
-}
-
-.cart-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.cart-card {
-  display: flex;
-  gap: 20px;
-  background: #fff;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid rgba(27,20,15,.08);
-  box-shadow: 0 8px 20px rgba(27,20,15,.08);
-}
-
-.cart-image {
-  width: 180px;
-  height: 180px;
-  object-fit: cover;
-}
-
-.cart-content {
-  flex: 1;
-  padding: 18px;
-}
-
-.cart-category {
-  display: inline-block;
-  background: rgba(244,165,34,.15);
-  color: #b5760f;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.cart-name {
-  margin: 12px 0 6px;
-  font-size: 1.35rem;
-}
-
-.cart-price {
-  color: #e8491d;
-  font-weight: 700;
-  margin-bottom: 18px;
-}
-
-.cart-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.qty-box {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.qty-box button {
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: #f6f6f6;
-  color: #1b140f; 
-  cursor: pointer;
-  font-size: 18px;
-}
-
-.qty-box span {
-  padding: 0 18px;
-  color: #1b140f; 
-  font-weight: 700;
-}
-.qty-box button:hover {
-  background: #e8491d;
-  color: #ffffff;
-}
-
-.remove-btn {
-  background: #c33a14;
-  color: white;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.remove-btn:hover {
-  background: #e8491d;
-}
-
-.summary-card {
-  margin-top: 30px;
-  background: #fff;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 8px 20px rgba(27,20,15,.08);
-}
-
-.summary-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-  font-size: 1.05rem;
-}
-
-.summary-total {
-  font-size: 1.3rem;
-  font-weight: bold;
-  border-top: 1px solid #eee;
-  padding-top: 15px;
-}
-
-.checkout-btn {
-  width: 100%;
-  margin-top: 20px;
-  padding: 14px;
-  background: #e8491d;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.checkout-btn:hover {
-  background: #c33a14;
-}
-
-.empty-cart {
-  text-align: center;
-  padding: 70px 20px;
-}
-.cart-page {
-  max-width: 1100px;
-  margin: 40px auto;
-  padding: 20px;
-  font-family: "Plus Jakarta Sans", sans-serif;
-
-  background:  #e6633e;
-}
-.summary-card {
-  background: #fffdf9;
-  border: 1px solid rgba(232,73,29,.12);
-  
-}
-.cart-brand-header .menu-brand-tagline {
-  color: #ffffff;
-}
-.cart-bottom strong {
-  color: #1b140f;
-  font-size: 18px;
-  font-weight: 700;
-}
-.summary-card {
-  color: #1b140f;
-}
-.summary-row span,
-.summary-row strong {
-  color: #1b140f;
-}
-
-.summary-total strong {
-  color: #e8491d;
-  font-size: 24px;
-}
-
-.login-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.65);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.login-modal-card {
-  background: #1c1c1c;
-  border: 1px solid rgba(255, 107, 53, 0.3);
-  border-radius: 16px;
-  padding: 32px;
-  max-width: 340px;
-  width: 90%;
-  text-align: center;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.login-modal-icon {
-  font-size: 2.2rem;
-  margin-bottom: 10px;
-}
-
-.login-modal-card h3 {
-  color: #fff;
-  margin-bottom: 10px;
-  font-size: 1.3rem;
-  text-align: center;
-}
-
-.login-modal-card p {
-  color: #ccc;
-  font-size: 0.9rem;
-  margin-bottom: 22px;
-  line-height: 1.4;
-}
-
-.login-modal-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.login-modal-primary {
-  padding: 11px;
-  border: none;
-  border-radius: 9px;
-  background: linear-gradient(135deg, #ff6b35, #ff9248);
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.login-modal-secondary {
-  padding: 11px;
-  border: none;
-  border-radius: 9px;
-  background: #333;
-  color: #ccc;
-  cursor: pointer;
-}
-
-.address-input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 15px;
-  outline: none;
-  transition: 0.2s ease;
-  box-sizing: border-box;
-}
-
-.address-input:focus {
-  border-color: #ff6b35;
-  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
-}
-.secondary-btn {
-  margin-top: 10px;
-}
-
-.secondary-btn:hover {
-  background: #ffe5dd;
-}
-/* ================= ADDRESS PAGE ================= */
-
-.address-page {
-  max-width: 1100px;
-  margin: 40px auto;
-  padding: 20px;
-  font-family: "Plus Jakarta Sans", sans-serif;
-}
-
-.page-hero {
-  background: linear-gradient(135deg, #ff7a3d, #e8491d);
-  border-radius: 18px;
-  padding: 30px;
-  margin-bottom: 30px;
-  color: white;
-  border: 1px solid rgba(27, 20, 15, 0.18);
-  box-shadow: 0 10px 25px rgba(27,20,15,0.12);
-}
-
-.page-hero-content {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.menu-icon {
-  font-size: 70px;
-}
-
-.section-title {
-  color: #1b140f;
-  margin-bottom: 18px;
-  font-family: "Baloo 2", sans-serif;
-}
-
-.address-card {
-  background: #fffdf9;
-  padding: 25px;
-  border-radius: 16px;
-  border: 2px solid rgba(27, 20, 75, 0.18);
-  box-shadow:  0 10px 25px rgba(27,20,15,.08);
-  margin-bottom: 30px;
-}
-
-.address-card h3 {
-  margin-top: 0;
-  color: #1b140f;
-}
-
-.primary-btn {
-  width: 100%;
-  background: #e8491d;
-  color: white;
-  border: none;
-  padding: 14px;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: .2s;
-}
-
-.primary-btn:hover {
-  background: #c33a14;
-}
-
-.address-list {
-  display: grid;
-  gap: 20px;
-}
-
-.address-item {
-  background: #fff;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 8px 20px rgba(27,20,15,.08);
-  border-left: 6px solid #e8491d;
-}
-
-.address-item h3 {
-  margin-top: 0;
-  color: #1b140f;
-}
-
-.address-item p {
-  color: #555;
-  margin: 8px 0;
-}
-
-.secondary-btn {
-  margin-top: 12px;
-  background: #fff3ef;
-  color: #e8491d;
-  border: 1px solid #e8491d;
-  padding: 10px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.secondary-btn:hover {
-  background: #e8491d;
-  color: white;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 50px 20px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(27,20,15,.08);
-}
-.page-hero-content {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.brand-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.menu-icon {
-  font-size: 2.5rem;
-}
-
-.brand-name {
-  margin: 0;
-  font-size: 2rem;
-  color: #fff;
-}
-
-.brand-tagline {
-  margin: 0;
-  color: #ffe6d8;
-}
-
-.hero-text h1 {
-  margin: 0;
-}
-
-.hero-text p {
-  margin-top: 8px;
-}
-.brand-title {
-  font-family: "Baloo 2", sans-serif;
-  font-weight: 800;
-  font-size: 2.4rem;
-  color: var(--ink, #1b140f);
-  margin: 0 0 4px;
-  letter-spacing: -0.01em;
-}
-.notification-modal {
-  animation: popupScale 0.2s ease;
-}
-
-.notification-modal h3 {
-  font-family: "Baloo 2", sans-serif;
-}
-
-@keyframes popupScale {
-  from {
-    transform: scale(0.85);
-    opacity: 0;
+  .menu-brand-header {
+    text-align: center;
+    margin-bottom: 32px;
   }
 
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.notification-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-}
-
-.notification-card {
-  width: 360px;
-  background: #fffdf9;
-  border-radius: 18px;
-  padding: 30px;
-  text-align: center;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-  animation: popupScale 0.25s ease;
-  border: 1px solid rgba(232,73,29,0.15);
-}
-
-.notification-icon {
-  font-size: 45px;
-  margin-bottom: 12px;
-}
-
-.notification-card h3 {
-  font-family: "Baloo 2", sans-serif;
-  color: #1b140f;
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-
-.notification-card p {
-  color: #555;
-  font-size: 0.95rem;
-  margin-bottom: 25px;
-}
-
-.notification-btn {
-  background: #e8491d;
-  color: white;
-  border: none;
-  padding: 12px 30px;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.notification-btn:hover {
-  background: #c33a14;
-}
-
-@keyframes popupScale {
-  from {
-    transform: scale(0.8);
-    opacity: 0;
+  .menu-brand-mark {
+    display: block;
+    font-size: 2.6rem;
+    line-height: 1;
+    margin-bottom: 4px;
   }
 
-  to {
-    transform: scale(1);
-    opacity: 1;
+  .menu-brand-name {
+    font-family: "Baloo 2", sans-serif;
+    font-weight: 800;
+    font-size: 2.4rem;
+    color: var(--ink, #1b140f);
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
   }
+
+  .menu-brand-tagline {
+    color: #ff6b35;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0;
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 16px;
+  }
+
+  .menu-card {
+    border: 1px solid rgba(27, 20, 15, 0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    text-align: left;
+    background: var(--cream-2, #fff);
+    box-shadow: 0 6px 18px rgba(27, 20, 15, 0.07);
+    transition:
+      transform 0.15s,
+      box-shadow 0.15s;
+  }
+
+  .menu-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(27, 20, 15, 0.12);
+  }
+
+  .menu-card-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .menu-card-body {
+    padding: 16px 18px 18px;
+  }
+
+  .menu-card-category {
+    display: inline-block;
+    background: rgba(244, 165, 34, 0.15);
+    color: var(--mango-dark, #b5760f);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+
+  .menu-card h3 {
+    margin: 0 0 6px 0;
+    font-family: "Baloo 2", sans-serif;
+    color: var(--ink, #1b140f);
+    font-size: 1.15rem;
+  }
+
+  .menu-card-price {
+    margin: 0 0 12px 0;
+    color: var(--chili-dark, #c33a14);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+
+  /* Add to Cart button inside each card */
+  .menu-card button {
+    margin-top: 12px;
+    width: 100%;
+    background: var(--chili, #e8491d);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    transition:
+      background 0.2s,
+      transform 0.15s;
+  }
+
+  .menu-card button:hover {
+    background: var(--chili-dark, #c33a14);
+    transform: translateY(-1px);
+  }
+
+  /* ---- Cart page ---- */
+  .cart-page {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 24px;
+    background: var(--ink, #1b140f);
+    border-radius: 16px;
+    color: #ffffff;
+    font-family: "Plus Jakarta Sans", sans-serif;
+  }
+
+  .cart-page h2 {
+    font-family: "Baloo 2", sans-serif;
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding-bottom: 10px;
+  }
+
+  .cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .cart-item span:first-child {
+    flex: 1;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .cart-item button {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .cart-item button:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .cart-item button:last-child {
+    width: auto;
+    padding: 6px 12px;
+    background: var(--chili-dark, #c33a14);
+    border-radius: 6px;
+    font-size: 0.85rem;
+  }
+
+  .cart-item button:last-child:hover {
+    background: var(--chili, #e8491d);
+  }
+
+  .cart-page h3 {
+    text-align: right;
+    margin-top: 20px;
+    font-size: 1.3rem;
+    color: var(--mango, #f4a522);
+  }
+  /* ================= CART PAGE ================= */
+
+  .cart-page {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: "Plus Jakarta Sans", sans-serif;
+  }
+
+  .cart-brand-header {
+    text-align: center;
+    margin-bottom: 35px;
+  }
+
+  .cart-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .cart-card {
+    display: flex;
+    gap: 20px;
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(27, 20, 15, 0.08);
+    box-shadow: 0 8px 20px rgba(27, 20, 15, 0.08);
+  }
+
+  .cart-image {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+  }
+
+  .cart-content {
+    flex: 1;
+    padding: 18px;
+  }
+
+  .cart-category {
+    display: inline-block;
+    background: rgba(244, 165, 34, 0.15);
+    color: #b5760f;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .cart-name {
+    margin: 12px 0 6px;
+    font-size: 1.35rem;
+  }
+
+  .cart-price {
+    color: #e8491d;
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+
+  .cart-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .qty-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .qty-box button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: #f6f6f6;
+    color: #1b140f;
+    cursor: pointer;
+    font-size: 18px;
+  }
+
+  .qty-box span {
+    padding: 0 18px;
+    color: #1b140f;
+    font-weight: 700;
+  }
+  .qty-box button:hover {
+    background: #e8491d;
+    color: #ffffff;
+  }
+
+  .remove-btn {
+    background: #c33a14;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .remove-btn:hover {
+    background: #e8491d;
+  }
+
+  .summary-card {
+    margin-top: 30px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 20px rgba(27, 20, 15, 0.08);
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 1.05rem;
+  }
+
+  .summary-total {
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+  }
+
+  .checkout-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    background: #e8491d;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .checkout-btn:hover {
+    background: #c33a14;
+  }
+
+  .empty-cart {
+    text-align: center;
+    padding: 70px 20px;
+  }
+  .cart-page {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: "Plus Jakarta Sans", sans-serif;
+
+    background: #e6633e;
+  }
+  .summary-card {
+    background: #fffdf9;
+    border: 1px solid rgba(232, 73, 29, 0.12);
+  }
+  .cart-brand-header .menu-brand-tagline {
+    color: #ffffff;
+  }
+  .cart-bottom strong {
+    color: #1b140f;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .summary-card {
+    color: #1b140f;
+  }
+  .summary-row span,
+  .summary-row strong {
+    color: #1b140f;
+  }
+
+  .summary-total strong {
+    color: #e8491d;
+    font-size: 24px;
+  }
+
+  .login-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .login-modal-card {
+    background: #1c1c1c;
+    border: 1px solid rgba(255, 107, 53, 0.3);
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 340px;
+    width: 90%;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .login-modal-icon {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+  }
+
+  .login-modal-card h3 {
+    color: #fff;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .login-modal-card p {
+    color: #ccc;
+    font-size: 0.9rem;
+    margin-bottom: 22px;
+    line-height: 1.4;
+  }
+
+  .login-modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .login-modal-primary {
+    padding: 11px;
+    border: none;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #ff6b35, #ff9248);
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .login-modal-secondary {
+    padding: 11px;
+    border: none;
+    border-radius: 9px;
+    background: #333;
+    color: #ccc;
+    cursor: pointer;
+  }
+
+  .address-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  .address-input:focus {
+    border-color: #ff6b35;
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+  }
+  .secondary-btn {
+    margin-top: 10px;
+  }
+
+  .secondary-btn:hover {
+    background: #ffe5dd;
+  }
+  /* ================= ADDRESS PAGE ================= */
+
+  .address-page {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: "Plus Jakarta Sans", sans-serif;
+  }
+
+  .page-hero {
+    background: linear-gradient(135deg, #ff7a3d, #e8491d);
+    border-radius: 18px;
+    padding: 30px;
+    margin-bottom: 30px;
+    color: white;
+    border: 1px solid rgba(27, 20, 15, 0.18);
+    box-shadow: 0 10px 25px rgba(27, 20, 15, 0.12);
+  }
+
+  .page-hero-content {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .menu-icon {
+    font-size: 70px;
+  }
+
+  .section-title {
+    color: #1b140f;
+    margin-bottom: 18px;
+    font-family: "Baloo 2", sans-serif;
+  }
+
+  .address-card {
+    background: #fffdf9;
+    padding: 25px;
+    border-radius: 16px;
+    border: 2px solid rgba(27, 20, 75, 0.18);
+    box-shadow: 0 10px 25px rgba(27, 20, 15, 0.08);
+    margin-bottom: 30px;
+  }
+
+  .address-card h3 {
+    margin-top: 0;
+    color: #1b140f;
+  }
+
+  .primary-btn {
+    width: 100%;
+    background: #e8491d;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .primary-btn:hover {
+    background: #c33a14;
+  }
+
+  .address-list {
+    display: grid;
+    gap: 20px;
+  }
+
+  .address-item {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(27, 20, 15, 0.08);
+    border-left: 6px solid #e8491d;
+  }
+
+  .address-item h3 {
+    margin-top: 0;
+    color: #1b140f;
+  }
+
+  .address-item p {
+    color: #555;
+    margin: 8px 0;
+  }
+
+  .secondary-btn {
+    margin-top: 12px;
+    background: #fff3ef;
+    color: #e8491d;
+    border: 1px solid #e8491d;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .secondary-btn:hover {
+    background: #e8491d;
+    color: white;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(27, 20, 15, 0.08);
+  }
+  .page-hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .brand-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .menu-icon {
+    font-size: 2.5rem;
+  }
+
+  .brand-name {
+    margin: 0;
+    font-size: 2rem;
+    color: #fff;
+  }
+
+  .brand-tagline {
+    margin: 0;
+    color: #ffe6d8;
+  }
+
+  .hero-text h1 {
+    margin: 0;
+  }
+
+  .hero-text p {
+    margin-top: 8px;
+  }
+  .brand-title {
+    font-family: "Baloo 2", sans-serif;
+    font-weight: 800;
+    font-size: 2.4rem;
+    color: var(--ink, #1b140f);
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+  .notification-modal {
+    animation: popupScale 0.2s ease;
+  }
+
+  .notification-modal h3 {
+    font-family: "Baloo 2", sans-serif;
+  }
+
+  @keyframes popupScale {
+    from {
+      transform: scale(0.85);
+      opacity: 0;
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .notification-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+  }
+
+  .notification-card {
+    width: 360px;
+    background: #fffdf9;
+    border-radius: 18px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    animation: popupScale 0.25s ease;
+    border: 1px solid rgba(232, 73, 29, 0.15);
+  }
+
+  .notification-icon {
+    font-size: 45px;
+    margin-bottom: 12px;
+  }
+
+  .notification-card h3 {
+    font-family: "Baloo 2", sans-serif;
+    color: #1b140f;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .notification-card p {
+    color: #555;
+    font-size: 0.95rem;
+    margin-bottom: 25px;
+  }
+
+  .notification-btn {
+    background: #e8491d;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .notification-btn:hover {
+    background: #c33a14;
+  }
+  /* ===== Full Screen App Layout ===== */
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  max-width: none !important;
+}
+
+/* Main application wrapper */
+.app-shell {
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
 }

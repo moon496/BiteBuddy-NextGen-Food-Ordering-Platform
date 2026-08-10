@@ -2,11 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
 import jwt
 
+
 from database import get_db
 from datetime import datetime
 import logging
 
-from model import User
+from model import User, UserCoupon
 from auth_schemas import RegisterRequest, LoginRequest, UserResponse, UpdateUserRequest
 from auth_utils import hash_password, verify_password, create_access_token, decode_access_token
 
@@ -29,11 +30,23 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
         username=payload.username,
         email=payload.email,
         hashed_password=hash_password(payload.password),
-        role="User",
+        role=payload.role,
     )
     db.add(user)
     db.commit()
     db.refresh(user)
+
+    welcome_coupon = UserCoupon(
+        user_id=user.id,
+        code="WELCOME20",
+        discount_type="percent",
+        value=20,
+        max_discount=200,
+        used="false",
+    )
+    db.add(welcome_coupon)
+    db.commit()
+
     return user
 
 
