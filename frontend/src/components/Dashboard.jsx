@@ -1,4 +1,5 @@
 import animation from "../assets/animation.mp4";
+import food from "../assets/food.jpeg";
 function Dashboard({ setView }) {
   const cards = [
     {
@@ -54,9 +55,11 @@ function Dashboard({ setView }) {
   return (
     <div className="dashboard">
       <div className="dashboard-hero">
+        <div className="dashboard-food-image">
+          <img src={food} alt="Delicious food" />
+        </div>
         <div className="dashboard-hero-content">
           <h1>
-            <span className="dashboard-title-icon">🍔</span>
             Welcome to BiteBuddy
           </h1>
           <p>Delicious food, delivered with love.</p>

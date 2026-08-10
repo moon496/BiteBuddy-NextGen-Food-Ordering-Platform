@@ -1041,10 +1041,10 @@ body,
   padding: 30px 45px;
   margin-bottom: 30px;
 
-  display: flex;
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr) 210px;
   align-items: center;
-  justify-content: space-between;
-  gap: 32px;
+  gap: 30px;
 
   box-sizing: border-box;
   overflow: hidden;
@@ -1052,14 +1052,46 @@ body,
   background: #ff8a3d;
   border-radius: 24px;
 }
+/* =========================
+   Circular Food Image
+========================= */
+
+.dashboard-food-image {
+  width: 155px;
+  height: 155px;
+
+  justify-self: center;
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  border: 5px solid #fff4eb;
+  background: #fff4eb;
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.14),
+    0 0 0 4px rgba(255, 255, 255, 0.12);
+}
+
+.dashboard-food-image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.60) translateY(4.5px);
+}
 
 /* =========================
    Welcome Text
 ========================= */
 
 .dashboard-hero-content {
-  flex: 1;
+  width: 100%;
   text-align: center;
+  justify-self: center;
 }
 
 .dashboard-hero-content h1 {
@@ -1071,11 +1103,7 @@ body,
   line-height: 1.1;
 
   color: #000000;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
+  text-align: center;  
 }
 
 .dashboard-title-icon {
@@ -1099,7 +1127,7 @@ body,
 ========================= */
 
 .dashboard-hero-image {
-  flex: 0 0 210px;
+  
   width: 210px;
   height: 270px;
 
