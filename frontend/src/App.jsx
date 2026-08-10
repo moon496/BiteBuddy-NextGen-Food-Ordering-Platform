@@ -18,9 +18,9 @@ import Checkout from "./components/Checkout";
 
 function App() {
   const [view, setView] = useState("dashboard");
+
   const [token, setToken] = useState(() => localStorage.getItem("bitebuddy_token"));
 
-  // localStorage theke token remove hole (logout) ba onno tab e change hole sync rakhar jonno
   useEffect(() => {
     const syncToken = () => setToken(localStorage.getItem("bitebuddy_token"));
     window.addEventListener("storage", syncToken);
@@ -31,20 +31,43 @@ function App() {
     <div className="app-shell">
       <Sidebar view={view} setView={setView} />
 
-      <div className="app-main">
-        <div className="app-content">
-          {view === "dashboard" && <Dashboard setView={setView} />}
-          {view === "menu" && <MenuItems />}
-          {view === "cart" && <CartPage setView={setView} />}
-          {view === "orders" && <OrderStatus />}
-          {view === "account" && <Login setView={setView} token={token} setToken={setToken} />}
-          {view === "payment" && <Payment />}
-          {view === "addresses" && <AddressBook token={token} />}
-          {view === "admin" && <AdminDashboard />}
-          {view === "coupon" && <Coupon />}
-          {view === "reviews" && <Reviews />}
-          {view === "checkout" && <Checkout setView={setView} token={token} />}
-        </div>
+  <div className="app-main">
+    <div className="app-content">
+
+      {view === "dashboard" && <Dashboard setView={setView} />}
+
+      {view === "menu" && <MenuItems setView={setView} />}
+
+      {view === "cart" && <CartPage setView={setView} />}
+
+      {view === "orders" && <OrderStatus />}
+
+      {view === "account" && (
+        <Login
+          setView={setView}
+          token={token}
+          setToken={setToken}
+        />
+      )}
+
+      {view === "payment" && <Payment />}
+
+      {view === "addresses" && <AddressBook token={token} />}
+
+      {view === "admin" && <AdminDashboard />}
+
+      {view === "coupon" && <Coupon />}
+
+      {view === "reviews" && <Reviews />}
+
+      {view === "checkout" && (
+        <Checkout
+          setView={setView}
+          token={token}
+        />
+      )}
+
+    </div>
 
         <Footer />
       </div>

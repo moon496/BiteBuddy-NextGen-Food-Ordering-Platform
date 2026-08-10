@@ -15,7 +15,7 @@ function Footer() {
 
       <div className="footer-section">
         <h4>Contact</h4>
-        <p>support@bitebuddy.example.com</p>
+        <p>admin1@bitebuddy.com</p>
         <a href="https://github.com/moon496/BiteBuddy-NextGen-Food-Ordering-Platform" target="_blank" rel="noopener noreferrer">
           View on GitHub
         </a>
