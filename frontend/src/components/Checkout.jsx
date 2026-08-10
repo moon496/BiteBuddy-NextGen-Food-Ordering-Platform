@@ -120,42 +120,149 @@ function Checkout({ setView, token }) {
   }
 
   if (step === "payment") {
-    return (
-      <div style={{ maxWidth: 420, margin: "40px auto" }}>
-        <h2>Payment</h2>
-        <p>Order #{orderId} — Subtotal: ৳{subtotal}</p>
+  return (
+    <div style={{ maxWidth: 420, margin: "40px auto" }}>
+      <h2>Payment</h2>
 
-        <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
-          <input placeholder="Coupon code" value={couponCode} onChange={(e) => setCouponCode(e.target.value)} />
-          <button onClick={handleApplyCoupon}>Apply</button>
+      <p>
+        Order #{orderId} — Subtotal: ৳{subtotal}
+      </p>
+
+      <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+        <input
+          placeholder="Coupon code"
+          value={couponCode}
+          onChange={(e) => setCouponCode(e.target.value)}
+        />
+        <button onClick={handleApplyCoupon}>Apply</button>
+      </div>
+
+      {couponError && (
+        <p style={{ color: "#c62828", marginTop: 8 }}>
+          {couponError}
+        </p>
+      )}
+
+      <div
+        style={{
+          marginTop: 20,
+          padding: 18,
+          border: "1px solid #e5e7eb",
+          borderRadius: 12,
+          background: "#f9fafb",
+        }}
+      >
+        <h3 style={{ margin: "0 0 14px" }}>Order Summary</h3>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: 8,
+          }}
+        >
+          <span>Subtotal</span>
+          <span>৳{subtotal}</span>
         </div>
-        {couponError && <p style={{ color: "#c62828" }}>{couponError}</p>}
-        {couponResult && <p style={{ color: "#2e7d32" }}>Discount: -৳{couponResult.discount_amount} — New total: ৳{couponResult.total}</p>}
 
-        <select value={method} onChange={(e) => setMethod(e.target.value)}>
-          <option value="cod">Cash on Delivery</option>
-          <option value="bkash">bKash</option>
-          <option value="card">Card</option>
-        </select>
+        {couponResult && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: 8,
+              color: "#2e7d32",
+            }}
+          >
+            <span>Coupon Discount</span>
+            <span>-৳{couponResult.discount_amount}</span>
+          </div>
+        )}
 
-        <p style={{ fontWeight: "bold" }}>Payable: ৳{finalAmount}</p>
-        {error && <p style={{ color: "#c62828" }}>{error}</p>}
-        <button className="checkout-btn" onClick={handlePay}>Confirm & Pay</button>
+        <hr
+          style={{
+            border: 0,
+            borderTop: "1px solid #ddd",
+            margin: "12px 0",
+          }}
+        />
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            fontWeight: "bold",
+            fontSize: 18,
+          }}
+        >
+          <span>Total Payable</span>
+          <span>৳{finalAmount}</span>
+        </div>
+
+        {couponResult && (
+          <p
+            style={{
+              margin: "12px 0 0",
+              color: "#2e7d32",
+              fontSize: 14,
+            }}
+          >
+            🎉 Coupon applied successfully!
+          </p>
+        )}
       </div>
-    );
-  }
 
-  if (step === "confirm") {
-    return (
-      <div style={{ maxWidth: 420, margin: "40px auto", textAlign: "center" }}>
-        <h2>✅ Order Confirmed!</h2>
-        <p>Order #{orderId} — Paid ৳{finalAmount} via {method}</p>
-        <button className="checkout-btn" onClick={() => setView("orders")}>Track Order</button>
-      </div>
-    );
-  }
+      <select
+        value={method}
+        onChange={(e) => setMethod(e.target.value)}
+      >
+        <option value="cod">Cash on Delivery</option>
+        <option value="bkash">bKash</option>
+        <option value="card">Card</option>
+      </select>
 
-  return null;
+      <p style={{ fontWeight: "bold" }}>
+        Payable: ৳{finalAmount}
+      </p>
+
+      {error && (
+        <p style={{ color: "#c62828" }}>
+          {error}
+        </p>
+      )}
+
+      <button className="checkout-btn" onClick={handlePay}>
+        Confirm & Pay
+      </button>
+    </div>
+  );
+}
+if (step === "confirm") {
+  return (
+    <div
+      style={{
+        maxWidth: 420,
+        margin: "40px auto",
+        textAlign: "center",
+      }}
+    >
+      <h2>✅ Order Confirmed!</h2>
+
+      <p>
+        Order #{orderId} — Paid ৳{finalAmount} via {method}
+      </p>
+
+      <button
+        className="checkout-btn"
+        onClick={() => setView("orders")}
+      >
+        Track Order
+      </button>
+    </div>
+  );
+}
+
+return null;
 }
 
 export default Checkout;

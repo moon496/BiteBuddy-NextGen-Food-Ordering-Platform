@@ -13,7 +13,7 @@ function CartPage({ setView }) {
   const [notification, setNotification] = useState(null);
 
   const handleGoToLogin = () => {
-    localStorage.setItem("checkout_redirect", "addresses");
+    localStorage.setItem("checkout_redirect",  "checkout");
     setShowLoginPrompt(false);
     setView("account");
   };
