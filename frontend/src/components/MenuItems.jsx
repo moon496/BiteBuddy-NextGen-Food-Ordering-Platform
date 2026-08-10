@@ -5,11 +5,12 @@ import { getCurrentUserId } from "../utils/auth";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 
-function MenuItems() {
+function MenuItems({ setView }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [message, setMessage] = useState(""); 
+  const [message, setMessage] = useState("");
+  const [cartPopup, setCartPopup] = useState(null); 
   
   useEffect(() => {
     console.log("BASE_URL:", BASE_URL);
@@ -45,8 +46,7 @@ function MenuItems() {
       throw new Error(errData?.detail || `Failed to add item (status ${res.status})`);
     }
 
-    setMessage(`${itemName} added to cart!`);
-    setTimeout(() => setMessage(""), 2000);
+    setCartPopup(itemName);
   } catch (err) {
     console.error("Error adding to cart:", err.message);
     setMessage(err.message || "Failed to add item to cart.");
@@ -79,21 +79,67 @@ function MenuItems() {
           {message}
         </div>
       )}
+      {cartPopup && (
+        <div className="cart-popup-overlay">
+          <div className="cart-popup">
+            <button
+              className="cart-popup-close"
+              onClick={() => setCartPopup(null)}
+            >
+              ×
+            </button>
 
+            <div className="cart-popup-icon">🛒</div>
 
+            <h3>Added to Cart!</h3>
 
+            <p>
+              <strong>{cartPopup}</strong> has been added to your cart.
+            </p>
+
+            <div className="cart-popup-actions">
+              <button
+                className="cart-popup-continue"
+                onClick={() => setCartPopup(null)}
+              >
+                Continue Shopping
+              </button>
+
+              <button
+                className="cart-popup-view"
+                onClick={() => {
+                  setCartPopup(null);
+                  setView("cart");
+                }}
+              >
+                View Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="menu-grid">
         {items.map((item) => (
           <div className="menu-card" key={item.id}>
             {item.image && (
-              <img className="menu-card-img" src={item.image} alt={item.name} />
+              <img
+                className="menu-card-img"
+                src={item.image}
+                alt={item.name}
+              />
             )}
+
             <div className="menu-card-body">
               <span className="menu-card-category">{item.category}</span>
               <h3>{item.name}</h3>
               <p className="menu-card-price">৳{item.price}</p>
-              <button onClick={() => handleAddToCart(item.id, item.name)}>Add to Cart</button>
+
+              <button
+                onClick={() => handleAddToCart(item.id, item.name)}
+              >
+                Add to Cart
+              </button>
             </div>
           </div>
         ))}
