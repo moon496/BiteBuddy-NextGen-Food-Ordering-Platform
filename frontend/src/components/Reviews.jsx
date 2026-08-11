@@ -35,13 +35,29 @@ function Reviews() {
   };
 
   return (
-    <div className="styled-page" style={{ maxWidth: 500, margin: "40px auto", padding: 20 }}>
-      <h2>Ratings & Reviews</h2>
+  <div className="bb-page">
+    <div className="bb-header">
+      <div className="bb-logo">
+        <span className="bb-burger">☰</span>
+        <span>BiteBuddy</span>
+      </div>
+
+      <span className="bb-header-icon">🍔</span>
+    </div>
+
+    <main className="bb-card bb-review-card">
+      <div className="bb-page-heading">
+        <span className="bb-eyebrow">CUSTOMER FEEDBACK</span>
+        <h1>Ratings & Reviews</h1>
+        <p>Share your experience and help others choose their food.</p>
+      </div>
+
+      <label className="bb-label">Choose a menu item</label>
 
       <select
+        className="bb-input"
         value={itemId}
         onChange={(e) => setItemId(Number(e.target.value))}
-        style={{ width: "100%", padding: 10, marginBottom: 16 }}
       >
         {MENU_ITEMS.map((m) => (
           <option key={m.id} value={m.id}>
@@ -51,16 +67,23 @@ function Reviews() {
       </select>
 
       {data && (
-        <p>
-          Average rating: <strong>{data.average_rating} / 5</strong> ({data.count} reviews)
-        </p>
+        <div className="bb-rating-summary">
+          <div className="bb-rating-star">★</div>
+
+          <div>
+            <strong>{data.average_rating} / 5</strong>
+            <span>{data.count} reviews</span>
+          </div>
+        </div>
       )}
 
-      <form onSubmit={handleSubmit} style={{ margin: "16px 0" }}>
+      <form onSubmit={handleSubmit} className="bb-review-form">
+        <label className="bb-label">Your rating</label>
+
         <select
+          className="bb-input"
           value={rating}
           onChange={(e) => setRating(Number(e.target.value))}
-          style={{ marginRight: 8 }}
         >
           {[5, 4, 3, 2, 1].map((r) => (
             <option key={r} value={r}>
@@ -68,27 +91,36 @@ function Reviews() {
             </option>
           ))}
         </select>
+
+        <label className="bb-label">Your comment</label>
+
         <input
+          className="bb-input"
           type="text"
           placeholder="Write a comment..."
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          style={{ width: "60%", padding: 8, marginRight: 8 }}
         />
-        <button type="submit">Submit</button>
+
+        <button type="submit" className="bb-primary-button">
+          Submit Review
+        </button>
       </form>
 
-      {data?.reviews.map((r) => (
-        <div
-          key={r.id}
-          style={{ borderBottom: "1px solid #eee", padding: "8px 0" }}
-        >
-          <strong>{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</strong>
-          <p>{r.comment}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
+      <div className="bb-review-list">
+        {data?.reviews.map((r) => (
+          <div key={r.id} className="bb-review-item">
+            <div className="bb-stars">
+              {"★".repeat(r.rating)}
+              {"☆".repeat(5 - r.rating)}
+            </div>
 
+            <p>{r.comment}</p>
+          </div>
+        ))}
+      </div>
+    </main>
+  </div>
+);
+}
 export default Reviews;

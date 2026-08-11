@@ -64,106 +64,182 @@ function Payment() {
   };
 
   return (
-    <div style={{ maxWidth: 420, margin: "40px auto", padding: 20 }}>
-      <h2>Payment</h2>
-      <p style={{ color: "#888", fontSize: 14 }}>
-        Simulated bKash/card checkout, plus Cash on Delivery.
-      </p>
+  <div className="bb-page">
+    <div className="bb-header">
+      <div className="bb-logo">
+        <span className="bb-burger">☰</span>
+        <span>BiteBuddy</span>
+      </div>
 
-      <input
-        type="text"
-        placeholder="Order ID (e.g. 1001)"
-        value={orderId}
-        onChange={(e) => setOrderId(e.target.value)}
-        style={{ width: "100%", padding: 10, marginBottom: 8 }}
-      />
-      <input
-        type="number"
-        placeholder="Amount"
-        value={subtotal}
-        onChange={(e) => {
-          setSubtotal(e.target.value);
-          setCouponResult(null);
-        }}
-        style={{ width: "100%", padding: 10, marginBottom: 8 }}
-      />
+      <span className="bb-header-icon">🍔</span>
+    </div>
 
-      <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+    <main className="bb-card bb-payment-card">
+      <div className="bb-page-heading">
+        <span className="bb-eyebrow">CHECKOUT</span>
+        <h1>Payment</h1>
+        <p>
+          Simulated bKash/card checkout, plus Cash on Delivery.
+        </p>
+      </div>
+
+      <div className="bb-form-group">
+        <label className="bb-label">Order ID</label>
+
         <input
+          className="bb-input"
+          type="text"
+          placeholder="e.g. 1001"
+          value={orderId}
+          onChange={(e) => setOrderId(e.target.value)}
+        />
+      </div>
+
+      <div className="bb-form-group">
+        <label className="bb-label">Amount</label>
+
+        <input
+          className="bb-input"
+          type="number"
+          placeholder="Enter amount"
+          value={subtotal}
+          onChange={(e) => {
+            setSubtotal(e.target.value);
+            setCouponResult(null);
+          }}
+        />
+      </div>
+
+      <div className="bb-coupon-row">
+        <input
+          className="bb-input"
           type="text"
           placeholder="Coupon code"
           value={couponCode}
           onChange={(e) => setCouponCode(e.target.value)}
-          style={{ flex: 1, padding: 10 }}
         />
-        <button onClick={handleApplyCoupon} style={{ padding: "10px 14px" }}>
+
+        <button
+          onClick={handleApplyCoupon}
+          className="bb-secondary-button"
+        >
           Apply
         </button>
       </div>
-      {couponError && <p style={{ color: "#c62828", fontSize: 13 }}>{couponError}</p>}
-      {couponResult && (
-        <div style={{ fontSize: 14, marginBottom: 8, color: "#2e7d32" }}>
-          Coupon applied: -৳{couponResult.discount_amount} &nbsp;
-          <strong>New total: ৳{couponResult.total}</strong>
+
+      {couponError && (
+        <div className="bb-message bb-error">
+          {couponError}
         </div>
       )}
 
-      <select
-        value={method}
-        onChange={(e) => setMethod(e.target.value)}
-        style={{ width: "100%", padding: 10, marginBottom: 8 }}
+      {couponResult && (
+        <div className="bb-payment-discount">
+          <span>Coupon applied</span>
+
+          <strong>
+            -৳{couponResult.discount_amount}
+          </strong>
+
+          <small>
+            New total: ৳{couponResult.total}
+          </small>
+        </div>
+      )}
+
+      <div className="bb-form-group">
+        <label className="bb-label">Payment method</label>
+
+        <select
+          className="bb-input"
+          value={method}
+          onChange={(e) => setMethod(e.target.value)}
+        >
+          <option value="bkash">bKash</option>
+          <option value="card">Card</option>
+          <option value="cod">Cash on Delivery</option>
+        </select>
+      </div>
+
+      <div className="bb-payable-box">
+        <span>Payable amount</span>
+        <strong>৳{finalAmount || 0}</strong>
+      </div>
+
+      <button
+        onClick={handleInitiate}
+        className="bb-primary-button bb-pay-button"
       >
-        <option value="bkash">bKash</option>
-        <option value="card">Card</option>
-        <option value="cod">Cash on Delivery</option>
-      </select>
-
-      <p style={{ fontWeight: "bold" }}>Payable: ৳{finalAmount || 0}</p>
-
-      <button onClick={handleInitiate} style={{ padding: "10px 18px" }}>
-        {method === "cod" ? "Place Order (Pay on Delivery)" : "Start Payment"}
+        {method === "cod"
+          ? "Place Order (Pay on Delivery)"
+          : "Start Payment"}
       </button>
 
-      {error && <p style={{ color: "#c62828" }}>{error}</p>}
+      {error && (
+        <div className="bb-message bb-error">
+          {error}
+        </div>
+      )}
 
       {payment && (
-        <div style={{ maxWidth: 420, margin: "40px auto", padding: 20 }}>
-          <p>Payment ID: {payment.payment_id}</p>
-          <p>
-            Amount: ৳{payment.amount} via {payment.method}
-          </p>
-          <p>
-            Status:{" "}
+        <div className="bb-payment-result">
+          <div className="bb-result-heading">
+            <span className="bb-eyebrow">PAYMENT STATUS</span>
+            <h3>Payment Details</h3>
+          </div>
+
+          <div className="bb-payment-detail">
+            <span>Payment ID</span>
+            <strong>{payment.payment_id}</strong>
+          </div>
+
+          <div className="bb-payment-detail">
+            <span>Amount</span>
+            <strong>
+              ৳{payment.amount} via {payment.method}
+            </strong>
+          </div>
+
+          <div className="bb-payment-detail">
+            <span>Status</span>
+
             <strong
-              style={{
-                color:
-                  payment.status === "paid"
-                    ? "#2e7d32"
-                    : payment.status === "failed"
-                    ? "#c62828"
-                    : "#ff6b35",
-              }}
+              className={`bb-status bb-status-${payment.status}`}
             >
               {payment.status}
             </strong>
-          </p>
+          </div>
 
-          {payment.status === "pending" && method !== "cod" && (
-            <div style={{ marginTop: 10 }}>
-              <button onClick={() => handleConfirm("success")} style={{ marginRight: 8 }}>
-                Simulate Success
-              </button>
-              <button onClick={() => handleConfirm("failure")}>Simulate Failure</button>
-              <br />
-              <button onClick={() => handleConfirm(null)} style={{ marginTop: 8 }}>
-                Random Gateway Result
-              </button>
-            </div>
-          )}
+          {payment.status === "pending" &&
+            method !== "cod" && (
+              <div className="bb-payment-actions">
+                <button
+                  onClick={() => handleConfirm("success")}
+                  className="bb-success-button"
+                >
+                  Simulate Success
+                </button>
+
+                <button
+                  onClick={() => handleConfirm("failure")}
+                  className="bb-danger-button"
+                >
+                  Simulate Failure
+                </button>
+
+                <button
+                  onClick={() => handleConfirm(null)}
+                  className="bb-outline-button"
+                >
+                  Random Gateway Result
+                </button>
+              </div>
+            )}
         </div>
       )}
-    </div>
-  );
+    </main>
+  </div>
+);
 }
 
 export default Payment;

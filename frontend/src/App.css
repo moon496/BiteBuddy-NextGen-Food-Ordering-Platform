@@ -1273,3 +1273,2196 @@ body,
   font-weight: bold;
   cursor: pointer;
 }
+
+@media (max-width: 550px) {
+  .admin-revenue-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* =========================================================
+   ADMIN DASHBOARD - MODERN BITEBUDDY STYLE
+   ========================================================= */
+
+.admin-brand {
+  text-align: center;
+  margin: 10px auto 26px;
+}
+
+.admin-brand-logo {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: #111;
+}
+
+.admin-brand-logo span {
+  font-size: 30px;
+  margin-left: 5px;
+}
+
+.admin-brand p {
+  margin: 5px 0 0;
+  font-size: 13px;
+  color: #8a6f66;
+  font-weight: 600;
+}
+
+
+/* Admin profile banner */
+
+.admin-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 26px 32px;
+  margin-bottom: 28px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #ff8a3d, #ff9d52);
+  box-shadow: 0 10px 28px rgba(190, 100, 45, 0.16);
+}
+
+.admin-profile-info {
+  min-width: 0;
+}
+
+.admin-profile-label {
+  display: inline-block;
+  margin-bottom: 5px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.admin-profile-info h1 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 900;
+  color: #111;
+}
+
+.admin-profile-info p {
+  margin: 3px 0 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.admin-profile-badge {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 15px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  backdrop-filter: blur(5px);
+}
+
+.admin-profile-badge > span {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff;
+  font-size: 19px;
+}
+
+.admin-profile-badge strong {
+  display: block;
+  font-size: 13px;
+}
+
+.admin-profile-badge small {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+
+/* Dashboard heading */
+
+.admin-dashboard-title {
+  text-align: center;
+  margin: 10px 0 30px;
+}
+
+.admin-dashboard-title h2 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 900;
+  color: #111;
+}
+
+.admin-dashboard-title p {
+  margin-top: 7px;
+  color: #806b64;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+
+/* Revenue cards */
+
+.admin-revenue-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 38px;
+}
+
+.admin-stat-card {
+  min-height: 126px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid rgba(225, 211, 204, 0.65);
+  box-shadow: 0 8px 24px rgba(90, 60, 45, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(90, 60, 45, 0.12);
+}
+
+.admin-stat-icon {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: #fff0e6;
+  font-size: 27px;
+}
+
+.admin-stat-card p {
+  margin: 0 0 4px;
+  color: #806b64;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.admin-stat-card h3 {
+  margin: 0;
+  color: #111;
+  font-size: 25px;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   ADMIN MANAGEMENT
+   ========================================================= */
+
+.admin-section-heading {
+  margin: 42px 0 22px;
+  text-align: center;
+}
+
+.admin-section-heading span,
+.current-admins-header span {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #ff7b32;
+}
+
+.admin-section-heading h2 {
+  margin: 5px 0 4px;
+  font-size: 28px;
+  font-weight: 900;
+  color: #111;
+}
+
+.admin-section-heading p {
+  margin: 0;
+  color: #806b64;
+  font-size: 13px;
+}
+
+
+/* Add admin card */
+
+.admin-management-form {
+  max-width: 760px;
+  margin: 0 auto 35px;
+  padding: 25px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid #eadfd9;
+  box-shadow: 0 8px 25px rgba(90, 60, 45, 0.07);
+}
+
+.admin-form-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.admin-form-icon {
+  width: 43px;
+  height: 43px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  background: #fff0e6;
+  font-size: 19px;
+}
+
+.admin-form-title h3 {
+  margin: 0;
+  color: #111;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.admin-form-title p {
+  margin: 3px 0 0;
+  color: #8b7770;
+  font-size: 12px;
+}
+
+.admin-form-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.admin-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-input-group label {
+  font-size: 12px;
+  font-weight: 800;
+  color: #65544d;
+}
+
+.admin-input-group input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 13px;
+  border: 1px solid #dfd3cc;
+  border-radius: 10px;
+  outline: none;
+  background: #fffaf7;
+  color: #302722;
+  font-size: 13px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.admin-input-group input:focus {
+  border-color: #ff8a3d;
+  box-shadow: 0 0 0 3px rgba(255, 138, 61, 0.12);
+}
+
+.admin-add-button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px;
+  border: none;
+  border-radius: 11px;
+  background: #ff8338;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.admin-add-button:hover {
+  background: #f57429;
+  transform: translateY(-1px);
+}
+
+.admin-add-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.admin-form-error,
+.admin-form-success {
+  margin: 12px 0 0;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.admin-form-error {
+  color: #c62828;
+}
+
+.admin-form-success {
+  color: #2e8b57;
+}
+
+
+/* Current admins */
+
+.current-admins-header {
+  max-width: 760px;
+  margin: 0 auto 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.current-admins-header h3 {
+  margin: 4px 0 0;
+  font-size: 21px;
+  font-weight: 900;
+  color: #111;
+}
+
+.admin-count {
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #fff0e6;
+  color: #d96522;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+
+/* Admin table */
+
+.admin-management-table {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid #eadfd9;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 7px 22px rgba(90, 60, 45, 0.06);
+}
+
+.admin-management-table th {
+  padding: 14px 16px;
+  background: #fff6f0;
+  color: #806b64;
+  font-size: 12px;
+  font-weight: 900;
+  text-align: left;
+}
+
+.admin-management-table td {
+  padding: 15px 16px;
+  border-top: 1px solid #eee4df;
+  color: #65544d;
+  font-size: 13px;
+}
+
+.admin-management-table tr:hover td {
+  background: #fffaf7;
+}
+
+.admin-management-table button {
+  padding: 7px 13px;
+  border: 1px solid #e1c7bb;
+  border-radius: 8px;
+  background: #fff;
+  color: #b33b2e;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-management-table button:hover {
+  background: #fff0ed;
+}
+
+
+/* Responsive */
+
+@media (max-width: 850px) {
+  .admin-revenue-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-form-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-dashboard-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 550px) {
+  .admin-revenue-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-profile-info h1 {
+    font-size: 28px;
+  }
+
+  .admin-dashboard-title h2 {
+    font-size: 26px;
+  }
+
+  .admin-management-form {
+    padding: 18px;
+  }
+}
+/* =========================================================
+   CURRENT ADMINS + BANNED USERS
+   Only styles these sections
+   ========================================================= */
+
+/* Current Admins section */
+.current-admins-header {
+  max-width: 1075px;
+  margin: 35px auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.current-admins-header span {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #ff6b35;
+}
+
+.current-admins-header h3 {
+  margin: 4px 0 0;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 25px;
+  font-weight: 800;
+  color: #1b140f;
+}
+
+/* Admin count */
+.admin-count {
+  padding: 10px 18px;
+  border-radius: 30px;
+  background: #fff8f2;
+  color: #ff6b35;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 3px 12px rgba(90, 60, 45, 0.05);
+}
+
+/* Admin table */
+.admin-management-table {
+  width: 100%;
+  max-width: 1075px;
+  margin: 0 auto;
+
+  border-collapse: separate;
+  border-spacing: 0;
+
+  background: #fffaf7;
+  border: 1px solid #eadfd9;
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  box-shadow: 0 6px 20px rgba(90, 60, 45, 0.05);
+}
+
+.admin-management-table th {
+  padding: 14px 16px;
+
+  background: #fff4ec;
+  color: #6f5b72;
+
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+
+  text-align: left;
+}
+
+.admin-management-table td {
+  padding: 15px 16px;
+
+  border-top: 1px solid #eee4df;
+
+  color: #695b75;
+
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 14px;
+}
+
+.admin-management-table tr:hover td {
+  background: #fff7f1;
+}
+
+/* Remove / Unban buttons */
+.admin-management-table button {
+  padding: 7px 14px;
+
+  border: 1px solid #e5d3ca;
+  border-radius: 8px;
+
+  background: #fff;
+  color: #b94a3a;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.admin-management-table button:hover {
+  background: #fff0eb;
+  border-color: #e5b8aa;
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   BANNED USERS SECTION
+   ========================================================= */
+
+/* The horizontal divider before Banned Users */
+.admin-management-table + hr,
+.current-admins-header + .admin-management-table + hr {
+  max-width: 1075px;
+  margin: 42px auto 45px;
+  border: none;
+  border-top: 1px solid #dfd2cb;
+}
+
+
+/* Banned users heading */
+.admin-section-heading {
+  max-width: 1075px;
+  margin: 0 auto 20px;
+  text-align: center;
+}
+
+.admin-section-heading span {
+  display: none;
+}
+
+.admin-section-heading h2 {
+  margin: 0;
+
+  font-family: "Baloo 2", sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+
+  color: #1b140f;
+}
+
+.admin-section-heading p {
+  margin: 5px 0 0;
+
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 13px;
+
+  color: #8a7670;
+}
+
+
+/* Banned users table */
+.admin-banned-table,
+.banned-users-table {
+  width: 100%;
+  max-width: 1075px;
+  margin: 0 auto;
+
+  border-collapse: separate;
+  border-spacing: 0;
+
+  background: #fffaf7;
+
+  border: 1px solid #eadfd9;
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  box-shadow: 0 6px 20px rgba(90, 60, 45, 0.05);
+}
+
+.admin-banned-table th,
+.banned-users-table th {
+  padding: 14px 16px;
+
+  background: #fff4ec;
+  color: #6f5b72;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-align: left;
+}
+
+.admin-banned-table td,
+.banned-users-table td {
+  padding: 14px 16px;
+
+  border-top: 1px solid #eee4df;
+
+  color: #695b75;
+
+  font-size: 14px;
+}
+
+.admin-banned-table tr:hover td,
+.banned-users-table tr:hover td {
+  background: #fff7f1;
+}
+
+
+/* Unban button */
+.admin-banned-table button,
+.banned-users-table button {
+  padding: 7px 14px;
+
+  border: 1px solid #e2c9bd;
+  border-radius: 8px;
+
+  background: #fff;
+  color: #b94a3a;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.admin-banned-table button:hover,
+.banned-users-table button:hover {
+  background: #fff0eb;
+  border-color: #e5b8aa;
+  transform: translateY(-1px);
+}
+
+
+/* Responsive */
+@media (max-width: 700px) {
+  .current-admins-header {
+    padding: 0 15px;
+  }
+
+  .admin-management-table,
+  .admin-banned-table,
+  .banned-users-table {
+    width: calc(100% - 30px);
+    overflow-x: auto;
+    display: table;
+  }
+
+  .current-admins-header h3 {
+    font-size: 21px;
+  }
+
+  .admin-section-heading h2 {
+    font-size: 24px;
+  }
+}
+/* =========================================================
+   BITEBUDDY ADMIN
+   CURRENT ADMINS + BANNED USERS
+   FINAL UI OVERRIDE
+   ONLY THESE SECTIONS
+========================================================= */
+
+/* ---------- CURRENT ADMINS HEADER ---------- */
+
+.current-admins-header {
+  width: calc(100% - 40px) !important;
+  max-width: 1075px !important;
+  margin: 42px auto 18px !important;
+
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: space-between !important;
+
+  padding: 0 4px !important;
+  box-sizing: border-box !important;
+}
+
+.current-admins-header span {
+  display: block !important;
+  margin-bottom: 5px !important;
+
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: 1.8px !important;
+  text-transform: uppercase !important;
+
+  color: #ff6b35 !important;
+}
+
+.current-admins-header h3 {
+  margin: 0 !important;
+
+  font-family: "Baloo 2", sans-serif !important;
+  font-size: 29px !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+
+  color: #1b140f !important;
+}
+
+/* ---------- ADMIN COUNT ---------- */
+
+.current-admins-header .admin-count,
+.admin-count {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  min-width: 78px !important;
+  height: 42px !important;
+  padding: 0 18px !important;
+  box-sizing: border-box !important;
+
+  border-radius: 999px !important;
+
+  background: linear-gradient(
+    135deg,
+    #fff1e7,
+    #fff8f3
+  ) !important;
+
+  border: 1px solid rgba(255, 107, 53, 0.15) !important;
+
+  color: #e85d28 !important;
+
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+
+  box-shadow: 0 5px 16px rgba(90, 60, 45, 0.06) !important;
+}
+
+
+/* =========================================================
+   CURRENT ADMINS TABLE
+========================================================= */
+
+.admin-management-table {
+  width: calc(100% - 40px) !important;
+  max-width: 1075px !important;
+  margin: 0 auto !important;
+
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+
+  background: #ffffff !important;
+
+  border: 1px solid #eadfd9 !important;
+  border-radius: 18px !important;
+
+  overflow: hidden !important;
+
+  box-shadow:
+    0 8px 25px rgba(64, 43, 32, 0.07) !important;
+}
+
+/* table header */
+
+.admin-management-table th {
+  padding: 17px 22px !important;
+
+  background: linear-gradient(
+    135deg,
+    #fff4ec,
+    #fff9f6
+  ) !important;
+
+  border: none !important;
+
+  color: #6b596f !important;
+
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+
+  text-align: left !important;
+}
+
+/* first header */
+
+.admin-management-table th:first-child {
+  border-top-left-radius: 18px !important;
+}
+
+/* last header */
+
+.admin-management-table th:last-child {
+  border-top-right-radius: 18px !important;
+}
+
+
+/* table cells */
+
+.admin-management-table td {
+  padding: 17px 22px !important;
+
+  background: #ffffff !important;
+
+  border-top: 1px solid #f0e7e2 !important;
+
+  color: #66576f !important;
+
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease !important;
+}
+
+
+/* row hover */
+
+.admin-management-table tbody tr:hover td {
+  background: #fffaf7 !important;
+}
+
+
+/* username */
+
+.admin-management-table td:first-child {
+  color: #332923 !important;
+  font-weight: 700 !important;
+}
+
+
+/* email */
+
+.admin-management-table td:nth-child(2) {
+  color: #766875 !important;
+}
+
+
+/* ---------- REMOVE BUTTON ---------- */
+
+.admin-management-table button {
+  padding: 8px 16px !important;
+
+  border: 1px solid #f0c9bd !important;
+  border-radius: 9px !important;
+
+  background: #fff7f4 !important;
+  color: #c24d39 !important;
+
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+
+  cursor: pointer !important;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease !important;
+}
+
+.admin-management-table button:hover {
+  background: #ffe9e2 !important;
+  border-color: #e9a998 !important;
+  color: #a93726 !important;
+  transform: translateY(-1px) !important;
+}
+
+
+/* =========================================================
+   DIVIDER BEFORE BANNED USERS
+========================================================= */
+
+.current-admins-header
+  + .admin-management-table
+  + hr,
+.admin-management-table + hr {
+  width: calc(100% - 40px) !important;
+  max-width: 1075px !important;
+
+  margin: 48px auto 42px !important;
+
+  border: none !important;
+  border-top: 1px solid #dfd2cb !important;
+}
+
+
+/* =========================================================
+   BANNED USERS HEADING
+========================================================= */
+
+.admin-section-heading {
+  width: calc(100% - 40px) !important;
+  max-width: 1075px !important;
+
+  margin: 0 auto 20px !important;
+
+  padding: 0 !important;
+
+  text-align: center !important;
+}
+
+.admin-section-heading span {
+  display: none !important;
+}
+
+.admin-section-heading h2 {
+  margin: 0 !important;
+
+  font-family: "Baloo 2", sans-serif !important;
+  font-size: 30px !important;
+  font-weight: 800 !important;
+
+  color: #1b140f !important;
+}
+
+.admin-section-heading p {
+  margin: 6px 0 0 !important;
+
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+
+  color: #8a7670 !important;
+}
+
+
+/* =========================================================
+   BANNED USERS TABLE
+========================================================= */
+
+.admin-banned-table,
+.banned-users-table {
+  width: calc(100% - 40px) !important;
+  max-width: 1075px !important;
+  margin: 0 auto !important;
+
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+
+  background: #ffffff !important;
+
+  border: 1px solid #eadfd9 !important;
+  border-radius: 18px !important;
+
+  overflow: hidden !important;
+
+  box-shadow:
+    0 8px 25px rgba(64, 43, 32, 0.07) !important;
+}
+
+
+/* banned table header */
+
+.admin-banned-table th,
+.banned-users-table th {
+  padding: 17px 22px !important;
+
+  background: linear-gradient(
+    135deg,
+    #fff1eb,
+    #fff8f5
+  ) !important;
+
+  border: none !important;
+
+  color: #6b596f !important;
+
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+
+  text-align: left !important;
+}
+
+
+/* banned table cells */
+
+.admin-banned-table td,
+.banned-users-table td {
+  padding: 16px 22px !important;
+
+  background: #ffffff !important;
+
+  border-top: 1px solid #f0e7e2 !important;
+
+  color: #66576f !important;
+
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+
+/* username */
+
+.admin-banned-table td:first-child,
+.banned-users-table td:first-child {
+  color: #332923 !important;
+  font-weight: 700 !important;
+}
+
+
+/* failed deliveries number */
+
+.admin-banned-table td:nth-child(3),
+.banned-users-table td:nth-child(3) {
+  color: #d9573d !important;
+  font-weight: 800 !important;
+}
+
+
+/* hover */
+
+.admin-banned-table tbody tr:hover td,
+.banned-users-table tbody tr:hover td {
+  background: #fffaf7 !important;
+}
+
+
+/* =========================================================
+   UNBAN BUTTON
+========================================================= */
+
+.admin-banned-table button,
+.banned-users-table button {
+  padding: 8px 17px !important;
+
+  border: 1px solid #f0c9bd !important;
+  border-radius: 9px !important;
+
+  background: #fff7f4 !important;
+  color: #c24d39 !important;
+
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+
+  cursor: pointer !important;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease !important;
+}
+
+.admin-banned-table button:hover,
+.banned-users-table button:hover {
+  background: #ffe8e0 !important;
+  border-color: #e8a796 !important;
+  transform: translateY(-1px) !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .current-admins-header {
+    width: calc(100% - 30px) !important;
+    align-items: flex-start !important;
+    gap: 15px !important;
+  }
+
+  .current-admins-header h3 {
+    font-size: 24px !important;
+  }
+
+  .admin-management-table,
+  .admin-banned-table,
+  .banned-users-table {
+    width: calc(100% - 30px) !important;
+    font-size: 13px !important;
+  }
+
+  .admin-management-table th,
+  .admin-management-table td,
+  .admin-banned-table th,
+  .admin-banned-table td,
+  .banned-users-table th,
+  .banned-users-table td {
+    padding: 13px 12px !important;
+  }
+
+  .admin-section-heading {
+    width: calc(100% - 30px) !important;
+  }
+
+  .admin-section-heading h2 {
+    font-size: 25px !important;
+  }
+}
+/* =====================================================
+   BITEBUDDY - ADMIN LIST & BANNED USERS
+   FINAL CLEAN STYLE
+   ===================================================== */
+
+.admin-list-section,
+.banned-section {
+  width: 100%;
+  max-width: 1075px;
+  margin: 0 auto;
+}
+
+/* ---------- Section header ---------- */
+
+.admin-section-header,
+.banned-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.admin-section-label {
+  display: block;
+  margin-bottom: 5px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: #ff6b35;
+}
+
+.admin-section-header h2,
+.banned-header h2 {
+  margin: 0;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: #1b140f;
+}
+
+/* ---------- Admin count ---------- */
+
+.admin-count {
+  padding: 9px 17px;
+  border-radius: 999px;
+  background: #fff4ec;
+  border: 1px solid #f4d8c9;
+  color: #e85d28;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* ---------- Table card ---------- */
+
+.admin-table-card {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #eadfd9;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(60, 40, 30, 0.07);
+}
+
+/* ---------- Table header ---------- */
+
+.admin-table-head {
+  display: grid;
+  align-items: center;
+  padding: 15px 22px;
+  background: #fff5ef;
+  color: #6b596f;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* ---------- Table rows ---------- */
+
+.admin-table-row {
+  display: grid;
+  align-items: center;
+  padding: 16px 22px;
+  border-top: 1px solid #f0e7e2;
+  color: #66576f;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.admin-table-row:hover {
+  background: #fffaf7;
+}
+
+/* ---------- Admin action button ---------- */
+
+.admin-remove-btn,
+.admin-unban-btn {
+  padding: 8px 15px;
+  border: 1px solid #f0c9bd;
+  border-radius: 9px;
+  background: #fff7f4;
+  color: #c24d39;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.admin-remove-btn:hover,
+.admin-unban-btn:hover {
+  background: #ffe8e0;
+  border-color: #e5a99a;
+  transform: translateY(-1px);
+}
+
+/* ---------- Banned section ---------- */
+
+.banned-section {
+  margin-top: 48px;
+  padding-top: 38px;
+  border-top: 1px solid #dfd2cb;
+}
+
+.banned-header {
+  display: block;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.banned-header .admin-section-label {
+  display: none;
+}
+
+.banned-header h2 {
+  font-size: 28px;
+}
+
+.banned-subtitle {
+  margin: 3px 0 5px;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ff6b35;
+}
+
+.banned-subtitle + p,
+.banned-header p {
+  margin: 0;
+  color: #8a7670;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 13px;
+}
+
+/* ---------- Banned table ---------- */
+
+.banned-table-card {
+  margin-top: 20px;
+}
+
+.banned-table-head,
+.banned-table-row {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr 1fr 120px;
+  align-items: center;
+}
+
+.banned-table-head {
+  padding: 15px 22px;
+  background: #fff5ef;
+  color: #6b596f;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.banned-table-row {
+  padding: 16px 22px;
+  border-top: 1px solid #f0e7e2;
+  color: #66576f;
+  font-size: 14px;
+}
+
+.banned-table-row:hover {
+  background: #fffaf7;
+}
+
+/* ---------- Failed deliveries ---------- */
+
+.failed-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fff0eb;
+  color: #d9573d;
+  font-weight: 800;
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 700px) {
+  .admin-list-section,
+  .banned-section {
+    width: calc(100% - 30px);
+  }
+
+  .admin-section-header {
+    align-items: flex-start;
+  }
+
+  .admin-section-header h2,
+  .banned-header h2 {
+    font-size: 24px;
+  }
+
+  .admin-table-head,
+  .admin-table-row,
+  .banned-table-head,
+  .banned-table-row {
+    padding: 13px 12px;
+    font-size: 12px;
+  }
+
+  .banned-table-head,
+  .banned-table-row {
+    grid-template-columns: 1fr 1.4fr 70px 80px;
+  }
+}
+/* ================================
+   CURRENT ADMINS
+================================ */
+
+.current-admins-table-wrapper {
+  width: 100%;
+  margin-top: 18px;
+  overflow-x: auto;
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.current-admins-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.current-admins-table thead {
+  background: #fff7ed;
+}
+
+.current-admins-table th {
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #f0e6dc;
+}
+
+.current-admins-table td {
+  padding: 15px 18px;
+  color: #444;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.current-admins-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.current-admins-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.current-admins-table tbody tr:hover {
+  background: #fffaf5;
+}
+
+/* Admin username */
+
+.admin-user-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-user-cell strong {
+  color: #333;
+  font-size: 14px;
+}
+
+.admin-user-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--accent-bg, #fff1e6);
+  color: var(--accent, #f97316);
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Email */
+
+.current-admins-table td:nth-child(2) {
+  color: #777;
+}
+
+/* Remove button */
+
+.admin-remove-button {
+  border: 1px solid #f3c6c6;
+  background: #fff5f5;
+  color: #c62828;
+
+  padding: 7px 14px;
+  border-radius: 7px;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-remove-button:hover {
+  background: #c62828;
+  color: #ffffff;
+  border-color: #c62828;
+  transform: translateY(-1px);
+}
+
+.admin-remove-button:active {
+  transform: translateY(0);
+}
+/* Remove Admin confirmation popup */
+
+.admin-remove-popup {
+  max-width: 430px;
+  padding: 34px 32px 30px;
+  border: 1px solid rgba(220, 38, 38, 0.18);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.admin-remove-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff1f2;
+  color: #dc2626;
+  font-size: 26px;
+}
+
+.admin-remove-popup h3 {
+  margin: 0 0 10px;
+  color: #222;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.admin-remove-popup p {
+  margin: 0 auto 26px;
+  max-width: 350px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.admin-popup-remove {
+  border: none;
+  border-radius: 9px;
+  padding: 11px 20px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-popup-remove:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.admin-popup-cancel {
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+  padding: 10px 20px;
+  background: #fff;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-popup-cancel:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+/* =========================================================
+   BiteBuddy Theme - Reviews / Coupons / Payment
+   ========================================================= */
+
+.bb-page {
+  min-height: 100vh;
+  width: 100%;
+  padding: 28px 20px 60px;
+  box-sizing: border-box;
+  background: #fffaf6;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: #222;
+}
+
+/* ---------- Header ---------- */
+
+.bb-header {
+  max-width: 1050px;
+  margin: 0 auto 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 4px;
+}
+
+.bb-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #222;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.bb-burger {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #ff6b35;
+  color: white;
+  font-size: 21px;
+  line-height: 1;
+}
+
+.bb-header-icon {
+  font-size: 28px;
+}
+
+/* ---------- Main Card ---------- */
+
+.bb-card {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 34px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #f1e4db;
+  border-radius: 22px;
+  box-shadow: 0 10px 35px rgba(70, 42, 25, 0.08);
+}
+
+.bb-payment-card {
+  max-width: 560px;
+}
+
+.bb-review-card {
+  max-width: 560px;
+}
+
+.bb-coupon-card {
+  max-width: 560px;
+}
+
+/* ---------- Headings ---------- */
+
+.bb-page-heading {
+  margin-bottom: 26px;
+}
+
+.bb-page-heading h1 {
+  margin: 4px 0 6px;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 32px;
+  line-height: 1.1;
+  color: #222;
+}
+
+.bb-page-heading h2 {
+  margin: 4px 0 6px;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 25px;
+  color: #222;
+}
+
+.bb-page-heading p {
+  margin: 0;
+  color: #777;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.bb-eyebrow {
+  display: inline-block;
+  color: #ff6b35;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.bb-small-heading {
+  margin-bottom: 20px;
+}
+
+/* ---------- Labels / Inputs ---------- */
+
+.bb-form-group {
+  margin-bottom: 17px;
+}
+
+.bb-label {
+  display: block;
+  margin-bottom: 7px;
+  color: #333;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bb-input {
+  width: 100%;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 11px 13px;
+  border: 1px solid #ded5cf;
+  border-radius: 10px;
+  background: #fff;
+  color: #222;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.bb-input:focus {
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.12);
+}
+
+.bb-input::placeholder {
+  color: #aaa;
+}
+
+/* ---------- Buttons ---------- */
+
+.bb-primary-button {
+  width: 100%;
+  min-height: 45px;
+  border: none;
+  border-radius: 11px;
+  padding: 11px 18px;
+  background: #ff6b35;
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 6px 16px rgba(255, 107, 53, 0.2);
+}
+
+.bb-primary-button:hover {
+  background: #e85b2a;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(255, 107, 53, 0.28);
+}
+
+.bb-secondary-button {
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 1px solid #ff6b35;
+  border-radius: 10px;
+  background: #fff6f0;
+  color: #e85b2a;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.bb-secondary-button:hover {
+  background: #ff6b35;
+  color: #fff;
+}
+
+/* ---------- Reviews ---------- */
+
+.bb-rating-summary {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 20px 0;
+  padding: 16px;
+  border-radius: 14px;
+  background: #fff6ef;
+  border: 1px solid #f8dfd0;
+}
+
+.bb-rating-star {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #ff6b35;
+  color: #fff;
+  font-size: 23px;
+}
+
+.bb-rating-summary strong {
+  display: block;
+  color: #222;
+  font-size: 17px;
+}
+
+.bb-rating-summary span {
+  display: block;
+  margin-top: 2px;
+  color: #888;
+  font-size: 12px;
+}
+
+.bb-review-form {
+  margin-top: 22px;
+}
+
+.bb-review-form .bb-input {
+  margin-bottom: 14px;
+}
+
+.bb-review-list {
+  margin-top: 28px;
+}
+
+.bb-review-item {
+  padding: 16px 0;
+  border-bottom: 1px solid #eee4de;
+}
+
+.bb-review-item:last-child {
+  border-bottom: none;
+}
+
+.bb-stars {
+  color: #ff6b35;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+.bb-review-item p {
+  margin: 8px 0 0;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ---------- Coupons ---------- */
+
+.bb-coupon-list {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin-bottom: 24px;
+}
+
+.bb-coupon-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 16px;
+  border: 1px dashed #ff6b35;
+  border-radius: 13px;
+  background: #fff8f3;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.bb-coupon-item:hover {
+  transform: translateY(-2px);
+  background: #fff1e7;
+  box-shadow: 0 5px 16px rgba(255, 107, 53, 0.1);
+}
+
+.bb-coupon-main strong {
+  display: block;
+  color: #e85b2a;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
+.bb-coupon-main span {
+  display: block;
+  margin-top: 4px;
+  color: #333;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.bb-coupon-main small {
+  display: block;
+  margin-top: 3px;
+  color: #888;
+  font-size: 11px;
+}
+
+.bb-coupon-use {
+  flex-shrink: 0;
+  color: #ff6b35;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.bb-empty-state {
+  padding: 24px;
+  text-align: center;
+  border-radius: 14px;
+  background: #faf7f4;
+  color: #888;
+}
+
+.bb-empty-icon {
+  margin-bottom: 8px;
+  font-size: 28px;
+}
+
+.bb-empty-state p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.bb-divider {
+  height: 1px;
+  margin: 28px 0;
+  background: #eee5df;
+}
+
+.bb-coupon-result {
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid #f0ddd1;
+  border-radius: 14px;
+  background: #fffaf6;
+}
+
+.bb-coupon-result > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 7px 0;
+  color: #666;
+  font-size: 13px;
+}
+
+.bb-coupon-result strong {
+  color: #333;
+}
+
+.bb-discount-row strong {
+  color: #2e7d32 !important;
+}
+
+.bb-total-row {
+  margin-top: 8px;
+  padding-top: 13px !important;
+  border-top: 1px solid #eaded6;
+  color: #222 !important;
+  font-size: 16px !important;
+}
+
+.bb-total-row strong {
+  color: #ff6b35 !important;
+  font-size: 20px;
+}
+
+/* ---------- Payment ---------- */
+
+.bb-coupon-row {
+  display: flex;
+  gap: 9px;
+  margin-bottom: 9px;
+}
+
+.bb-coupon-row .bb-input {
+  flex: 1;
+}
+
+.bb-payment-discount {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 12px 0 18px;
+  padding: 13px 15px;
+  border: 1px solid #cfe7d4;
+  border-radius: 11px;
+  background: #f3fbf4;
+  color: #2e7d32;
+  font-size: 13px;
+}
+
+.bb-payment-discount strong {
+  color: #2e7d32;
+}
+
+.bb-payment-discount small {
+  color: #4d8055;
+}
+
+.bb-payable-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 22px 0 15px;
+  padding: 17px;
+  border-radius: 13px;
+  background: #fff4ec;
+  border: 1px solid #f8d9c5;
+}
+
+.bb-payable-box span {
+  color: #666;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.bb-payable-box strong {
+  color: #ff6b35;
+  font-size: 22px;
+}
+
+.bb-pay-button {
+  min-height: 48px;
+}
+
+.bb-payment-result {
+  margin-top: 25px;
+  padding: 20px;
+  border: 1px solid #eee1d9;
+  border-radius: 15px;
+  background: #fffaf7;
+}
+
+.bb-result-heading {
+  margin-bottom: 15px;
+}
+
+.bb-result-heading h3 {
+  margin: 3px 0 0;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 21px;
+  color: #222;
+}
+
+.bb-payment-detail {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 11px 0;
+  border-bottom: 1px solid #eee5df;
+  font-size: 13px;
+}
+
+.bb-payment-detail:last-of-type {
+  border-bottom: none;
+}
+
+.bb-payment-detail span {
+  color: #888;
+}
+
+.bb-payment-detail strong {
+  color: #333;
+  text-align: right;
+}
+
+.bb-status {
+  text-transform: capitalize;
+}
+
+.bb-status-paid {
+  color: #2e7d32 !important;
+}
+
+.bb-status-failed {
+  color: #c62828 !important;
+}
+
+.bb-status-pending {
+  color: #ff6b35 !important;
+}
+
+.bb-payment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.bb-success-button,
+.bb-danger-button,
+.bb-outline-button {
+  flex: 1;
+  min-height: 40px;
+  padding: 9px 12px;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.bb-success-button {
+  border: none;
+  background: #2e7d32;
+  color: white;
+}
+
+.bb-danger-button {
+  border: none;
+  background: #c62828;
+  color: white;
+}
+
+.bb-outline-button {
+  flex-basis: 100%;
+  border: 1px solid #ff6b35;
+  background: white;
+  color: #e85b2a;
+}
+
+.bb-success-button:hover,
+.bb-danger-button:hover,
+.bb-outline-button:hover {
+  opacity: 0.88;
+}
+
+/* ---------- Messages ---------- */
+
+.bb-message {
+  margin-top: 12px;
+  padding: 11px 13px;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.bb-error {
+  border: 1px solid #f1c7c7;
+  background: #fff3f3;
+  color: #c62828;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 600px) {
+  .bb-page {
+    padding: 18px 12px 40px;
+  }
+
+  .bb-header {
+    margin-bottom: 20px;
+  }
+
+  .bb-logo {
+    font-size: 25px;
+  }
+
+  .bb-burger {
+    width: 36px;
+    height: 36px;
+  }
+
+  .bb-card {
+    padding: 23px 18px;
+    border-radius: 17px;
+  }
+
+  .bb-page-heading h1 {
+    font-size: 28px;
+  }
+
+  .bb-coupon-item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .bb-coupon-use {
+    align-self: flex-end;
+  }
+
+  .bb-coupon-row {
+    flex-direction: column;
+  }
+
+  .bb-secondary-button {
+    width: 100%;
+  }
+
+  .bb-payment-discount {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .bb-payment-detail {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .bb-payment-detail strong {
+    text-align: left;
+  }
+}
+

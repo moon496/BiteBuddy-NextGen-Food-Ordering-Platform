@@ -159,26 +159,49 @@ def list_admins(admin: User = Depends(require_admin), db: Session = Depends(get_
 
 
 @router.post("/admins", status_code=201)
-def add_admin(payload: AdminCreateRequest, admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+def add_admin(
+    payload: AdminCreateRequest,
+    admin: User = Depends(require_admin),
+    db: Session = Depends(get_db)
+):
+    # Check if username or email already exists
     existing = db.query(User).filter(
-        (User.username == payload.username) | (User.email == payload.email)
+        (User.username == payload.username) |
+        (User.email == payload.email)
     ).first()
+
     if existing:
+        # Already an admin
         if existing.role == "Admin":
-            raise HTTPException(status_code=400, detail="User is already an admin")
+            raise HTTPException(
+                status_code=400,
+                detail="User is already an admin"
+            )
+
+        # Existing normal user → promote to Admin
         existing.role = "Admin"
         db.commit()
-        return {"message": f"{existing.username} promoted to Admin"}
+        db.refresh(existing)
 
+        return {
+            "message": f"{existing.username} promoted to Admin"
+        }
+
+    # Create a completely new admin
     new_admin = User(
         username=payload.username,
         email=payload.email,
         hashed_password=hash_password(payload.password),
         role="Admin",
     )
+
     db.add(new_admin)
     db.commit()
-    return {"message": f"New admin {payload.username} created"}
+    db.refresh(new_admin)
+
+    return {
+        "message": f"New admin {new_admin.username} created"
+    }
 
 
 @router.delete("/admins/{admin_id}")

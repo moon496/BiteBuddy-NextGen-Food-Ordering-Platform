@@ -46,9 +46,13 @@ function Login({ setView, token, setToken }) {
       const data = await loginUser(email, password);
       localStorage.setItem("bitebuddy_token", data.access_token);
       localStorage.setItem("bitebuddy_user_id", data.user.id);
-      setToken(data.access_token);
-      setUser(data.user);
+      
       localStorage.setItem("bitebuddy_role", data.user.role);
+      localStorage.setItem("bitebuddy_username", data.user.username);
+      localStorage.setItem("bitebuddy_email", data.user.email); 
+      setToken(data.access_token);
+      setUser(data.user); 
+      
 
       if (setView) {
         if (data.user.role === "Admin") {
