@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from database import get_db
-from model import Order, OrderItem, UserCoupon
+from model import Order, OrderItem, UserCoupon, User
 from routes.cart_routes import cart_db, find_menu_item
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
@@ -72,6 +72,21 @@ def get_order_status(order_id: int, db: Session = Depends(get_db)):
     order = db.query(Order).filter(Order.id == order_id).first()
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
+    user = db.query(User).filter(User.id == order.user_id).first()
+    
+    # Check whether the account that owns this order is banned
+    if user and user.is_banned:
+        raise HTTPException(
+            status_code=403,
+            detail=(
+                "This order cannot be tracked because the account associated "
+                "with it has been banned due to repeated failed or cancelled orders. "
+                "If you think this is a mistake, please contact the admin at "
+                "admin1@bitebuddy.com."
+            ),
+        )
+
+    
 
     return {
         "order_id": order.id,

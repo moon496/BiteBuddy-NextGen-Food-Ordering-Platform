@@ -27,7 +27,15 @@ function OrderStatus() {
 
       if (!response.ok) {
         setStatusData(null);
-        setError("Order not found.");
+        if (response.status === 403) {
+          setError(
+            "Order Tracking Unavailable: The account associated with this order has been banned due to repeated failed or cancelled orders. If you think this is a mistake, please contact the admin at admin1@bitebuddy.com."
+          );
+        } else if (response.status === 404) {
+            setError("Order not found.");
+        } else {
+            setError("Unable to retrieve order status.");
+        }
         return;
       }
 

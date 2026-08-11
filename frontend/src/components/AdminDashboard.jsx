@@ -6,6 +6,9 @@ import {
   addAdmin,
   removeAdmin,
   getRevenue,
+  markOrderFailed,
+  getBannedUsers,
+  unbanUser,
 } from "../api/adminApi";
 
 const DEMO_BASE_REVENUE = 15000; // demo starting amount — change korte paro
@@ -25,9 +28,12 @@ function AdminDashboard() {
 
   if (role !== "Admin") {
     return (
-      <div style={{ textAlign: "center", marginTop: "60px" }}>
-        <h2>Access Denied</h2>
-        <p>You do not have permission to access this page.</p>
+      <div className="access-denied-overlay">
+        <div className="access-denied-card">
+          <div className="access-denied-icon">🚫</div>
+          <h2>Access Denied</h2>
+          <p>You do not have permission to access this page. Admin privileges are required.</p>
+        </div>
       </div>
     );
   }
@@ -45,6 +51,55 @@ function AdminDashboard() {
 
   const [revenue, setRevenue] = useState(null);
   const [revenueLoading, setRevenueLoading] = useState(true);
+
+  const [bannedUsers, setBannedUsers] = useState([]);
+  const [bannedLoading, setBannedLoading] = useState(true);
+  const [confirmOrderId, setConfirmOrderId] = useState(null);
+  const [banAlert, setBanAlert] = useState(null);
+  
+
+  const loadBannedUsers = async () => {
+    setBannedLoading(true);
+    try {
+      const data = await getBannedUsers();
+      setBannedUsers(data);
+    } catch (err) {
+      console.error(err);
+    }
+    setBannedLoading(false);
+  };
+
+  const handleMarkFailed = (orderId) => {
+    setConfirmOrderId(orderId);
+  };
+
+  const confirmMarkFailed = async () => {
+    const orderId = confirmOrderId;
+    setConfirmOrderId(null);
+    try {
+      const result = await markOrderFailed(orderId);
+      if (result.is_banned) {
+        setBanAlert({
+          username: result.username || "This user",
+          count: result.failed_delivery_count,
+        });
+      }
+      loadOrders();
+      loadBannedUsers();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleUnban = async (userId) => {
+    if (!window.confirm("Unban this user?")) return;
+    try {
+      await unbanUser(userId);
+      loadBannedUsers();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
 
   // Keep a ref to always have the latest orders inside the interval callback
   const ordersRef = useRef([]);
@@ -84,6 +139,7 @@ function AdminDashboard() {
     loadOrders();
     loadAdmins();
     loadRevenue();
+    loadBannedUsers();
   }, []);
 
   // Auto-advance every order's status every 5 minutes
@@ -159,6 +215,39 @@ function AdminDashboard() {
 
   return (
     <div style={{ maxWidth: 900, margin: "40px auto", padding: 20 }}>
+      {confirmOrderId && (
+        <div className="admin-popup-overlay">
+          <div className="admin-popup-card">
+            <div className="admin-popup-icon">⚠️</div>
+            <h3>Mark as Failed?</h3>
+            <p>This will flag order #{confirmOrderId} as a failed/fraudulent delivery. This action will be counted against the customer's account.</p>
+            <div className="admin-popup-actions">
+              <button className="admin-popup-confirm" onClick={confirmMarkFailed}>
+                Yes, Mark Failed
+              </button>
+              <button className="admin-popup-cancel" onClick={() => setConfirmOrderId(null)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {banAlert && (
+        <div className="admin-popup-overlay">
+          <div className="admin-popup-card admin-popup-danger">
+            <div className="admin-popup-icon">⛔</div>
+            <h3>User Banned</h3>
+            <p>
+              <strong>{banAlert.username}</strong> has reached {banAlert.count} failed
+              deliveries and has been automatically banned from the platform.
+            </p>
+            <button className="admin-popup-confirm-danger" onClick={() => setBanAlert(null)}>
+              Understood
+            </button>
+          </div>
+        </div>
+      )}
       <h2>Restaurant Order Dashboard</h2>
       <p style={{ color: "#888", fontSize: 13, marginTop: -8 }}>
         Order status auto-updates to the next stage every 5 minutes.
@@ -213,6 +302,7 @@ function AdminDashboard() {
               <th style={{ padding: 8 }}>Items</th>
               <th style={{ padding: 8 }}>Total Amount</th>
               <th style={{ padding: 8 }}>Status</th>
+              <th style={{ padding: 8 }}>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -226,6 +316,17 @@ function AdminDashboard() {
                 <td style={{ padding: 8 }}>
                   <span style={statusBadgeStyle(o.status)}>{o.status}</span>
                 </td>
+                <td style={{ padding: 8 }}>
+                  {o.status !== "Failed" && o.status !== "Delivered" && (
+                    <button
+                      onClick={() => handleMarkFailed(o.order_id)}
+                      style={{ background: "#c62828", color: "#fff", border: "none", borderRadius: 6, padding: "5px 10px", cursor: "pointer", fontSize: 12 }}
+                    >
+                      Mark Failed
+                    </button>
+                  )}
+                </td>
+                
               </tr>
             ))}
           </tbody>
@@ -301,6 +402,42 @@ function AdminDashboard() {
           </tbody>
         </table>
       )}
+      <hr style={{ margin: "40px 0" }} />
+
+      <h2>Banned Users (Fraud Detection)</h2>
+      <p style={{ color: "#888", fontSize: 13, marginTop: -8 }}>
+        Users are automatically banned after 3 failed/fraudulent deliveries.
+      </p>
+      {bannedLoading ? (
+        <p>Loading...</p>
+      ) : bannedUsers.length === 0 ? (
+        <p style={{ color: "#888" }}>No banned users.</p>
+      ) : (
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr style={{ borderBottom: "2px solid #ddd", textAlign: "left" }}>
+              <th style={{ padding: 8 }}>Username</th>
+              <th style={{ padding: 8 }}>Email</th>
+              <th style={{ padding: 8 }}>Failed Deliveries</th>
+              <th style={{ padding: 8 }}></th>
+            </tr>
+          </thead>
+          <tbody>
+            {bannedUsers.map((u) => (
+              <tr key={u.id} style={{ borderBottom: "1px solid #eee" }}>
+                <td style={{ padding: 8 }}>{u.username}</td>
+                <td style={{ padding: 8 }}>{u.email}</td>
+                <td style={{ padding: 8 }}>{u.failed_delivery_count}</td>
+                <td style={{ padding: 8 }}>
+                  <button onClick={() => handleUnban(u.id)}>Unban</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+   
+
     </div>
   );
 }
@@ -332,6 +469,7 @@ const statusColors = {
   Preparing: "#8b5cf6",
   "Out for Delivery": "#ec4899",
   Delivered: "#22c55e",
+  Failed: "#c62828",
 };
 
 const statusBadgeStyle = (status) => ({

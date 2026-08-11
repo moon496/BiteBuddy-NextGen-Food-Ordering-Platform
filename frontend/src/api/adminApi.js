@@ -93,3 +93,32 @@ export async function getRevenue() {
   if (!res.ok) throw new Error("Failed to load revenue");
   return res.json();
 }
+
+export const markOrderFailed = async (orderId) => {
+  const res = await fetch(`${BASE_URL}/admin/orders/${orderId}/mark-failed`, {
+    method: "PATCH",
+    headers: authHeader(),
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.detail || "Failed to mark order as failed");
+  }
+  return res.json();
+};
+
+export const getBannedUsers = async () => {
+  const res = await fetch(`${BASE_URL}/admin/banned-users`, { headers: authHeader() });
+  return res.json();
+};
+
+export const unbanUser = async (userId) => {
+  const res = await fetch(`${BASE_URL}/admin/users/${userId}/unban`, {
+    method: "PATCH",
+    headers: authHeader(),
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.detail || "Failed to unban user");
+  }
+  return res.json();
+};
