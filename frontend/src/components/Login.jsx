@@ -8,6 +8,7 @@ function Login({ setView, token, setToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [banPopup, setBanPopup] = useState("");
   
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -67,7 +68,12 @@ function Login({ setView, token, setToken }) {
         }
       }
     } catch (err) {
-      setError(err.message);
+      const message = err.message || "Login failed";
+      if (message.toLowerCase().includes("banned")) {
+        setError("Your account has been banned due to repeated failed or cancelled orders. If you think this is a mistake, please contact the admin at admin1@bitebuddy.com.");
+      } else {
+        setError(message);
+      }
     }
   };
 
@@ -152,6 +158,18 @@ function Login({ setView, token, setToken }) {
     const initial = user.username.charAt(0).toUpperCase();
     return (
       <div className="auth-page">
+        {banPopup && (
+        <div className="ban-popup-overlay">
+          <div className="ban-popup-card">
+            <div className="ban-popup-icon">⛔</div>
+            <h3>Account Banned</h3>
+            <p>{banPopup}</p>
+            <button className="ban-popup-close" onClick={() => setBanPopup("")}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
         <BrandPanel />
         <div className="auth-form-panel">
           <div className="auth-card profile-card">

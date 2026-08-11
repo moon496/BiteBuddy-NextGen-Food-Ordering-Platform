@@ -249,3 +249,56 @@ def remove_assigned_coupon(coupon_id: int, admin: User = Depends(require_admin),
     db.delete(coupon)
     db.commit()
     return {"message": "Coupon removed"}
+# ---------- Fraud detection / Ban management ----------
+
+@router.patch("/orders/{order_id}/mark-failed")
+def mark_order_failed(order_id: int, admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    order = db.query(Order).filter(Order.id == order_id).first()
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+
+    order.status = "Failed"
+    db.commit()
+
+    target_user = db.query(User).filter(User.id == order.user_id).first()
+    if target_user:
+        target_user.failed_delivery_count += 1
+        if target_user.failed_delivery_count >= 3:
+            target_user.is_banned = True
+        db.commit()
+
+    return {
+        "order_id": order.id,
+        "status": order.status,
+        "user_id": target_user.id if target_user else None,
+        "username": target_user.username if target_user else None,
+        "failed_delivery_count": target_user.failed_delivery_count if target_user else None,
+        "failed_delivery_count": target_user.failed_delivery_count if target_user else None,
+        "is_banned": target_user.is_banned if target_user else None,
+    }
+
+
+@router.get("/banned-users")
+def list_banned_users(admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    users = db.query(User).filter(User.is_banned == True).all()
+    return [
+        {
+            "id": u.id,
+            "username": u.username,
+            "email": u.email,
+            "failed_delivery_count": u.failed_delivery_count,
+        }
+        for u in users
+    ]
+
+
+@router.patch("/users/{user_id}/unban")
+def unban_user(user_id: int, admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user.is_banned = False
+    user.failed_delivery_count = 0
+    db.commit()
+    return {"message": f"{user.username} has been unbanned"}
