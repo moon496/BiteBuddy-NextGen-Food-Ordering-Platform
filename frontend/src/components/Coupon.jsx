@@ -26,78 +26,134 @@ function Coupon() {
   };
 
   return (
-  <div className="styled-page" style={{ maxWidth: 480, margin: "40px auto", padding: 20 }}>
-    <h2>My Coupons</h2>
+  <div className="bb-page">
+    <div className="bb-header">
+      <div className="bb-logo">
+        <span className="bb-burger">☰</span>
+        <span>BiteBuddy</span>
+      </div>
 
-    {personalCoupons.length === 0 ? (
-        <p style={{ color: "#888", fontSize: 14 }}>
-          You don't have any personal coupons yet. Complete orders to earn loyalty rewards!
-        </p>
+      <span className="bb-header-icon">🍔</span>
+    </div>
+
+    <main className="bb-card bb-coupon-card">
+      <div className="bb-page-heading">
+        <span className="bb-eyebrow">SPECIAL OFFERS</span>
+        <h1>My Coupons</h1>
+        <p>Save more on your favourite BiteBuddy meals.</p>
+      </div>
+
+      {personalCoupons.length === 0 ? (
+        <div className="bb-empty-state">
+          <div className="bb-empty-icon">🎟️</div>
+          <p>
+            You don't have any personal coupons yet.
+            Complete orders to earn loyalty rewards!
+          </p>
+        </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
+        <div className="bb-coupon-list">
           {personalCoupons.map((c) => (
             <div
               key={c.id}
+              className="bb-coupon-item"
               onClick={() => setCode(c.code)}
-              style={{
-                cursor: "pointer",
-                border: "1px dashed #ff6b35",
-                borderRadius: 8,
-                padding: 12,
-                background: "#fff6ee",
-              }}
             >
-              <strong>{c.code}</strong> —{" "}
-              {c.discount_type === "percent" ? `${c.value}% off` : `৳${c.value} off`}
-              {c.max_discount ? ` (max ৳${c.max_discount})` : ""}
-              <div style={{ fontSize: 12, color: "#888" }}>Click to use this code</div>
+              <div className="bb-coupon-main">
+                <strong>{c.code}</strong>
+
+                <span>
+                  {c.discount_type === "percent"
+                    ? `${c.value}% off`
+                    : `৳${c.value} off`}
+                </span>
+
+                {c.max_discount && (
+                  <small>Maximum discount ৳{c.max_discount}</small>
+                )}
+              </div>
+
+              <div className="bb-coupon-use">
+                Click to use
+              </div>
             </div>
           ))}
         </div>
       )}
 
-      <h2>Apply a Coupon</h2>
-      <p style={{ color: "#888", fontSize: 14 }}>
-        Try: WELCOME10, SAVE50, , or a personal coupon above
-      </p>
+      <div className="bb-divider" />
 
-      <input
-        type="text"
-        placeholder="Coupon code"
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-        style={{ width: "100%", padding: 10, marginBottom: 10 }}
-      />
-      <input
-        type="number"
-        placeholder="Cart subtotal (e.g. 500)"
-        value={subtotal}
-        onChange={(e) => setSubtotal(e.target.value)}
-        style={{ width: "100%", padding: 10, marginBottom: 10 }}
-      />
-      <button onClick={handleApply} style={{ padding: "10px 18px" }}>
+      <div className="bb-page-heading bb-small-heading">
+        <span className="bb-eyebrow">DISCOUNT CODE</span>
+        <h2>Apply a Coupon</h2>
+        <p>
+          Try WELCOME10, SAVE50, or one of your personal coupons.
+        </p>
+      </div>
+
+      <div className="bb-form-group">
+        <label className="bb-label">Coupon code</label>
+
+        <input
+          className="bb-input"
+          type="text"
+          placeholder="Enter coupon code"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+        />
+      </div>
+
+      <div className="bb-form-group">
+        <label className="bb-label">Cart subtotal</label>
+
+        <input
+          className="bb-input"
+          type="number"
+          placeholder="e.g. 500"
+          value={subtotal}
+          onChange={(e) => setSubtotal(e.target.value)}
+        />
+      </div>
+
+      <button
+        onClick={handleApply}
+        className="bb-primary-button"
+      >
         Apply Coupon
       </button>
 
-      {error && <p style={{ color: "#c62828", fontWeight: "bold" }}>{error}</p>}
-
-      {result && (
-        <div
-          style={{
-            marginTop: 20,
-            padding: 16,
-            border: "1px solid #ddd",
-            borderRadius: 8,
-          }}
-        >
-          <p>Code: <strong>{result.code}</strong></p>
-          <p>Subtotal: ৳{result.subtotal}</p>
-          <p>Discount: -৳{result.discount_amount}</p>
-          <h3>Total: ৳{result.total}</h3>
+      {error && (
+        <div className="bb-message bb-error">
+          {error}
         </div>
       )}
-    </div>
-  );
+
+      {result && (
+        <div className="bb-coupon-result">
+          <div>
+            <span>Coupon</span>
+            <strong>{result.code}</strong>
+          </div>
+
+          <div>
+            <span>Subtotal</span>
+            <strong>৳{result.subtotal}</strong>
+          </div>
+
+          <div className="bb-discount-row">
+            <span>Discount</span>
+            <strong>-৳{result.discount_amount}</strong>
+          </div>
+
+          <div className="bb-total-row">
+            <span>Total</span>
+            <strong>৳{result.total}</strong>
+          </div>
+        </div>
+      )}
+    </main>
+  </div>
+);
 }
 
 export default Coupon;
