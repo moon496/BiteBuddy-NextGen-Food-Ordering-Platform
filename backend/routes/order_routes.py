@@ -16,10 +16,18 @@ class StatusUpdate(BaseModel):
 
 
 @router.post("/create", status_code=201)
-def create_order(user_id: int, address_id: int | None = None, db: Session = Depends(get_db)):
+def create_order(
+    user_id: int,
+    address_id: int | None = None,
+    payment_method: str = "cod",
+    db: Session = Depends(get_db),
+):
     user_cart = cart_db.get(user_id, [])
     if not user_cart:
         raise HTTPException(status_code=400, detail="Cart is empty")
+
+    if payment_method not in ("cod", "bkash", "card"):
+        raise HTTPException(status_code=400, detail="Invalid payment method")
 
     total = 0
     order_items_data = []
@@ -36,7 +44,16 @@ def create_order(user_id: int, address_id: int | None = None, db: Session = Depe
             "price": item["price"],
         })
 
-    new_order = Order(user_id=user_id, address_id=address_id, total_amount=total, status="Pending")
+    initial_payment_status = "pending" if payment_method == "cod" else "paid"
+
+    new_order = Order(
+        user_id=user_id,
+        address_id=address_id,
+        total_amount=total,
+        status="Pending",
+        payment_method=payment_method,
+        payment_status=initial_payment_status,
+    )
     db.add(new_order)
     db.flush()
 
@@ -73,8 +90,7 @@ def get_order_status(order_id: int, db: Session = Depends(get_db)):
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
     user = db.query(User).filter(User.id == order.user_id).first()
-    
-    # Check whether the account that owns this order is banned
+
     if user and user.is_banned:
         raise HTTPException(
             status_code=403,
@@ -86,13 +102,14 @@ def get_order_status(order_id: int, db: Session = Depends(get_db)):
             ),
         )
 
-    
-
     return {
         "order_id": order.id,
         "status": order.status,
         "status_sequence": ORDER_STATUS_SEQUENCE,
         "current_step": ORDER_STATUS_SEQUENCE.index(order.status),
+        "payment_method": order.payment_method,
+        "payment_status": order.payment_status,
+        "total_amount": order.total_amount,
     }
 
 
@@ -125,7 +142,7 @@ def update_order_status(order_id: int, body: StatusUpdate, db: Session = Depends
             )
             db.add(loyalty_coupon)
             db.commit()
-            
+
     return {"order_id": order_id, "status": body.status}
 
 
@@ -142,3 +159,16 @@ def get_order_detail(order_id: int, db: Session = Depends(get_db)):
         "total_amount": order.total_amount,
         "items": [{"name": i.item_name, "quantity": i.quantity, "price": i.price} for i in items],
     }
+
+@router.patch("/{order_id}/confirm-payment")
+def confirm_payment_by_user(order_id: int, db: Session = Depends(get_db)):
+    order = db.query(Order).filter(Order.id == order_id).first()
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+
+    if order.status != "Delivered":
+        raise HTTPException(status_code=400, detail="Order is not yet delivered")
+
+    order.payment_status = "paid"
+    db.commit()
+    return {"order_id": order.id, "payment_status": order.payment_status}

@@ -122,3 +122,26 @@ export const unbanUser = async (userId) => {
   }
   return res.json();
 };
+
+export const markOrderPaid = async (orderId) => {
+  const res = await fetch(`${BASE_URL}/admin/orders/${orderId}/mark-paid`, {
+    method: "PATCH",
+    headers: authHeader(),
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.detail || "Failed to mark order as paid");
+  }
+  return res.json();
+};
+
+export const confirmPaymentByUser = async (orderId) => {
+  const res = await fetch(`${BASE_URL}/orders/${orderId}/confirm-payment`, {
+    method: "PATCH",
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.detail || "Failed to confirm payment");
+  }
+  return res.json();
+};

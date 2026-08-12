@@ -41,12 +41,14 @@ class Order(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    address_id = Column(Integer, ForeignKey("addresses.id"), nullable=True)  # ← notun line
+    address_id = Column(Integer, ForeignKey("addresses.id"), nullable=True)  
     status = Column(String(20), default="Pending", nullable=False)
     total_amount = Column(Float, nullable=False)
+    payment_method = Column(String(20), default="cod", nullable=False)      
+    payment_status = Column(String(20), default="pending", nullable=False) 
     created_at = Column(DateTime, default=datetime.utcnow)
     user = relationship("User", backref="orders")
-    address = relationship("Address", backref="orders")  # ← notun line
+    address = relationship("Address", backref="orders")  
 
     items = relationship("OrderItem", backref="order", cascade="all, delete-orphan")
 
