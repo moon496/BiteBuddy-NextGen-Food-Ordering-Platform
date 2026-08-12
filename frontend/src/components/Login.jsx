@@ -1,14 +1,20 @@
 import { useState, useEffect } from "react";
 import { registerUser, loginUser, logoutUser, fetchCurrentUser, updateUser, deleteUser } from "../api/authApi";
+import NotificationModal from "./NotificationModal";
+import { getBestCoupon } from "../api/couponApi";
+import { getWelcomeCoupon } from "../api/couponApi";
 import "./Login.css";
 
-function Login({ setView, token, setToken }) {
+function Login({ setView, token, setToken, onWelcomeCoupon }) {
   const [mode, setMode] = useState("login");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [banPopup, setBanPopup] = useState("");
+  const [deletePopup, setDeletePopup] = useState(false);
+  const [deleteSuccessPopup, setDeleteSuccessPopup] = useState(false);
+  const [welcomeCoupon, setWelcomeCoupon] = useState(null);
   
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -51,8 +57,30 @@ function Login({ setView, token, setToken }) {
       localStorage.setItem("bitebuddy_username", data.user.username);
       localStorage.setItem("bitebuddy_email", data.user.email); 
       setToken(data.access_token);
-      setUser(data.user); 
+      setUser(data.user);
+      try {
+  const welcomeData = await getWelcomeCoupon();
+
+  if (welcomeData?.available && welcomeData?.coupon) {
+    onWelcomeCoupon?.(welcomeData.coupon);
+  }
+}
+catch (couponErr) {
+  console.log("Welcome coupon check failed:", couponErr);
+}
+      try {
+  const couponData = await getBestCoupon(1000);
+
+  if (
+    couponData?.best_coupon?.code === "WELCOME30"
+  ) {
+    onWelcomeCoupon?.(couponData.best_coupon);
+  }
+} catch (couponErr) {
+  console.log("Welcome coupon check failed:", couponErr);
+}
       
+
 
       if (setView) {
         if (data.user.role === "Admin") {
@@ -112,20 +140,11 @@ function Login({ setView, token, setToken }) {
   };
 
   const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete your account? This cannot be undone.")) {
-      return;
-    }
-    try {
-      await deleteUser(token);
-      localStorage.removeItem("bitebuddy_token");
-      setToken(null);
-      setUser(null);
-    } catch (err) {
-      setError(err.message);
-    }
+    setDeletePopup(true);
   };
 
   if (loading) return <div className="auth-loading">Loading BiteBuddy…</div>;
+  
 
   const BrandPanel = () => (
     <div className="auth-brand-panel">
@@ -157,186 +176,414 @@ function Login({ setView, token, setToken }) {
       </div>
     </div>
   );
+  if (deleteSuccessPopup) {
+  return (
+    <div className="delete-popup-overlay">
+      <div className="delete-popup-card success-delete-card">
+        <div className="delete-success-icon">✓</div>
+
+        <h3>Account deleted successfully</h3>
+
+        <p>Your account has been successfully deleted.</p>
+
+        <button
+          className="delete-success-btn"
+          onClick={() => {
+  setDeleteSuccessPopup(false);
+
+  setMode("login");
+  setUsername("");
+  setEmail("");
+  setPassword("");
+  setError("");
+
+  setEditMode(false);
+  setEditUsername("");
+  setEditEmail("");
+
+  setView?.("account");
+}}
+        >
+          Continue
+        </button>
+      </div>
+    </div>
+  );
+}
 
   if (user) {
-    const initial = user.username.charAt(0).toUpperCase();
-    return (
-      <div className="auth-page">
-        {banPopup && (
+  const initial = user.username.charAt(0).toUpperCase();
+
+  return (
+    <div className="auth-page">
+
+      {/* Account Banned Popup */}
+      {banPopup && (
         <div className="ban-popup-overlay">
           <div className="ban-popup-card">
             <div className="ban-popup-icon">⛔</div>
+
             <h3>Account Banned</h3>
+
             <p>{banPopup}</p>
-            <button className="ban-popup-close" onClick={() => setBanPopup("")}>
+
+            <button
+              className="ban-popup-close"
+              onClick={() => setBanPopup("")}
+            >
               Close
             </button>
           </div>
         </div>
       )}
-        <BrandPanel />
-        <div className="auth-form-panel">
-          <div className="auth-card profile-card">
-            <div className="avatar-circle">{initial}</div>
-            <h2>{user.username}</h2>
-            <p className="user-email">{user.email}</p>
-            <span className={`role-badge ${user.role === "Admin" ? "role-admin" : "role-user"}`}>
-              {user.role === "Admin" ? "Logged in as Admin" : "Logged in as User"}
-            </span>
 
-            {!editMode ? (
-              <div className="profile-actions">
-                <button onClick={handleEditStart}>Edit profile</button>
-                <button onClick={handleLogout}>Log out</button>
-                <button className="danger-btn" onClick={handleDelete}>
-                  Delete account
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleEditSubmit} className="edit-form">
-                <input
-                  type="text"
-                  placeholder="Username"
-                  value={editUsername}
-                  onChange={(e) => setEditUsername(e.target.value)}
-                  required
-                />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  value={editEmail}
-                  onChange={(e) => setEditEmail(e.target.value)}
-                  required
-                />
-                <div className="edit-form-buttons">
-                  <button type="submit">Save</button>
-                  <button type="button" onClick={() => setEditMode(false)}>
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            )}
-            {error && <p className="auth-error">{error}</p>}
+      {/* Delete Confirmation Popup */}
+      {deletePopup && (
+        <div className="delete-popup-overlay">
+          <div className="delete-popup-card">
+
+            <div className="delete-popup-icon">⚠️</div>
+
+            <h3>Are you sure?</h3>
+
+            <p>
+              Are you sure you want to delete your account?
+              <br />
+              This action cannot be undone.
+            </p>
+
+            <div className="delete-popup-actions">
+
+              <button
+                className="delete-cancel-btn"
+                onClick={() => setDeletePopup(false)}
+              >
+                Cancel
+              </button>
+
+              <button
+                className="delete-confirm-btn"
+                onClick={async () => {
+                  setDeletePopup(false);
+
+                  try {
+                    await deleteUser(token);
+
+                    localStorage.removeItem("bitebuddy_token");
+                    localStorage.removeItem("bitebuddy_role");
+                    localStorage.removeItem("bitebuddy_user_id");
+                    localStorage.removeItem("bitebuddy_username");
+                    localStorage.removeItem("bitebuddy_email");
+
+                    setToken(null);
+                    setUser(null);
+
+                    setDeleteSuccessPopup(true);
+                  } catch (err) {
+                    setError(err.message);
+                  }
+                }}
+              >
+                Yes, delete
+              </button>
+
+            </div>
           </div>
         </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="auth-page">
+      )}
+      
       <BrandPanel />
+
       <div className="auth-form-panel">
-        <div className="auth-card">
-          <div className="auth-tabs">
-            <button
-              type="button"
-              className={mode === "login" ? "auth-tab active" : "auth-tab"}
-              onClick={() => {
-                setMode("login");
-                setError("");
-              }}
-            >
-              Log in
-            </button>
-            <button
-              type="button"
-              className={mode === "register" ? "auth-tab active" : "auth-tab"}
-              onClick={() => {
-                setMode("register");
-                setError("");
-              }}
-            >
-              Register
-            </button>
+        <div className="auth-card profile-card">
+
+          <div className="avatar-circle">
+            {initial}
           </div>
 
-          <form onSubmit={handleSubmit}>
-            {mode === "register" && (
-              <div className="field">
-                <label>Username</label>
-                <input
-                  type="text"
-                  placeholder="hungry_hippo"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                />
-              </div>
-            )}
+          <h2>{user.username}</h2>
 
-            <div className="field">
-              <label>Email</label>
+          <p className="user-email">
+            {user.email}
+          </p>
+
+          <span
+            className={`role-badge ${
+              user.role === "Admin"
+                ? "role-admin"
+                : "role-user"
+            }`}
+          >
+            {user.role === "Admin"
+              ? "Logged in as Admin"
+              : "Logged in as User"}
+          </span>
+
+          {!editMode ? (
+            <div className="profile-actions">
+
+              <button onClick={handleEditStart}>
+                Edit profile
+              </button>
+
+              <button onClick={handleLogout}>
+                Log out
+              </button>
+
+              <button
+                className="danger-btn"
+                onClick={handleDelete}
+              >
+                Delete account
+              </button>
+
+            </div>
+          ) : (
+            <form
+              onSubmit={handleEditSubmit}
+              className="edit-form"
+            >
+              <input
+                type="text"
+                placeholder="Username"
+                value={editUsername}
+                onChange={(e) =>
+                  setEditUsername(e.target.value)
+                }
+                required
+              />
+
               <input
                 type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                value={editEmail}
+                onChange={(e) =>
+                  setEditEmail(e.target.value)
+                }
                 required
               />
-            </div>
 
-            <div className="field">
-              <label>Password</label>
-              <input
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
+              <div className="edit-form-buttons">
 
-            {/* Admin role select purapuri sorano hoyeche.
-                Notun account shob shomoy "User" hisebe register hobe.
-                Admin banano jabe shudhu seed script diye, othoba
-                existing admin er "Manage Admins" panel theke. */}
+                <button type="submit">
+                  Save
+                </button>
 
-            <button type="submit" className="submit-btn">
-              {mode === "login" ? "Sign in" : "Create account"}
-            </button>
-          </form>
+                <button
+                  type="button"
+                  onClick={() => setEditMode(false)}
+                >
+                  Cancel
+                </button>
 
-          {error && <p className="auth-error">{error}</p>}
+              </div>
+            </form>
+          )}
 
-          <p className="auth-switch">
-            {mode === "login" ? "Don't have an account yet? " : "Already have an account? "}
-            <span
-              onClick={() => {
-                setMode(mode === "login" ? "register" : "login");
-                setError("");
-              }}
-            >
-              {mode === "login" ? "Register for free" : "Log in"}
-            </span>
-          </p>
+          {error && (
+            <p className="auth-error">
+              {error}
+            </p>
+          )}
+
         </div>
-
-        <p className="auth-footer">
-          Built by{" "}
-          <a href="https://github.com/farhana2443" target="_blank" rel="noopener noreferrer">
-            Farhana
-          </a>
-          ,{" "}
-          <a href="https://github.com/moon496" target="_blank" rel="noopener noreferrer">
-            Moon
-          </a>{" "}
-          &{" "}
-          <a href="https://github.com/Yeonali" target="_blank" rel="noopener noreferrer">
-            Naim
-          </a>{" "}
-          ·{" "}
-          <a
-            href="https://github.com/moon496/BiteBuddy-NextGen-Food-Ordering-Platform"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View on GitHub
-          </a>
-        </p>
       </div>
+
     </div>
   );
+}
+
+return (
+  <div className="auth-page">
+
+    <BrandPanel />
+
+    <div className="auth-form-panel">
+
+      <div className="auth-card">
+
+        <div className="auth-tabs">
+
+          <button
+            type="button"
+            className={
+              mode === "login"
+                ? "auth-tab active"
+                : "auth-tab"
+            }
+            onClick={() => {
+              setMode("login");
+              setError("");
+            }}
+          >
+            Log in
+          </button>
+
+          <button
+            type="button"
+            className={
+              mode === "register"
+                ? "auth-tab active"
+                : "auth-tab"
+            }
+            onClick={() => {
+              setMode("register");
+              setError("");
+            }}
+          >
+            Register
+          </button>
+
+        </div>
+
+        <form onSubmit={handleSubmit}>
+
+          {mode === "register" && (
+            <div className="field">
+
+              <label>Username</label>
+
+              <input
+                type="text"
+                placeholder="hungry_hippo"
+                value={username}
+                onChange={(e) =>
+                  setUsername(e.target.value)
+                }
+                required
+              />
+
+            </div>
+          )}
+
+          <div className="field">
+
+            <label>Email</label>
+
+            <input
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) =>
+                setEmail(e.target.value)
+              }
+              required
+            />
+
+          </div>
+
+          <div className="field">
+
+            <label>Password</label>
+
+            <input
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) =>
+                setPassword(e.target.value)
+              }
+              required
+            />
+
+          </div>
+
+          {/* Admin role select purapuri sorano hoyeche.
+              Notun account shob shomoy "User" hisebe register hobe.
+              Admin banano jabe shudhu seed script diye, othoba
+              existing admin er "Manage Admins" panel theke. */}
+
+          <button
+            type="submit"
+            className="submit-btn"
+          >
+            {mode === "login"
+              ? "Sign in"
+              : "Create account"}
+          </button>
+
+        </form>
+
+        {error && (
+          <p className="auth-error">
+            {error}
+          </p>
+        )}
+
+        <p className="auth-switch">
+
+          {mode === "login"
+            ? "Don't have an account yet? "
+            : "Already have an account? "}
+
+          <span
+            onClick={() => {
+              setMode(
+                mode === "login"
+                  ? "register"
+                  : "login"
+              );
+              setError("");
+            }}
+          >
+            {mode === "login"
+              ? "Register for free"
+              : "Log in"}
+          </span>
+
+        </p>
+
+      </div>
+
+      <p className="auth-footer">
+
+        Built by{" "}
+
+        <a
+          href="https://github.com/farhana2443"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Farhana
+        </a>
+
+        ,{" "}
+
+        <a
+          href="https://github.com/moon496"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Moon
+        </a>
+
+        {" "}&{" "}
+
+        <a
+          href="https://github.com/Yeonali"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Naim
+        </a>
+
+        {" "}·{" "}
+
+        <a
+          href="https://github.com/moon496/BiteBuddy-NextGen-Food-Ordering-Platform"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View on GitHub
+        </a>
+
+      </p>
+
+    </div>
+
+  </div>
+);
+
 }
 
 export default Login;

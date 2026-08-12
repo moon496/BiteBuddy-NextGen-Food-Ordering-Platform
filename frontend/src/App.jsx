@@ -15,11 +15,13 @@ import Coupon from "./components/Coupon";
 import Reviews from "./components/Reviews";
 import Payment from "./components/Payment";
 import Checkout from "./components/Checkout";
+import NotificationModal from "./components/NotificationModal";
 
 function App() {
   const [view, setView] = useState("dashboard");
 
   const [token, setToken] = useState(() => localStorage.getItem("bitebuddy_token"));
+  const [welcomeCoupon, setWelcomeCoupon] = useState(null);
 
   useEffect(() => {
     const syncToken = () => setToken(localStorage.getItem("bitebuddy_token"));
@@ -47,6 +49,7 @@ function App() {
           setView={setView}
           token={token}
           setToken={setToken}
+          onWelcomeCoupon={setWelcomeCoupon}
         />
       )}
 
@@ -68,6 +71,15 @@ function App() {
       )}
 
     </div>
+    {welcomeCoupon && (
+      <NotificationModal
+        title="🎉 Congratulations!"
+        message={`You have received a special welcome coupon: ${welcomeCoupon.code} — ${welcomeCoupon.value}% OFF!`}
+        icon="🎟️"
+        onClose={() => setWelcomeCoupon(null)}
+      />
+    )}
+
 
         <Footer />
       </div>

@@ -3,14 +3,15 @@ import { applyCoupon, myCoupons  } from "../api/couponApi";
 
 function Coupon() {
   const [code, setCode] = useState("");
+  const token = localStorage.getItem("bitebuddy_token");
   const [subtotal, setSubtotal] = useState("");
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
   const [personalCoupons, setPersonalCoupons] = useState([]);
 
   useEffect(() => {
-    myCoupons().then(setPersonalCoupons);
-  }, []);
+    myCoupons(token).then(setPersonalCoupons).catch((err) => setError(err.message));
+  }, [token]);
 
   const handleApply = async () => {
     setError("");

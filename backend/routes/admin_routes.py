@@ -71,22 +71,74 @@ def list_orders_by_user(user_id: int, admin: User = Depends(require_admin), db: 
         for o in orders
     ]
 
-
 @router.patch("/orders/{order_id}/status")
-def admin_update_order_status(order_id: int, body: StatusUpdate, admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+def admin_update_order_status(
+    order_id: int,
+    body: StatusUpdate,
+    admin: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
     order = db.query(Order).filter(Order.id == order_id).first()
+
     if order is None:
         raise HTTPException(status_code=404, detail="Order not found")
 
     if body.status not in ORDER_STATUS_SEQUENCE:
         raise HTTPException(
             status_code=400,
-            detail={"error": "Invalid status", "allowed_statuses": ORDER_STATUS_SEQUENCE},
+            detail={
+                "error": "Invalid status",
+                "allowed_statuses": ORDER_STATUS_SEQUENCE,
+            },
         )
 
+    previous_status = order.status
     order.status = body.status
+
+    # Automatically issue a loyalty coupon on every
+    # 3rd, 6th, 9th... delivered order.
+    if body.status == "Delivered" and previous_status != "Delivered":
+        db.flush()
+
+        delivered_count = (
+            db.query(func.count(Order.id))
+            .filter(
+                Order.user_id == order.user_id,
+                Order.status == "Delivered",
+            )
+            .scalar()
+        )
+
+        if delivered_count % 3 == 0:
+            loyalty_coupon_count = (
+                db.query(UserCoupon)
+                .filter(
+                    UserCoupon.user_id == order.user_id,
+                    UserCoupon.code == "LOYAL10",
+                )
+                .count()
+            )
+
+            expected_loyalty_coupons = delivered_count // 3
+
+            if loyalty_coupon_count < expected_loyalty_coupons:
+                loyalty_coupon = UserCoupon(
+                    user_id=order.user_id,
+                    code="LOYAL10",
+                    discount_type="percent",
+                    value=10,
+                    max_discount=150,
+                    used="false",
+                )
+
+                db.add(loyalty_coupon)
+
     db.commit()
-    return {"order_id": order.id, "status": order.status}
+
+    return {
+        "order_id": order.id,
+        "status": order.status,
+    }
 
 
 # ---------- Revenue ----------
