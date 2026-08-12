@@ -1,12 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from sqlalchemy.orm import Session
 
 from routes.cart_routes import router as cart_router
 from database import Base, engine, get_db, SessionLocal
-from fastapi import Depends
-from sqlalchemy.orm import Session
 from model import User, MenuItem, Order
 
 from routes.order_routes import router as order_router
@@ -44,7 +43,7 @@ def advance_order_statuses():
 
 def run_startup_seeds():
     """Backend chalu hobar shomoy check kore — data na thakle seed kore dey.
-    Render restart/sleep-wake er por o data thakbe."""
+       Render restart/sleep-wake er por o data thakbe."""
     try:
         menu_seed.seed()
     except Exception as e:
@@ -85,9 +84,15 @@ app.include_router(admin_router)
 app.include_router(review_router)
 app.include_router(payment_router)
 
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://bug-free-robot-gx45qpj7pjxcp9gj-5173.app.github.dev",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r"https://.*\.vercel\.app|https://.*\.app\.github\.dev|http://localhost:\d+",
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

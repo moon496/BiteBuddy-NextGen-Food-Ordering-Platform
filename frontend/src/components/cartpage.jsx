@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../App.css";
 import NotificationModal from "./NotificationModal";
 import { getCurrentUserId } from "../utils/auth";
+import { getBestCoupon } from "../api/couponApi";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -11,6 +12,10 @@ function CartPage({ setView }) {
   const [loading, setLoading] = useState(true);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [notification, setNotification] = useState(null);
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [showCouponPopup, setShowCouponPopup] = useState(false);
+  const couponPopupShown = useRef(false);
 
   const handleGoToLogin = () => {
     localStorage.setItem("checkout_redirect",  "checkout");
@@ -34,6 +39,41 @@ function CartPage({ setView }) {
   useEffect(() => {
     loadCart();
   }, []);
+  useEffect(() => {
+  const fetchBestCoupon = async () => {
+    if (!cartItems.length) {
+      setAppliedCoupon(null);
+      return;
+    }
+
+    try {
+      const subtotal = cartItems.reduce(
+        (sum, item) => sum + item.subtotal,
+        0
+      );
+
+      const couponData = await getBestCoupon(subtotal);
+
+      console.log(
+        "BEST COUPON RESPONSE:",
+        JSON.stringify(couponData, null, 2)
+      );
+
+      setAppliedCoupon(couponData);
+
+      // Show coupon popup once when entering the cart
+      if (couponData?.best_coupon && !couponPopupShown.current) {
+        setShowCouponPopup(true);
+        couponPopupShown.current = true;
+      }
+    } catch (err) {
+      console.log("No best coupon available:", err.message);
+      setAppliedCoupon(null);
+    }
+  };
+
+  fetchBestCoupon();
+}, [cartItems]);
 
   const handleQuantityChange = async (id, delta) => {
     const item = cartItems.find((c) => c.id === id);
@@ -71,7 +111,16 @@ function CartPage({ setView }) {
       return;
     }
     localStorage.setItem("checkout_cart_total", total);
-    setView("checkout");
+    if (appliedCoupon?.best_coupon) {
+      localStorage.setItem(
+        "selected_coupon",
+         JSON.stringify(appliedCoupon.best_coupon)
+      );
+    } else {
+      localStorage.removeItem("selected_coupon");
+    }
+
+  setView("checkout");
   };
 
   if (loading) return <p>Loading cart...</p>;
@@ -153,6 +202,35 @@ function CartPage({ setView }) {
               <strong>৳{total}</strong>
             </div>
 
+            <div className="coupon-section">
+  <div className="coupon-header">
+    <span>🎟️ Coupon</span>
+  </div>
+
+  <div className="best-deal">
+  <strong>🔥 Best Deal</strong>
+
+  {appliedCoupon?.best_coupon ? (
+    <>
+      <span>
+        {appliedCoupon.best_coupon.code} —{" "}
+        {appliedCoupon.best_coupon.discount_type === "percent"
+          ? `${appliedCoupon.best_coupon.discount_value}% OFF`
+          : `৳${appliedCoupon.best_coupon.discount_value} OFF`}
+      </span>
+
+      <small>
+        Best available coupon will be applied automatically.
+      </small>
+    </>
+  ) : (
+    <span>No applicable coupon available</span>
+  )}
+</div>
+</div>
+
+
+
             <button
               className="checkout-btn"
               onClick={handlePlaceOrder}
@@ -170,6 +248,48 @@ function CartPage({ setView }) {
           onClose={() => setNotification(null)}
         />
       )}
+
+      {showCouponPopup && appliedCoupon?.best_coupon && (
+  <div className="coupon-popup-overlay">
+    <div className="coupon-popup-card">
+      <button
+        className="coupon-popup-close"
+        onClick={() => setShowCouponPopup(false)}
+      >
+        ×
+      </button>
+
+      <div className="coupon-popup-icon">🎟️</div>
+
+      <h2>Best Coupon For You!</h2>
+
+      <p className="coupon-popup-code">
+        {appliedCoupon.best_coupon.code}
+      </p>
+
+      <p className="coupon-popup-discount">
+        {appliedCoupon.best_coupon.discount_type === "percent"
+          ? `${appliedCoupon.best_coupon.discount_value}% OFF`
+          : `৳${appliedCoupon.best_coupon.discount_value} OFF`}
+      </p>
+
+      <p>
+        You save ৳{appliedCoupon.best_coupon.discount_amount}
+      </p>
+
+      <p className="coupon-popup-note">
+        This coupon will be applied automatically before payment.
+      </p>
+
+      <button
+        className="checkout-btn"
+        onClick={() => setShowCouponPopup(false)}
+      >
+        Continue
+      </button>
+    </div>
+  </div>
+)}
 
       {showLoginPrompt && (
         <div className="login-modal-overlay">

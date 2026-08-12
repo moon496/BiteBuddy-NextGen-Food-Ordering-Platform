@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
 import jwt
-
+from model import User, UserCoupon, Address, Order
 
 from database import get_db
 from datetime import datetime
 import logging
 
-from model import User, UserCoupon
+from model import User, UserCoupon, Address
 from auth_schemas import RegisterRequest, LoginRequest, UserResponse, UpdateUserRequest
 from auth_utils import hash_password, verify_password, create_access_token, decode_access_token
 
@@ -133,9 +133,35 @@ def update_me(payload: UpdateUserRequest, current=Depends(get_current_user), db:
 
 
 @router.delete("/me")
-def delete_me(current=Depends(get_current_user), db: Session = Depends(get_db)):
-    user, _ = current
-    db_user = db.query(User).filter(User.id == user.id).first()
-    db.delete(db_user)
-    db.commit()
-    return {"message": "Account deleted successfully"}
+def delete_me(
+    current_user=Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    try:
+        user = current_user[0] if isinstance(current_user, tuple) else current_user
+
+        # Delete user coupons
+        db.query(UserCoupon).filter(
+            UserCoupon.user_id == user.id
+        ).delete(synchronize_session=False)
+
+        # Delete addresses
+        db.query(Address).filter(
+            Address.user_id == user.id
+        ).delete(synchronize_session=False)
+
+        # Delete orders
+        db.query(Order).filter(
+            Order.user_id == user.id
+        ).delete(synchronize_session=False)
+
+        # Finally delete user
+        db.delete(user)
+
+        db.commit()
+
+        return {"message": "Account deleted successfully"}
+
+    except Exception:
+        db.rollback()
+        raise

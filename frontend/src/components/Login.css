@@ -588,3 +588,335 @@
   font-weight: bold;
   cursor: pointer;
 }
+/* =========================================================
+   DELETE ACCOUNT POPUPS — DARK THEME
+   ========================================================= */
+
+.delete-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(5px);
+
+  animation: deleteOverlayIn 0.2s ease-out;
+}
+
+.delete-popup-card {
+  width: 100%;
+  max-width: 410px;
+
+  background: #1c1c1c;
+
+  border: 1px solid rgba(232, 73, 29, 0.35);
+  border-radius: 18px;
+
+  padding: 34px 32px 30px;
+
+  text-align: center;
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.55),
+    0 8px 25px rgba(232, 73, 29, 0.12);
+
+  animation: deletePopupIn 0.25s ease-out;
+}
+
+/* Warning Icon */
+
+.delete-popup-icon {
+  width: 68px;
+  height: 68px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(232, 73, 29, 0.12);
+  border: 1px solid rgba(232, 73, 29, 0.25);
+
+  font-size: 2rem;
+
+  box-shadow:
+    0 8px 22px rgba(232, 73, 29, 0.12);
+}
+
+/* Title */
+
+.delete-popup-card h3 {
+  margin: 0 0 10px;
+
+  color: #ffffff;
+
+  font-family: "Baloo 2", sans-serif;
+  font-size: 1.55rem;
+  font-weight: 800;
+}
+
+/* Description */
+
+.delete-popup-card p {
+  margin: 0 auto 24px;
+
+  max-width: 330px;
+
+  color: #bdbdbd;
+
+  font-family: "Plus Jakarta Sans", sans-serif;
+
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* Buttons */
+
+.delete-popup-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.delete-popup-actions button {
+  flex: 1;
+
+  padding: 12px 16px;
+
+  border-radius: 10px;
+
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+/* Cancel */
+
+.delete-cancel-btn {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  background: #292929;
+
+  color: #ffffff;
+}
+
+.delete-cancel-btn:hover {
+  background: #353535;
+
+  transform: translateY(-1px);
+}
+
+/* Confirm */
+
+.delete-confirm-btn {
+  border: none;
+
+  background: linear-gradient(
+    135deg,
+    #e8491d,
+    #c33a14
+  );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 8px 18px rgba(195, 58, 20, 0.28);
+}
+
+.delete-confirm-btn:hover {
+  transform: translateY(-1px);
+
+  background: linear-gradient(
+    135deg,
+    #f05425,
+    #d13e16
+  );
+
+  box-shadow:
+    0 11px 24px rgba(195, 58, 20, 0.4);
+}
+
+
+/* =========================================================
+   SUCCESS POPUP
+   ========================================================= */
+
+.success-delete-card {
+  max-width: 400px;
+
+  border-color: rgba(47, 107, 58, 0.45);
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.55),
+    0 8px 25px rgba(47, 107, 58, 0.15);
+}
+
+/* Success Icon */
+
+.delete-success-icon {
+  width: 70px;
+  height: 70px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(47, 107, 58, 0.14);
+
+  border: 1px solid rgba(47, 107, 58, 0.35);
+
+  color: #7ce38b;
+
+  font-size: 2rem;
+  font-weight: 800;
+
+  box-shadow:
+    0 8px 22px rgba(47, 107, 58, 0.15);
+
+  animation: successPop 0.35s ease-out;
+}
+
+.success-delete-card h3 {
+  color: #7ce38b;
+}
+
+.success-delete-card p {
+  color: #bdbdbd;
+  margin-bottom: 22px;
+}
+
+/* Continue */
+
+.delete-success-btn {
+  width: 100%;
+
+  padding: 13px 18px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #292929;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  color: #ffffff;
+
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.delete-success-btn:hover {
+  background: #353535;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes deleteOverlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes deletePopupIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes successPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.65);
+  }
+
+  70% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 500px) {
+  .delete-popup-card {
+    max-width: 350px;
+    padding: 30px 22px 24px;
+    border-radius: 16px;
+  }
+
+  .delete-popup-card h3 {
+    font-size: 1.35rem;
+  }
+
+  .delete-popup-card p {
+    font-size: 0.84rem;
+  }
+
+  .delete-popup-actions {
+    flex-direction: column;
+  }
+
+  .delete-popup-actions button {
+    width: 100%;
+  }
+
+  .delete-popup-icon,
+  .delete-success-icon {
+    width: 62px;
+    height: 62px;
+    font-size: 1.8rem;
+  }
+}
