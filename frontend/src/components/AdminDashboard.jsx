@@ -7,6 +7,7 @@ import {
   removeAdmin,
   getRevenue,
   markOrderFailed,
+  markOrderPaid,
   getBannedUsers,
   unbanUser,
 } from "../api/adminApi";
@@ -83,6 +84,15 @@ function AdminDashboard() {
       loadBannedUsers();
     } catch (err) {
       alert(err.message);
+    }
+  };
+
+     const handleMarkPaid = async (orderId) => {
+     try {
+     await markOrderPaid(orderId);
+     loadOrders();
+    } catch (err) {
+    alert(err.message);
     }
   };
 
@@ -412,6 +422,7 @@ return (
         <th>Date</th>
         <th>Items</th>
         <th>Total Amount</th>
+        <th>Paid</th>
         <th>Status</th>
         <th>Action</th>
       </tr>
@@ -442,6 +453,38 @@ return (
           <td>
             ৳{o.total_amount}
           </td>
+          <td>
+  <span
+    style={{
+      padding: "4px 10px",
+      borderRadius: 20,
+      fontSize: 12,
+      fontWeight: 600,
+      color: "#fff",
+      backgroundColor: o.payment_status === "paid" ? "#22c55e" : "#f59e0b",
+    }}
+  >
+    {o.payment_status === "paid" ? "Paid" : "Pending"}
+  </span>
+
+  {o.payment_status !== "paid" && (
+    <button
+      onClick={() => handleMarkPaid(o.order_id)}
+      style={{
+        marginLeft: 6,
+        background: "#2563eb",
+        color: "#fff",
+        border: "none",
+        borderRadius: 6,
+        padding: "3px 8px",
+        cursor: "pointer",
+        fontSize: 11,
+      }}
+    >
+      Mark Paid
+    </button>
+  )}
+</td>
 
           <td>
             <span style={statusBadgeStyle(o.status)}>

@@ -17,6 +17,8 @@ function OrderStatus() {
   const [trackedOrderId, setTrackedOrderId] = useState(null);
   const [statusData, setStatusData] = useState(null);
   const [error, setError] = useState("");
+  const [showPayPopup, setShowPayPopup] = useState(false);
+  const [confirmingPayment, setConfirmingPayment] = useState(false);
 
   const fetchOrderStatus = async (orderId) => {
     try {
@@ -42,11 +44,58 @@ function OrderStatus() {
       const data = await response.json();
       setStatusData(data);
       setError("");
+
+      if (
+        data.status === "Delivered" &&
+        data.payment_method === "cod" &&
+        data.payment_status === "pending"
+      ) {
+        setShowPayPopup(true);
+      }
     } catch (err) {
       setStatusData(null);
       setError("Unable to connect to the server.");
     }
   };
+  const handleConfirmPaid = async () => {
+  if (!statusData) return;
+  setConfirmingPayment(true);
+  try {
+    const res = await fetch(`${BASE_URL}/orders/${statusData.order_id}/confirm-payment`, {
+      method: "PATCH",
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "Failed to confirm payment");
+    setShowPayPopup(false);
+    // status ta locally o update kore dicchi, fetch abar hobe next poll-e
+    setStatusData((prev) => prev ? { ...prev, payment_status: "paid" } : prev);
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setConfirmingPayment(false);
+  }
+};{showPayPopup && (
+  <div className="order-pay-popup-overlay">
+    <div className="order-pay-popup-card">
+      <div className="order-pay-popup-icon">💵</div>
+      <h3>Your order has been delivered!</h3>
+      <p>Please pay ৳{statusData.total_amount || ""} to the delivery rider now.</p>
+      <button
+        className="order-pay-popup-ok"
+        onClick={handleConfirmPaid}
+        disabled={confirmingPayment}
+      >
+        {confirmingPayment ? "Confirming..." : "I've Paid"}
+      </button>
+      <button
+        className="order-pay-popup-later"
+        onClick={() => setShowPayPopup(false)}
+      >
+        Remind me later
+      </button>
+    </div>
+  </div>
+)}
 
   const handleTrackOrder = () => {
     if (!orderIdInput.trim()) return;
@@ -109,6 +158,22 @@ function OrderStatus() {
               );
             })}
           </ul>
+        </div>
+      )}
+
+      {showPayPopup && (
+        <div className="order-pay-popup-overlay">
+          <div className="order-pay-popup-card">
+            <div className="order-pay-popup-icon">💵</div>
+            <h3>Your order has been delivered!</h3>
+            <p>Please pay ৳{statusData.total_amount || ""} to the delivery rider now.</p>
+            <button
+              className="order-pay-popup-ok"
+              onClick={() => setShowPayPopup(false)}
+            >
+              OK, Got it
+            </button>
+          </div>
         </div>
       )}
     </div>

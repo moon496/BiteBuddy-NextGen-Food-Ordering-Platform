@@ -44,6 +44,8 @@ def list_all_orders(admin: User = Depends(require_admin), db: Session = Depends(
                 "username": o.user.username if o.user else None,
                 "status": o.status,
                 "total_amount": o.total_amount,
+                "payment_method": o.payment_method,   
+                "payment_status": o.payment_status,
                 "created_at": o.created_at.isoformat() + "Z",
                 "items": [
                     {"item_name": i.item_name, "quantity": i.quantity, "price": i.price}
@@ -254,6 +256,16 @@ def add_admin(
     return {
         "message": f"New admin {new_admin.username} created"
     }
+
+@router.patch("/orders/{order_id}/mark-paid")
+def mark_order_paid(order_id: int, admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    order = db.query(Order).filter(Order.id == order_id).first()
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+
+    order.payment_status = "paid"
+    db.commit()
+    return {"order_id": order.id, "payment_status": order.payment_status}
 
 
 @router.delete("/admins/{admin_id}")
