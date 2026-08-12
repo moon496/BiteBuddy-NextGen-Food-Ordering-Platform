@@ -84,20 +84,18 @@ app.include_router(admin_router)
 app.include_router(review_router)
 app.include_router(payment_router)
 
-origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "https://bug-free-robot-gx45qpj7pjxcp9gj-5173.app.github.dev",
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://bite-buddy-next-gen-food-ordering-p.vercel.app",
+    ],
+    allow_origin_regex=r"https://.*\.app\.github\.dev|https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 @app.get("/")
 def read_root():
