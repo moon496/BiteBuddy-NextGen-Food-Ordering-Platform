@@ -93,10 +93,35 @@ class Address(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    label = Column(String(50), nullable=False)
-    address_line = Column(String(255), nullable=False)
+
+    label = Column(String(20), nullable=False, default="Home")       # "Home" | "Work" | "Other"
+    custom_label = Column(String(50), nullable=True)                  # only used when label == "Other"
+
+    address_line1 = Column(String(255), nullable=False)               # House/Flat/Road
+    address_line2 = Column(String(255), nullable=True)                # Area/Landmark (optional)
     city = Column(String(100), nullable=False)
+    postal_code = Column(String(20), nullable=True)
     phone = Column(String(20), nullable=False)
+
+    delivery_instructions = Column(String(500), nullable=True)
+    is_default = Column(Boolean, default=False, nullable=False)
+
     created_at = Column(DateTime, default=datetime.utcnow)
 
     user = relationship("User", backref="addresses")
+
+
+class Review(Base):
+    __tablename__ = "reviews"
+
+    id = Column(Integer, primary_key=True, index=True)
+    order_id = Column(Integer, ForeignKey("orders.id"), nullable=False)
+    item_id = Column(Integer, ForeignKey("menu_items.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    rating = Column(Integer, nullable=False)
+    comment = Column(String(1000), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    order = relationship("Order", backref="reviews")
+    item = relationship("MenuItem", backref="reviews")
+    user = relationship("User", backref="reviews")

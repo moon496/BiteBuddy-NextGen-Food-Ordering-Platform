@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from routes.cart_routes import router as cart_router
 from database import Base, engine, get_db, SessionLocal
 from model import User, MenuItem, Order
+from migrations import run_migrations
 
 from routes.order_routes import router as order_router
 from routes.auth_routes import router as auth_router
@@ -65,6 +66,7 @@ scheduler = AsyncIOScheduler()
 async def lifespan(app: FastAPI):
     # startup
     Base.metadata.create_all(bind=engine)
+    run_migrations(engine)
     run_startup_seeds()
     scheduler.add_job(advance_order_statuses, "interval", minutes=5, id="advance_order_statuses")
     scheduler.start()

@@ -810,6 +810,107 @@ nav button:hover {
     color: white;
   }
 
+  .address-label-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .address-label-chip {
+    padding: 9px 16px;
+    border-radius: 10px;
+    border: 1.5px solid #ddd;
+    background: #fff;
+    color: #555;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+
+  .address-label-chip.active {
+    border-color: #e8491d;
+    background: #fff1e7;
+    color: #e8491d;
+  }
+
+  .address-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .address-form-grid .address-input {
+    margin-bottom: 0;
+  }
+
+  textarea.address-input {
+    resize: vertical;
+    font-family: inherit;
+  }
+
+  .address-checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0 16px;
+    color: #444;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .address-checkbox-row input {
+    width: 16px;
+    height: 16px;
+  }
+
+  .address-default-note {
+    margin: 4px 0 16px;
+    color: #8a5a3f;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .address-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .default-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: #2e7d32;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  .address-item.is-default {
+    border-left: 6px solid #2e7d32;
+  }
+
+  .delivery-instructions-note {
+    color: #8a5a3f !important;
+    font-style: italic;
+    font-size: 13px !important;
+  }
+
+  .address-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .address-actions .secondary-btn {
+    margin-top: 0;
+  }
+
   .empty-state {
     text-align: center;
     padding: 50px 20px;
@@ -3104,6 +3205,68 @@ body,
   color: #555;
   font-size: 14px;
   line-height: 1.6;
+}
+
+.bb-review-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.bb-order-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: #fff1e7;
+  color: #e85b2a;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.bb-review-date {
+  color: #aaa;
+  font-size: 12px;
+}
+
+.bb-review-delete-btn {
+  margin-top: 10px;
+  border: none;
+  background: none;
+  color: #c62828;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
+
+.bb-review-delete-btn:hover {
+  text-decoration: underline;
+}
+
+.bb-empty-note {
+  margin: 14px 0;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #fff6ef;
+  border: 1px solid #f8dfd0;
+  color: #8a5a3f;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.bb-error-text {
+  margin: 4px 0 14px;
+  color: #c62828;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.bb-success-text {
+  margin: 4px 0 14px;
+  color: #2e7d32;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 /* ---------- Coupons ---------- */
