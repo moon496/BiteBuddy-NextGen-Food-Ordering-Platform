@@ -118,5 +118,4 @@ def get_menu_items(db: Session = Depends(get_db)):
             }
             for item in items
         ]
-    }# CI/CD test
-
+    
