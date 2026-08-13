@@ -7,14 +7,24 @@ import { getCurrentUserId } from "../utils/auth";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 
+const EMPTY_ADDRESS_FORM = {
+  label: "Home",
+  customLabel: "",
+  addressLine1: "",
+  addressLine2: "",
+  city: "",
+  postalCode: "",
+  phone: "",
+  deliveryInstructions: "",
+  isDefault: false,
+};
+
 function Checkout({ setView, token }) {
   const [step, setStep] = useState("address"); // address -> coupon -> payment -> confirm
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
-  const [label, setLabel] = useState("");
-  const [addressLine, setAddressLine] = useState("");
-  const [city, setCity] = useState("");
-  const [phone, setPhone] = useState("");
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [addrForm, setAddrForm] = useState(EMPTY_ADDRESS_FORM);
 
   const [orderId, setOrderId] = useState(null);
   const [subtotal, setSubtotal] = useState(Number(localStorage.getItem("checkout_cart_total")) || 0);
@@ -31,15 +41,29 @@ function Checkout({ setView, token }) {
 
   useEffect(() => {
     if (!token) return;
-    getAddresses(token).then(setAddresses).catch((err) => setError(err.message));
+    getAddresses(token)
+      .then((data) => {
+        setAddresses(data);
+        // Pre-select the default address (or the first one) so returning
+        // customers don't have to pick it again every time.
+        if (data.length > 0 && !selectedAddressId) {
+          const def = data.find((a) => a.is_default) || data[0];
+          setSelectedAddressId(def.id);
+        }
+        setShowAddForm(data.length === 0);
+      })
+      .catch((err) => setError(err.message));
   }, [token]);
+
+  const updateAddrField = (field, value) => setAddrForm((f) => ({ ...f, [field]: value }));
 
   const handleAddAddress = async (e) => {
     e.preventDefault();
-    if (!label.trim() || !addressLine.trim() || !city.trim() || !phone.trim()) return;
+    if (!addrForm.addressLine1.trim() || !addrForm.city.trim() || !addrForm.phone.trim()) return;
     try {
-      const newAddr = await addAddress(token, label, addressLine, city, phone);
-      setLabel(""); setAddressLine(""); setCity(""); setPhone("");
+      const newAddr = await addAddress(token, addrForm);
+      setAddrForm(EMPTY_ADDRESS_FORM);
+      setShowAddForm(false);
       const updated = await getAddresses(token);
       setAddresses(updated);
       setSelectedAddressId(newAddr.id);
@@ -103,15 +127,30 @@ function Checkout({ setView, token }) {
   }
 };
 
+  // ---- FIXED handlePay ----
+  // Age: confirmPayment shobshomoy "success" pathaito, method jai hok na keno,
+  // tai COD order o create hoyar shathe shathe "paid" hoye jaito.
+  // Ekhon: sudhu online payment (bkash/card) er khetre i confirmPayment call hobe.
+  // COD hole order "pending" payment_status e i thakbe, delivery howar por
+  // customer OrderStatus page theke "I've Paid" confirm korle tobe "paid" hobe.
   const handlePay = async () => {
     setError("");
     try {
       const data = await initiatePayment(orderId, finalAmount, method);
-      const confirmed = await confirmPayment(data.payment_id, method === "cod" ? "success" : "success");
-      setPayment(confirmed);
+
+      if (method !== "cod") {
+        // Online payment (bKash / Card) — immediately confirm as paid
+        const confirmed = await confirmPayment(data.payment_id, "success");
+        setPayment(confirmed);
+      } else {
+        // COD — do NOT mark as paid yet. Payment happens on delivery.
+        setPayment(null);
+      }
+
       if (couponResult?.user_coupon_id) {
         await redeemCoupon(couponResult.user_coupon_id);
       }
+
       setStep("confirm");
     } catch (err) {
       setError(err.message);
@@ -122,21 +161,59 @@ function Checkout({ setView, token }) {
     return (
       <div className="address-page">
         <h2>Select Delivery Address</h2>
+
         {addresses.map((a) => (
-          <div key={a.id} className="address-item" style={{ border: selectedAddressId === a.id ? "2px solid #ff6b35" : "1px solid #ddd" }} onClick={() => setSelectedAddressId(a.id)}>
-            <h3>📍 {a.label}</h3>
-            <p>{a.address_line}, {a.city}</p>
+          <div
+            key={a.id}
+            className="address-item"
+            style={{ border: selectedAddressId === a.id ? "2px solid #ff6b35" : "1px solid #ddd", cursor: "pointer" }}
+            onClick={() => setSelectedAddressId(a.id)}
+          >
+            <div className="address-item-header">
+              <h3>📍 {a.display_label}</h3>
+              {a.is_default && <span className="default-badge">Default</span>}
+            </div>
+            <p>{a.address_line1}{a.address_line2 ? `, ${a.address_line2}` : ""}, {a.city}{a.postal_code ? ` - ${a.postal_code}` : ""}</p>
             <p>{a.phone}</p>
+            {a.delivery_instructions && (
+              <p className="delivery-instructions-note">📝 {a.delivery_instructions}</p>
+            )}
           </div>
         ))}
 
-        <form onSubmit={handleAddAddress} style={{ marginTop: 20 }}>
-          <input placeholder="Label" value={label} onChange={(e) => setLabel(e.target.value)} />
-          <input placeholder="Address line" value={addressLine} onChange={(e) => setAddressLine(e.target.value)} />
-          <input placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} />
-          <input placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
-          <button type="submit">+ Add New Address</button>
-        </form>
+        {showAddForm ? (
+          <form onSubmit={handleAddAddress} style={{ marginTop: 20 }}>
+            <div className="address-label-row">
+              {["Home", "Work", "Other"].map((opt) => (
+                <button
+                  type="button"
+                  key={opt}
+                  className={`address-label-chip${addrForm.label === opt ? " active" : ""}`}
+                  onClick={() => updateAddrField("label", opt)}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+            {addrForm.label === "Other" && (
+              <input placeholder="Name this address" value={addrForm.customLabel} onChange={(e) => updateAddrField("customLabel", e.target.value)} />
+            )}
+            <input placeholder="House / Flat / Road" value={addrForm.addressLine1} onChange={(e) => updateAddrField("addressLine1", e.target.value)} />
+            <input placeholder="Area / Landmark (optional)" value={addrForm.addressLine2} onChange={(e) => updateAddrField("addressLine2", e.target.value)} />
+            <input placeholder="City" value={addrForm.city} onChange={(e) => updateAddrField("city", e.target.value)} />
+            <input placeholder="Postal code (optional)" value={addrForm.postalCode} onChange={(e) => updateAddrField("postalCode", e.target.value)} />
+            <input placeholder="Phone" value={addrForm.phone} onChange={(e) => updateAddrField("phone", e.target.value)} />
+            <textarea placeholder="Delivery instructions (optional)" value={addrForm.deliveryInstructions} onChange={(e) => updateAddrField("deliveryInstructions", e.target.value)} rows={2} />
+            <button type="submit">+ Save New Address</button>
+            {addresses.length > 0 && (
+              <button type="button" className="secondary-btn" onClick={() => setShowAddForm(false)}>Cancel</button>
+            )}
+          </form>
+        ) : (
+          <button type="button" className="secondary-btn" style={{ marginTop: 16 }} onClick={() => setShowAddForm(true)}>
+            + Add New Address
+          </button>
+        )}
 
         {error && <p style={{ color: "#c62828" }}>{error}</p>}
         <button className="checkout-btn" onClick={handleContinueToCoupon}>Continue to Coupon</button>
@@ -355,7 +432,9 @@ if (step === "confirm") {
       <h2>✅ Order Confirmed!</h2>
 
       <p>
-        Order #{orderId} — Paid ৳{finalAmount} via {method}
+        {method === "cod"
+          ? `Order #${orderId} placed — pay ৳${finalAmount} in cash on delivery.`
+          : `Order #${orderId} — Paid ৳${finalAmount} via ${method}`}
       </p>
 
       <button

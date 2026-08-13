@@ -22,7 +22,7 @@ const ORDER_STATUS_SEQUENCE = [
   "Delivered",
 ];
 
-const AUTO_UPDATE_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
+const AUTO_UPDATE_INTERVAL_MS = 60 * 1000; // 1 minutes
 
 function AdminDashboard() {
   const role = localStorage.getItem("bitebuddy_role");

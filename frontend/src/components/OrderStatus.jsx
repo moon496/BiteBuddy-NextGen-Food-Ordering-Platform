@@ -74,28 +74,7 @@ function OrderStatus() {
   } finally {
     setConfirmingPayment(false);
   }
-};{showPayPopup && (
-  <div className="order-pay-popup-overlay">
-    <div className="order-pay-popup-card">
-      <div className="order-pay-popup-icon">💵</div>
-      <h3>Your order has been delivered!</h3>
-      <p>Please pay ৳{statusData.total_amount || ""} to the delivery rider now.</p>
-      <button
-        className="order-pay-popup-ok"
-        onClick={handleConfirmPaid}
-        disabled={confirmingPayment}
-      >
-        {confirmingPayment ? "Confirming..." : "I've Paid"}
-      </button>
-      <button
-        className="order-pay-popup-later"
-        onClick={() => setShowPayPopup(false)}
-      >
-        Remind me later
-      </button>
-    </div>
-  </div>
-)}
+};
 
   const handleTrackOrder = () => {
     if (!orderIdInput.trim()) return;
@@ -169,9 +148,16 @@ function OrderStatus() {
             <p>Please pay ৳{statusData.total_amount || ""} to the delivery rider now.</p>
             <button
               className="order-pay-popup-ok"
+              onClick={handleConfirmPaid}
+              disabled={confirmingPayment}
+            >
+              {confirmingPayment ? "Confirming..." : "I've Paid"}
+            </button>
+            <button
+              className="order-pay-popup-later"
               onClick={() => setShowPayPopup(false)}
             >
-              OK, Got it
+              Remind me later
             </button>
           </div>
         </div>

@@ -68,6 +68,9 @@ Use sample order IDs:
 
 ## Notes for GitHub Codespaces
 
+# .env file : 
+VITE_API_URL = backend url 
+
 For GitHub Codespaces:
 
 - Make sure backend port `8000` is forwarded and set to **Public** visibility.
