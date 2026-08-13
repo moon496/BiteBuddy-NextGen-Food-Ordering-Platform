@@ -127,15 +127,30 @@ function Checkout({ setView, token }) {
   }
 };
 
+  // ---- FIXED handlePay ----
+  // Age: confirmPayment shobshomoy "success" pathaito, method jai hok na keno,
+  // tai COD order o create hoyar shathe shathe "paid" hoye jaito.
+  // Ekhon: sudhu online payment (bkash/card) er khetre i confirmPayment call hobe.
+  // COD hole order "pending" payment_status e i thakbe, delivery howar por
+  // customer OrderStatus page theke "I've Paid" confirm korle tobe "paid" hobe.
   const handlePay = async () => {
     setError("");
     try {
       const data = await initiatePayment(orderId, finalAmount, method);
-      const confirmed = await confirmPayment(data.payment_id, method === "cod" ? "success" : "success");
-      setPayment(confirmed);
+
+      if (method !== "cod") {
+        // Online payment (bKash / Card) — immediately confirm as paid
+        const confirmed = await confirmPayment(data.payment_id, "success");
+        setPayment(confirmed);
+      } else {
+        // COD — do NOT mark as paid yet. Payment happens on delivery.
+        setPayment(null);
+      }
+
       if (couponResult?.user_coupon_id) {
         await redeemCoupon(couponResult.user_coupon_id);
       }
+
       setStep("confirm");
     } catch (err) {
       setError(err.message);
@@ -417,7 +432,9 @@ if (step === "confirm") {
       <h2>✅ Order Confirmed!</h2>
 
       <p>
-        Order #{orderId} — Paid ৳{finalAmount} via {method}
+        {method === "cod"
+          ? `Order #${orderId} placed — pay ৳${finalAmount} in cash on delivery.`
+          : `Order #${orderId} — Paid ৳${finalAmount} via ${method}`}
       </p>
 
       <button
