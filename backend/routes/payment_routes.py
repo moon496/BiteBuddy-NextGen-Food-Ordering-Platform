@@ -88,14 +88,19 @@ def payment_callback(payment_id: str, body: CallbackRequest = CallbackRequest(),
     else:
         succeeded = call_bkash_gateway()
 
+    order = db.query(Order).filter(Order.id == payment["order_id"]).first()
+
     if succeeded:
         payment["status"] = "paid"
-        order = db.query(Order).filter(Order.id == payment["order_id"]).first()
         if order:
             order.status = "Confirmed"
+            order.payment_status = "paid"
             db.commit()
     else:
         payment["status"] = "failed"
+        if order:
+            order.payment_status = "failed"
+            db.commit()
 
     return payment
 

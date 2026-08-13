@@ -44,7 +44,7 @@ def create_order(
             "price": item["price"],
         })
 
-    initial_payment_status = "pending" if payment_method == "cod" else "paid"
+    initial_payment_status = "pending" if payment_method == "cod" else "unpaid"
 
     new_order = Order(
         user_id=user_id,
